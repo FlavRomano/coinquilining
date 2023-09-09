@@ -1,97 +1,29 @@
-<script lang="ts">
-  let addingToCart = false;
-  let addingToShopList = false;
-</script>
+<div
+  class="grid place-items-center gap-4 lg:pt-12 lg:grid lg:grid-cols-2 sm:grid-cols-1 sm:gap-4 md:grid-cols-2 md:gap-4"
+>
+  <div class="card w-80 bg-base-100 shadow-xl">
+    <figure>
+      <img src="/shopping/shopping list.jpeg" alt="Cleaning things" />
+    </figure>
+    <div class="card-body">
+      <h2 class="card-title">Shopping list</h2>
+      <p>If a dog chews shoes whose shoes does he choose?</p>
+      <div class="card-actions justify-end">
+        <button class="btn btn-primary">Click me</button>
+      </div>
+    </div>
+  </div>
 
-<h2>Shopping List</h2>
-<button on:click={() => (addingToShopList = !addingToShopList)}>
-  {addingToShopList ? "Hide" : "Add to shopping list"}
-</button>
-
-<div>
-  {#if addingToShopList}
-    <form>
-      <label for="item">Item:</label>
-      <input type="text" name="item" id="item" />
-      <br />
-      <label for="description">Description:</label>
-      <input type="text" name="description" id="description" />
-      <br />
-      <br />
-      <input type="submit" value="Conferma" />
-    </form>
-  {:else}
-    <table>
-      <tr>
-        <th>Roommate</th>
-        <th>Item</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td>Flavio</td>
-        <td>Balsamo</td>
-        <td>Il più economico</td>
-      </tr>
-      <tr>
-        <td>Gabriele</td>
-        <td>Dentifricio</td>
-        <td>Colgate o Parodontax</td>
-      </tr>
-    </table>
-  {/if}
-</div>
-
-<h2>Cart</h2>
-<ul>
-  <li>Totale:</li>
-  <li>Flavio:</li>
-  <li>Gabriele:</li>
-</ul>
-<button on:click={() => (addingToCart = !addingToCart)}>
-  {addingToCart ? "Hide" : "Add to cart"}
-</button>
-
-<div>
-  {#if addingToCart}
-    <p>
-      TODO: In "Item" suggerisci gli elementi già presenti nella "Shopping list"
-    </p>
-    <form>
-      <label for="item">Item:</label>
-      <input type="text" name="item" id="item" />
-      <br />
-      <label for="price">Price:</label>
-      <input type="text" name="price" id="price" />
-      <br />
-      <br />
-      <input type="submit" value="Conferma" />
-    </form>
-  {:else}
-    <ul>
-      Flavio
-      <li>
-        <input type="checkbox" name="cartItem" id="check1" />
-        <label for="check1">Balsamo</label>
-        <input
-          type="text"
-          name="cartItem"
-          id="check1"
-          placeholder="Insert price"
-        />
-      </li>
-    </ul>
-    <ul>
-      Gabriele
-      <li>
-        <input type="checkbox" name="asd" id="check2" />
-        <label for="check2">Dentifricio</label>
-        <input
-          type="text"
-          name="cartItem"
-          id="check2"
-          placeholder="Insert price"
-        />
-      </li>
-    </ul>
-  {/if}
+  <div class="card w-80 bg-base-100 shadow-xl">
+    <figure>
+      <img src="shopping/receipts.jpeg" alt="Calendar" />
+    </figure>
+    <div class="card-body">
+      <h2 class="card-title">Receipts</h2>
+      <p>If a dog chews shoes whose shoes does he choose?</p>
+      <div class="card-actions justify-end">
+        <button class="btn btn-primary">Click me</button>
+      </div>
+    </div>
+  </div>
 </div>
