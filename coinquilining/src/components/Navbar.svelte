@@ -1,3 +1,7 @@
+<script lang="ts">
+  let isLoggedIn = false;
+</script>
+
 <div class="navbar bg-base-100 pb-5">
   <div class="navbar-start">
     <div class="dropdown">
@@ -38,6 +42,10 @@
     </ul>
   </div>
   <div class="navbar-end">
-    <a class="btn">Button</a>
+    {#if isLoggedIn}
+      <a class="btn">Account</a>
+    {:else}
+      <a class="btn">Signup</a>
+    {/if}
   </div>
 </div>
