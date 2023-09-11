@@ -1,3 +1,6 @@
+<script lang="ts">
+</script>
+
 <div
   class="pt-2 grid gap-4 place-items-center
 lg:grid-cols-3 lg:grid-flow-row-dense lg:pl-4 lg:pr-4"

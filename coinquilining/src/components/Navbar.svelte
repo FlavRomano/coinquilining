@@ -1,5 +1,5 @@
 <script lang="ts">
-  let isLoggedIn = false;
+  import SignupModal from "./SignupModal.svelte";
 </script>
 
 <div class="navbar bg-base-100 pb-5">
@@ -42,10 +42,6 @@
     </ul>
   </div>
   <div class="navbar-end">
-    {#if isLoggedIn}
-      <a class="btn">Account</a>
-    {:else}
-      <a class="btn">Signup</a>
-    {/if}
+    <SignupModal />
   </div>
 </div>
