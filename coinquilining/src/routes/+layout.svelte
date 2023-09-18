@@ -18,8 +18,4 @@
 	});
 </script>
 
-<svelte:head>
-	<title>ROOT</title>
-</svelte:head>
-
 <slot />
