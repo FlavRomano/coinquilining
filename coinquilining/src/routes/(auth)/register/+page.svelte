@@ -60,12 +60,6 @@
 		<div class="prose">
 			<p>Click <a href="/login">here</a> to login</p>
 		</div>
-		{#each Object.entries($errors) as [err, message]}
-			{#if message}
-				<p>{err}</p>
-				<p>--{message}</p>
-			{/if}
-		{/each}
 	</div>
 	<!-- <pre>{JSON.stringify($page, null, 2)}</pre> -->
 </div>
