@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
 
 	if (session) {
-		throw redirect(303, "/");
+		throw redirect(303, "/dashboard");
 	}
 
 	const form = await superValidate(user);
@@ -39,6 +39,6 @@ export const actions: Actions = {
 			return message(form, err.message);
 		}
 
-		throw redirect(303, "/login");
+		throw redirect(303, "/house");
 	},
 };
