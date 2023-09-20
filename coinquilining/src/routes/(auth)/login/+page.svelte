@@ -48,16 +48,3 @@
 	</div>
 	<!-- <pre>{JSON.stringify($page, null, 2)}</pre> -->
 </div>
-
-<div class="toast toast-bottom toast-center">
-	{#each Object.entries($errors) as [err, message]}
-		{#if message}
-			<div class="prose alert alert-warning">
-				<div class="prose-p">
-					<span><b>{err}</b></span>
-					<span>{message}</span>
-				</div>
-			</div>
-		{/if}
-	{/each}
-</div>
