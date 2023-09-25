@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
 
 	if (session) {
-		throw redirect(303, "/dashboard");
+		throw redirect(303, "/house/dashboard");
 	}
 
 	const registrationForm = await superValidate(user);
@@ -38,7 +38,7 @@ export const actions: Actions = {
 			lastname: registrationForm.data.lastname,
 		};
 	},
-	houseSection: async ({ request, cookies, locals: { supabase } }) => {
+	houseSection: async ({ request, locals: { supabase } }) => {
 		const houseForm = await superValidate(request, houseSchema);
 
 		if (!houseForm.valid) {
@@ -91,7 +91,5 @@ export const actions: Actions = {
 				return message(houseForm, err.message);
 			}
 		}
-
-		console.log(data);
 	},
 };

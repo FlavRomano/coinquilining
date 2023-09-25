@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
 
 	if (session) {
-		throw redirect(303, "/dashboard");
+		throw redirect(303, "/house/dashboard");
 	}
 
 	const form = await superValidate(loginSchema);
@@ -16,10 +16,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals: { supabase } }) => {
+	default: async ({ request, locals: { supabase, getSession } }) => {
 		const form = await superValidate(request, loginSchema);
-
-		console.log(form);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -35,6 +33,8 @@ export const actions: Actions = {
 			return message(form, err.message);
 		}
 
-		throw redirect(303, "/");
+		const session = await getSession();
+
+		throw redirect(303, `/house/dashboard`);
 	},
 };

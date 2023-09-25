@@ -1,0 +1,48 @@
+<div
+	class="grid place-items-center gap-4 lg:pt-12 lg:grid lg:grid-cols-3 sm:grid-cols-1 sm:gap-4 md:grid-cols-2 md:gap-4"
+>
+	<div class="card w-80 bg-base-100 shadow-xl">
+		<figure>
+			<img src="/house/cleaning.jpeg" alt="Cleaning things" />
+		</figure>
+		<div class="card-body">
+			<h2 class="card-title">Cleaning rotations</h2>
+			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<div class="card-actions justify-end">
+				<a
+					class="btn btn-primary"
+					href="/house/lifestyle/cleaning-rotations">CLICK ME</a
+				>
+			</div>
+		</div>
+	</div>
+
+	<div class="card w-80 bg-base-100 shadow-xl">
+		<figure>
+			<img src="/house/calendar.jpeg" alt="Calendar" />
+		</figure>
+		<div class="card-body">
+			<h2 class="card-title">Calendar</h2>
+			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<div class="card-actions justify-end">
+				<a class="btn btn-primary" href="/house/lifestyle/calendar"
+					>Click me</a
+				>
+			</div>
+		</div>
+	</div>
+	<div class="card w-80 bg-base-100 shadow-xl">
+		<figure>
+			<img src="/house/outgoings.jpeg" alt="Cleaning things" />
+		</figure>
+		<div class="card-body">
+			<h2 class="card-title">Outgoings</h2>
+			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<div class="card-actions justify-end">
+				<a class="btn btn-primary" href="/house/lifestyle/outgoings"
+					>Click me</a
+				>
+			</div>
+		</div>
+	</div>
+</div>

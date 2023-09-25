@@ -47,3 +47,10 @@ export const houseSchema = z.object({
 
 	enteringExistingHouse: z.boolean(),
 });
+
+export type User = {
+	email: string;
+	firstname: string;
+	lastname: string;
+	house_id: string;
+};
