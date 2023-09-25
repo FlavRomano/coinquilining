@@ -6,8 +6,6 @@ import { loginSchema } from "$lib/schemas";
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
 
-	console.log(session);
-
 	if (session) {
 		throw redirect(303, "/dashboard");
 	}
@@ -20,6 +18,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals: { supabase } }) => {
 		const form = await superValidate(request, loginSchema);
+
+		console.log(form);
 
 		if (!form.valid) {
 			return fail(400, { form });

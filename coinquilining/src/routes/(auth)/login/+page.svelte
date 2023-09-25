@@ -3,14 +3,14 @@
 	import type { PageData } from "./$types";
 
 	import { loginSchema } from "$lib/schemas";
+	import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
 
 	export let data: PageData;
 
-	const { form, errors, constraints, message, enhance, capture, restore } =
-		superForm(data.form, {
-			taintedMessage: null,
-			validators: loginSchema,
-		});
+	const { form, constraints, enhance } = superForm(data.form, {
+		taintedMessage: null,
+		validators: loginSchema,
+	});
 </script>
 
 <svelte:head>

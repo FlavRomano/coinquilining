@@ -7,23 +7,25 @@ export const user = z.object({
 
 	password: z.string().trim().min(6, { message: "Password too short" }),
 
-	name: z
+	firstname: z
 		.string()
 		.trim()
-		.min(3, { message: "Name too short" })
-		.max(20, { message: "Name too long" })
+		.min(3, { message: "Firstname too short" })
+		.max(20, { message: "Firstname too long" })
 		.regex(/^[A-Za-z]{1,}$/, {
-			message: "Name must contain only letters",
+			message: "Firstname must contain only letters",
 		}),
 
-	surname: z
+	lastname: z
 		.string()
 		.trim()
-		.min(3, { message: "Surname too short" })
-		.max(20, { message: "Surname too long" })
+		.min(3, { message: "Lastname too short" })
+		.max(20, { message: "Lastname too long" })
 		.regex(/^[A-Za-z]{1,}$/, {
-			message: "Surname must contain only letters",
+			message: "Lastname must contain only letters",
 		}),
+
+	houseId: z.string(),
 });
 
 export const loginSchema = z.object({
@@ -31,11 +33,17 @@ export const loginSchema = z.object({
 	password: z.string().min(6),
 });
 
-export const house = z.object({
-	name: z.string().min(3),
-	mates: z.array(
-		z.object({
-			email: z.string().email(),
-		})
-	),
+export const houseSchema = z.object({
+	name: z
+		.string()
+		.min(3, { message: "Name too short" })
+		.max(64, { message: "Name too long" })
+		.trim(),
+
+	code: z
+		.string()
+		.min(9, { message: "Code too short" })
+		.max(9, { message: "Code too long" }),
+
+	enteringExistingHouse: z.boolean(),
 });

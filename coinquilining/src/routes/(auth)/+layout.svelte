@@ -8,7 +8,7 @@
 			<h1>coinquilining</h1>
 		</div>
 	</div>
-	<div class="pt-20">
+	<div class="pt-10">
 		<slot />
 	</div>
 </div>
