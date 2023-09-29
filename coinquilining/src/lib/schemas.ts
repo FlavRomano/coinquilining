@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const user = z.object({
 	email: z.string().email({
@@ -46,6 +46,15 @@ export const houseSchema = z.object({
 		.max(9, { message: "Code too long" }),
 
 	enteringExistingHouse: z.boolean(),
+});
+
+export const fridgeSchema = z.object({
+	owner: z.string(),
+	food_name: z.string().min(3, { message: "Name too short" }),
+	purchased_on: z.date(),
+	expiration_on: z.date(),
+	kind: z.string(),
+	price: z.number().min(0),
 });
 
 export type User = {

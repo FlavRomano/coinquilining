@@ -3,7 +3,6 @@
 	import type { PageData } from "./$types";
 
 	import { loginSchema } from "$lib/schemas";
-	import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
 
 	export let data: PageData;
 

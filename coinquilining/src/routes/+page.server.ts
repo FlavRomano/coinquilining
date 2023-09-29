@@ -8,7 +8,5 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	if (!session) {
 		throw redirect(303, "/register");
-	} else {
-		throw redirect(303, "/dashboard");
 	}
 };
