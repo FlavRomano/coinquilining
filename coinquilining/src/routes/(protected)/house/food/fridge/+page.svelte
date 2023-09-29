@@ -1,17 +1,7 @@
 <script lang="ts">
-	import {
-		createSvelteTable,
-		defaultColumnSizing,
-		flexRender,
-		getCoreRowModel,
-	} from "@tanstack/svelte-table";
-	import { writable } from "svelte/store";
-	import type { ColumnDef, TableOptions } from "@tanstack/svelte-table";
-	import type { Food } from "$lib/server/db/types.js";
 	import Table from "$components/Table.svelte";
 	import { fridgeSchema } from "$types/lib/schemas.js";
 	import { superForm } from "sveltekit-superforms/client";
-	import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
