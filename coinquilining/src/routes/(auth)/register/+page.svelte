@@ -3,6 +3,7 @@
 	import type { PageData } from "./$types";
 	import { houseSchema, user } from "$lib/schemas";
 	import { nanoid } from "nanoid";
+	import { fade } from "svelte/transition";
 
 	export let data: PageData;
 	let nextPage = false;
@@ -18,9 +19,11 @@
 		enhance: registration_enhance,
 		capture: registration_capture,
 		restore: registration_restore,
+		allErrors: registration_allErrors,
 	} = superForm(data.registrationForm, {
 		taintedMessage: null,
 		validators: user,
+		resetForm: true,
 	});
 
 	const {
@@ -31,6 +34,7 @@
 		enhance: house_enhance,
 		capture: house_capture,
 		restore: house_restore,
+		allErrors: house_allErrors,
 	} = superForm(data.houseForm, {
 		taintedMessage: null,
 		validators: houseSchema,
@@ -39,20 +43,23 @@
 	$: if (!$house_form.enteringExistingHouse) {
 		$house_form.code = houseCode;
 	} else {
-		$house_form.name = "NONAME";
+		$house_form.name = "";
+	}
+
+	$: if ($registration_allErrors.length != 0) {
+		nextPage = false;
 	}
 </script>
 
 <svelte:head>
 	<title>{nextPage ? "House creation" : "Registration"}</title>
 </svelte:head>
-
 <div class="flex flex-col items-center border-opacity-50">
-	<ul class="steps">
-		<li class="step step-primary">Credentials</li>
-		<li class="step {!nextPage ? '' : 'step-primary'}">House</li>
-	</ul>
 	{#if !nextPage}
+		<ul class="steps">
+			<li class="step step-primary">Credentials</li>
+			<li class="step">House</li>
+		</ul>
 		<div class="pt-5 grid h-20 card rounded-box place-items-center">
 			<form
 				method="post"
@@ -101,8 +108,35 @@
 			<div class="prose">
 				<p>Click <a href="/login">here</a> to login</p>
 			</div>
+			{#if $registration_allErrors.length}
+				<ul>
+					{#each $registration_allErrors as error}
+						<li>
+							<div class="alert alert-error w-full mt-4">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="stroke-current shrink-0 h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+									/></svg
+								>
+								<span>{error.messages.join(". ")} </span>
+							</div>
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		</div>
 	{:else}
+		<ul class="steps">
+			<li class="step step-primary">Credentials</li>
+			<li class="step step-primary">House</li>
+		</ul>
 		<div class="pt-5 prose">
 			<form
 				method="post"
@@ -178,6 +212,34 @@
 					<button type="submit" class="btn join-item btn-primary"
 						>Create House</button
 					>
+					{#if $house_allErrors.length}
+						<ul>
+							{#each $house_allErrors as error}
+								<li>
+									<div
+										class="alert alert-error w-full mt-4"
+										transition:fade
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="stroke-current shrink-0 h-6 w-6"
+											fill="none"
+											viewBox="0 0 24 24"
+											><path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+											/></svg
+										>
+										<span
+											>{error.messages.join(". ")}
+										</span>
+									</div>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</div>
 			</form>
 		</div>

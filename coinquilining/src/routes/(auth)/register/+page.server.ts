@@ -1,6 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
-import { message, superValidate } from "sveltekit-superforms/server";
+import { message, setError, superValidate } from "sveltekit-superforms/server";
 import { user, houseSchema } from "$lib/schemas";
 
 let userCredential: {
@@ -37,12 +37,30 @@ export const actions: Actions = {
 			firstname: registrationForm.data.firstname,
 			lastname: registrationForm.data.lastname,
 		};
+
+		const { data } = await supabase
+			.from("users")
+			.select()
+			.eq("email", userCredential.email);
+
+		console.log(data);
+
+		if (data.length !== 0) {
+			return setError(
+				registrationForm,
+				"email",
+				"E-mail already exists."
+			);
+		}
+		return { registrationForm };
 	},
 	houseSection: async ({ request, locals: { supabase } }) => {
 		const houseForm = await superValidate(request, houseSchema);
 
 		if (!houseForm.valid) {
-			return fail(400, { houseForm });
+			return message(houseForm, "Invalid form", {
+				status: 403,
+			});
 		}
 
 		const enteringExistingHouse = houseForm.data.enteringExistingHouse;
@@ -55,11 +73,14 @@ export const actions: Actions = {
 			console.log(data);
 
 			if (error) {
-				console.log(error);
-				return message(houseForm, error.message);
-			} else if (data.length === 0) {
-				console.log("Invalid invitation ID");
-				return message(houseForm, "Invalid invitation ID");
+				return setError(houseForm, "", "Internal server error", {
+					status: 500,
+				});
+			}
+			if (data.length === 0) {
+				return setError(houseForm, "code", "House doesn't exists.", {
+					status: 409,
+				});
 			}
 		}
 
@@ -76,8 +97,9 @@ export const actions: Actions = {
 		});
 
 		if (error) {
-			console.log(error);
-			return message(houseForm, error.message);
+			return setError(houseForm, "", error.message, {
+				status: 409,
+			});
 		}
 
 		if (!enteringExistingHouse) {
@@ -87,8 +109,9 @@ export const actions: Actions = {
 			});
 
 			if (err) {
-				console.log(err);
-				return message(houseForm, err.message);
+				return setError(houseForm, "", err.message, {
+					status: 500,
+				});
 			}
 		}
 	},

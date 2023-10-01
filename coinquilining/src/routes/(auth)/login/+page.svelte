@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { superForm } from "sveltekit-superforms/client";
 	import type { PageData } from "./$types";
-	import { fade } from "svelte/transition";
 
 	import { loginSchema } from "$lib/schemas";
 
@@ -49,7 +48,7 @@
 			<p>Click <a href="/register">here</a> to register</p>
 		</div>
 		{#if $message}
-			<div class="alert alert-error w-full mt-4" transition:fade>
+			<div class="alert alert-error w-full mt-4">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="stroke-current shrink-0 h-6 w-6"
