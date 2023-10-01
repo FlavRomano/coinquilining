@@ -1,11 +1,13 @@
 <script lang="ts">
 	import Table from "$components/Table.svelte";
+	import FridgeForm from "$components/fridge/FridgeForm.svelte";
 	import { fridgeSchema } from "$types/lib/schemas.js";
 	import { superForm } from "sveltekit-superforms/client";
 	import type { PageData } from "./$types";
+	import type { Food } from "$types/lib/server/db/types";
 
 	export let data: PageData;
-
+	const table: Food[] = data.table;
 	const {
 		form: fridge_form,
 		errors: fridge_errors,
@@ -28,67 +30,18 @@
 	}
 </script>
 
-<Table {data} />
-<div>
-	<form
-		class="form-control gap-4 w-full max-w-xs"
-		action="fridge?/insert"
-		method="post"
-	>
-		<input
-			bind:value={$fridge_form.owner}
-			class="input input-bordered join-item"
-			type="text"
-			name="owner"
-			placeholder="Owner"
-			{...$fridge_constraints.owner}
-		/>
-
-		<input
-			bind:value={$fridge_form.food_name}
-			class="input input-bordered join-item"
-			type="text"
-			name="food_name"
-			placeholder="food_name"
-			{...$fridge_constraints.food_name}
-		/>
-		<!-- <label class="label">
-			<span class="label-text">Purchase date</span>
-		</label> -->
-		<input
-			bind:value={$fridge_form.purchased_on}
-			class="input input-bordered join-item"
-			type="date"
-			name="purchased_on"
-			placeholder="purchased_on"
-			{...$fridge_constraints.purchased_on}
-		/>
-
-		<input
-			bind:value={$fridge_form.expiration_on}
-			class="input input-bordered join-item"
-			type="date"
-			name="expiration_on"
-			placeholder="expiration_on"
-			{...$fridge_constraints.expiration_on}
-		/>
-
-		<input
-			bind:value={$fridge_form.kind}
-			class="input input-bordered join-item"
-			type="text"
-			name="kind"
-			placeholder="kind"
-			{...$fridge_constraints.kind}
-		/>
-		<input
-			bind:value={$fridge_form.price}
-			class="input input-bordered join-item"
-			type="text"
-			name="price"
-			placeholder="price"
-			{...$fridge_constraints.price}
-		/>
-		<button class="btn btn-primary">INSERT</button>
-	</form>
+<div class="flex flex-col items-center pb-4">
+	<div class="join join-horizontal gap-2">
+		<button class="btn lg:btn-wide btn-lg btn-outline btn-primary join-item"
+			>Add</button
+		>
+		<button class="btn lg:btn-wide btn-lg btn-outline btn-error join-item"
+			>Remove</button
+		>
+		<button class="btn lg:btn-wide btn-lg btn-outline btn-neutral join-item"
+			>Edit</button
+		>
+	</div>
 </div>
+<Table {table} />
+<!-- <FridgeForm {fridge_form} {fridge_constraints} /> -->

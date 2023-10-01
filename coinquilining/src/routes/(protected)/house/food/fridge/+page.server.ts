@@ -12,7 +12,7 @@ export const load = async ({ locals }) => {
 
 	const { data: fridge, error } = await locals.supabase
 		.from("fridge")
-		.select()
+		.select("owner, food_name, kind, purchased_on, expiration, price")
 		.eq("house_id", session.user.user_metadata.house_id);
 
 	if (error) {
@@ -28,7 +28,6 @@ export const load = async ({ locals }) => {
 export const actions: Actions = {
 	insert: async ({ request, cookies, locals }) => {
 		const insertFoodForm = await superValidate(request, fridgeSchema);
-		//insertFoodForm.data.expiration_on.toISOString().split("T")[0]
 		if (!insertFoodForm.valid) {
 			return fail(400, { insertFoodForm });
 		}
