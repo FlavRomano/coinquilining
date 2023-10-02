@@ -77,6 +77,7 @@
 						placeholder="Email"
 						{...$registration_constraints.email}
 					/>
+
 					<input
 						bind:value={$registration_form.password}
 						class="input input-bordered w-full max-w-xs join-item"
