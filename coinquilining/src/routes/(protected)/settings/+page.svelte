@@ -1,1 +1,5 @@
-<h1>settings</h1>
+<script lang="ts">
+	import Menu from "$components/settings/Menu.svelte";
+</script>
+
+<Menu />
