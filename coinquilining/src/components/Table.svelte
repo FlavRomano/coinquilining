@@ -7,7 +7,6 @@
 </script>
 
 <Grid
-	width=""
 	data={table}
 	sort
 	search
