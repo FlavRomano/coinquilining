@@ -3,9 +3,8 @@ import {
 	PUBLIC_SUPABASE_URL,
 } from "$env/static/public";
 import { createSupabaseLoadClient } from "@supabase/auth-helpers-sveltekit";
-import type { LayoutLoad } from "./$types";
 
-export const load: LayoutLoad = async ({ fetch, data, depends, parent }) => {
+export async function load({ fetch, data, depends, parent }) {
 	depends("supabase:auth");
 
 	const supabase = createSupabaseLoadClient({
@@ -20,4 +19,4 @@ export const load: LayoutLoad = async ({ fetch, data, depends, parent }) => {
 	} = await supabase.auth.getSession();
 
 	return { supabase, session };
-};
+}
