@@ -15,14 +15,18 @@ export const load = async ({ locals }) => {
 		.select("owner, food_name, kind, purchased_on, expiration, price")
 		.eq("house_id", session.user.user_metadata.house_id);
 
+	const { data: roommates, error: err } = await locals.supabase
+		.from("users")
+		.select("firstname, lastname")
+		.eq("house_id", session.user.user_metadata.house_id);
+
 	if (error) {
-		return fail(404);
+		return fail(404, { error });
 	}
-	console.log(fridge);
 
 	const insertFoodForm = await superValidate(fridgeSchema);
 
-	return { insertFoodForm, table: fridge };
+	return { insertFoodForm, table: fridge, roommates };
 };
 
 export const actions: Actions = {
@@ -36,7 +40,7 @@ export const actions: Actions = {
 
 		const { error } = await locals.supabase.from("fridge").insert({
 			house_id: session.user.user_metadata.house_id,
-			owner: insertFoodForm.data.owner,
+			owner: insertFoodForm.data.owner.split(" ")[0],
 			food_name: insertFoodForm.data.food_name,
 			purchased_on: insertFoodForm.data.purchased_on,
 			expiration: insertFoodForm.data.expiration_on,
