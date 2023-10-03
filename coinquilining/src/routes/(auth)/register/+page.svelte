@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { superForm } from "sveltekit-superforms/client";
 	import type { PageData } from "./$types";
-	import { houseSchema, user } from "$lib/schemas";
+	import { houseSchema, registrationSchema } from "$lib/schemas";
 	import { nanoid } from "nanoid";
 	import { fade } from "svelte/transition";
 
@@ -22,7 +22,7 @@
 		allErrors: registration_allErrors,
 	} = superForm(data.registrationForm, {
 		taintedMessage: null,
-		validators: user,
+		validators: registrationSchema,
 		resetForm: true,
 	});
 
@@ -75,6 +75,9 @@
 						name="email"
 						type="email"
 						placeholder="Email"
+						aria-invalid={$registration_errors.email
+							? "true"
+							: undefined}
 						{...$registration_constraints.email}
 					/>
 
@@ -84,6 +87,9 @@
 						name="password"
 						type="password"
 						placeholder="Password"
+						aria-invalid={$registration_errors.password
+							? "true"
+							: undefined}
 						{...$registration_constraints.password}
 					/>
 					<input

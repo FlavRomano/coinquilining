@@ -1,7 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import { message, setError, superValidate } from "sveltekit-superforms/server";
-import { user, houseSchema } from "$lib/schemas";
+import { registrationSchema, houseSchema } from "$lib/schemas";
 
 let userCredential: {
 	email: string;
@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(303, "/house/dashboard");
 	}
 
-	const registrationForm = await superValidate(user);
+	const registrationForm = await superValidate(registrationSchema);
 	const houseForm = await superValidate(houseSchema);
 
 	return { registrationForm, houseForm };
@@ -25,7 +25,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	userSection: async ({ request, cookies, locals: { supabase } }) => {
-		const registrationForm = await superValidate(request, user);
+		const registrationForm = await superValidate(
+			request,
+			registrationSchema
+		);
 
 		if (!registrationForm.valid) {
 			return fail(400, { registrationForm });
