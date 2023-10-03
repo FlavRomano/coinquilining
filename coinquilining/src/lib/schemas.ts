@@ -1,6 +1,6 @@
-import { string, z } from "zod";
+import { z } from "zod";
 
-export const user = z.object({
+export const registrationSchema = z.object({
 	email: z.string().email({
 		message: "Invalid email",
 	}),
@@ -63,3 +63,23 @@ export type User = {
 	lastname: string;
 	house_id: string;
 };
+
+export const changeNameSchema = z.object({
+	firstname: z
+		.string()
+		.trim()
+		.min(3, { message: "Firstname too short" })
+		.max(20, { message: "Firstname too long" })
+		.regex(/^[A-Za-z]{1,}$/, {
+			message: "Firstname must contain only letters",
+		}),
+
+	lastname: z
+		.string()
+		.trim()
+		.min(3, { message: "Lastname too short" })
+		.max(20, { message: "Lastname too long" })
+		.regex(/^[A-Za-z]{1,}$/, {
+			message: "Lastname must contain only letters",
+		}),
+});
