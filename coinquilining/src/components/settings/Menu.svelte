@@ -5,7 +5,9 @@
 	import EditRoommates from "$components/settings/house/EditRoommates.svelte";
 	import DestroyHouse from "$components/settings/house/DestroyHouse.svelte";
 
-	let settingsOptions = 5;
+	let settingsOptions = 1;
+
+	export let data;
 </script>
 
 <div class="grid grid-cols-3 grid-flow-col-dense m-2 lg:m-5">
@@ -60,9 +62,9 @@
 	</ul>
 	<div class="pl-5 sm:pl-24 col-span-2">
 		{#if settingsOptions === 1}
-			<ChangeName />
+			<ChangeName {data} />
 		{:else if settingsOptions === 2}
-			<ChangeEmail />
+			<ChangeEmail {data} />
 		{:else if settingsOptions === 3}
 			<ResetPassword />
 		{:else if settingsOptions === 4}
