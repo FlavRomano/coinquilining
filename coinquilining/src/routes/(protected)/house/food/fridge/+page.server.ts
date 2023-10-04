@@ -1,7 +1,10 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
-import type { PageServerLoad } from "../../../../$types";
-import { message, superValidate } from "sveltekit-superforms/server";
-import { fridgeSchema } from "$types/lib/schemas";
+import { superValidate } from "sveltekit-superforms/server";
+import {
+	fridgeAddSchema,
+	fridgeRemoveSchema,
+	fridgeEditSchema,
+} from "$types/lib/schemas";
 
 export const load = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -12,7 +15,7 @@ export const load = async ({ locals }) => {
 
 	const { data: fridge, error } = await locals.supabase
 		.from("fridge")
-		.select("owner, food_name, kind, purchased_on, expiration, price")
+		.select("id, owner, food_name, kind, purchased_on, expiration, price")
 		.eq("house_id", session.user.user_metadata.house_id);
 
 	const { data: roommates, error: err } = await locals.supabase
@@ -24,14 +27,22 @@ export const load = async ({ locals }) => {
 		return fail(404, { error });
 	}
 
-	const insertFoodForm = await superValidate(fridgeSchema);
+	const insertFoodForm = await superValidate(fridgeAddSchema);
+	const deleteFoodForm = await superValidate(fridgeRemoveSchema);
+	const editFoodForm = await superValidate(fridgeEditSchema);
 
-	return { insertFoodForm, table: fridge, roommates };
+	return {
+		insertFoodForm,
+		deleteFoodForm,
+		editFoodForm,
+		table: fridge,
+		roommates,
+	};
 };
 
 export const actions: Actions = {
 	insert: async ({ request, cookies, locals }) => {
-		const insertFoodForm = await superValidate(request, fridgeSchema);
+		const insertFoodForm = await superValidate(request, fridgeAddSchema);
 		if (!insertFoodForm.valid) {
 			return fail(400, { insertFoodForm });
 		}
@@ -50,6 +61,46 @@ export const actions: Actions = {
 
 		if (error) {
 			return fail(400, { insertFoodForm });
+		}
+	},
+	delete: async ({ request, cookies, locals }) => {
+		const removeFoodForm = await superValidate(request, fridgeRemoveSchema);
+		if (!removeFoodForm.valid) {
+			return fail(400, { fridgeRemoveSchema });
+		}
+
+		console.log(removeFoodForm.data.id);
+
+		const { error } = await locals.supabase
+			.from("fridge")
+			.delete()
+			.eq("id", removeFoodForm.data.id);
+
+		if (error) {
+			return fail(400, { removeFoodForm });
+		}
+	},
+	edit: async ({ request, cookies, locals }) => {
+		const editFoodForm = await superValidate(request, fridgeEditSchema);
+		if (!editFoodForm.valid) {
+			return fail(400, { fridgeEditSchema });
+		}
+
+		const { error } = await locals.supabase
+			.from("fridge")
+			.update({
+				owner: editFoodForm.data.owner.split(" ").at(0),
+				food_name: editFoodForm.data.food_name,
+				purchased_on: editFoodForm.data.purchased_on,
+				expiration: editFoodForm.data.expiration_on,
+				kind: editFoodForm.data.kind,
+				price: editFoodForm.data.price,
+			})
+			.eq("id", editFoodForm.data.id)
+			.select();
+
+		if (error) {
+			return fail(400, { editFoodForm });
 		}
 	},
 };
