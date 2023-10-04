@@ -4,9 +4,9 @@
 	export let roommates;
 </script>
 
-<div class="flex flex-col items-center border-opacity-50">
+<div class="flex items-start">
 	<form
-		class="form-control gap-4 w-full max-w-xs"
+		class="form-control flex-grow-1 gap-y-4 w-full"
 		action="fridge?/insert"
 		method="post"
 	>
