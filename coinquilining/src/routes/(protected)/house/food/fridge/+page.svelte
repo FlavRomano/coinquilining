@@ -35,14 +35,20 @@
 			on:click={() => document.getElementById("addModal").showModal()}
 			>ADD</button
 		>
-		<dialog id="addModal" class="modal">
-			<div class="modal-box">
-				<FridgeForm {fridge_form} {fridge_constraints} {roommates} />
-			</div>
-			<form method="dialog" class="modal-backdrop">
-				<button>close</button>
-			</form>
-		</dialog>
+		<div class="">
+			<dialog id="addModal" class="modal">
+				<div class="modal-box">
+					<FridgeForm
+						{fridge_form}
+						{fridge_constraints}
+						{roommates}
+					/>
+				</div>
+				<form method="dialog" class="modal-backdrop">
+					<button>close</button>
+				</form>
+			</dialog>
+		</div>
 		<button class="btn lg:btn-wide btn-lg btn-outline btn-error join-item"
 			>Remove</button
 		>
