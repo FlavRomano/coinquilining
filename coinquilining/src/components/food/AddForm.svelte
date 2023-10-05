@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let fridgeAdd_form;
-	export let fridgeAdd_constraints;
+	export let add_form;
+	export let add_constraints;
 	export let roommates;
 </script>
 
@@ -13,7 +13,7 @@
 		<label class="label"
 			><span class="label-text">Select owner</span>
 			<select
-				bind:value={$fridgeAdd_form.owner}
+				bind:value={$add_form.owner}
 				class="select select-bordered w-full max-w-xs"
 				name="owner"
 			>
@@ -25,56 +25,56 @@
 		</label>
 
 		<input
-			bind:value={$fridgeAdd_form.food_name}
+			bind:value={$add_form.food_name}
 			class="input input-bordered"
 			type="text"
 			name="food_name"
 			placeholder="food_name"
-			{...$fridgeAdd_constraints.food_name}
+			{...$add_constraints.food_name}
 		/>
 		<label class="label">
 			<span class="label-text">Purchase date</span>
 			<input
-				bind:value={$fridgeAdd_form.purchased_on}
+				bind:value={$add_form.purchased_on}
 				class="input input-bordered"
 				type="date"
 				name="purchased_on"
 				placeholder="purchased_on"
-				{...$fridgeAdd_constraints.purchased_on}
+				{...$add_constraints.purchased_on}
 			/>
 		</label>
 
 		<label class="label">
 			<span class="label-text">Expiration date</span>
 			<input
-				bind:value={$fridgeAdd_form.expiration_on}
+				bind:value={$add_form.expiration_on}
 				class="input input-bordered"
 				type="date"
 				name="expiration_on"
 				placeholder="expiration_on"
-				{...$fridgeAdd_constraints.expiration_on}
+				{...$add_constraints.expiration_on}
 			/>
 		</label>
 
 		<input
-			bind:value={$fridgeAdd_form.kind}
+			bind:value={$add_form.kind}
 			class="input input-bordered"
 			type="text"
 			name="kind"
 			placeholder="kind"
-			{...$fridgeAdd_constraints.kind}
+			{...$add_constraints.kind}
 		/>
 		<label class="label">
 			<span class="label-text">Price</span>
 			<input
-				bind:value={$fridgeAdd_form.price}
+				bind:value={$add_form.price}
 				class="input input-bordered"
 				type="number"
 				step="0.01"
 				min="0.01"
 				name="price"
 				placeholder="price"
-				{...$fridgeAdd_constraints.price}
+				{...$add_constraints.price}
 			/>
 		</label>
 		<button class="btn btn-primary">ADD</button>

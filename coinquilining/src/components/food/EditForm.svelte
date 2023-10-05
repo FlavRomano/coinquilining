@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let fridgeEdit_form;
-	export let fridgeEdit_constraints;
+	export let edit_form;
+	export let edit_constraints;
 	export let roommates;
 </script>
 
@@ -13,13 +13,13 @@
 		<label class="label"
 			><span class="label-text">Select owner</span>
 			<select
-				bind:value={$fridgeEdit_form.owner}
+				bind:value={$edit_form.owner}
 				class="select select-bordered w-full max-w-xs"
 				name="owner"
 				required
 			>
 				{#each roommates as roommate}
-					{#if roommate.firstname === $fridgeEdit_form.owner}
+					{#if roommate.firstname === $edit_form.owner}
 						<option value={roommate.firstname} selected
 							>{roommate.firstname} {roommate.lastname}</option
 						>
@@ -33,71 +33,71 @@
 		</label>
 
 		<input
-			bind:value={$fridgeEdit_form.id}
+			bind:value={$edit_form.id}
 			type="text"
 			name="id"
 			hidden
-			{...$fridgeEdit_constraints.id}
+			{...$edit_constraints.id}
 		/>
 		<label class="label"
 			><span class="label-text">Food name</span>
 			<input
-				bind:value={$fridgeEdit_form.food_name}
+				bind:value={$edit_form.food_name}
 				class="input input-bordered"
 				type="text"
 				name="food_name"
 				placeholder="food_name"
-				{...$fridgeEdit_constraints.food_name}
+				{...$edit_constraints.food_name}
 			/></label
 		>
 
 		<label class="label">
 			<span class="label-text">Purchase date</span>
 			<input
-				bind:value={$fridgeEdit_form.purchased_on}
+				bind:value={$edit_form.purchased_on}
 				class="input input-bordered"
 				type="date"
 				name="purchased_on"
 				placeholder="purchased_on"
-				{...$fridgeEdit_constraints.purchased_on}
+				{...$edit_constraints.purchased_on}
 			/>
 		</label>
 
 		<label class="label">
 			<span class="label-text">Expiration date</span>
 			<input
-				bind:value={$fridgeEdit_form.expiration_on}
+				bind:value={$edit_form.expiration_on}
 				class="input input-bordered"
 				type="date"
 				name="expiration_on"
 				placeholder="expiration_on"
-				{...$fridgeEdit_constraints.expiration_on}
+				{...$edit_constraints.expiration_on}
 			/>
 		</label>
 
 		<label class="label"
 			><span class="label-text">Food name</span>
 			<input
-				bind:value={$fridgeEdit_form.kind}
+				bind:value={$edit_form.kind}
 				class="input input-bordered"
 				type="text"
 				name="kind"
 				placeholder="kind"
-				{...$fridgeEdit_constraints.kind}
+				{...$edit_constraints.kind}
 			/></label
 		>
 
 		<label class="label">
 			<span class="label-text">Price</span>
 			<input
-				bind:value={$fridgeEdit_form.price}
+				bind:value={$edit_form.price}
 				class="input input-bordered"
 				type="number"
 				step="0.01"
 				min="0.01"
 				name="price"
 				placeholder="price"
-				{...$fridgeEdit_constraints.price}
+				{...$edit_constraints.price}
 			/>
 		</label>
 		<button class="btn btn-neutral">CHANGE</button>

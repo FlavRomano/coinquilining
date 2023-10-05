@@ -59,7 +59,6 @@
 	});
 </script>
 
-<Table {table} {option} />
 <div class="flex flex-col items-center pb-4">
 	<TableControls
 		{option}
@@ -72,3 +71,4 @@
 		remove_constraints={fridgeRemove_constraints}
 	/>
 </div>
+<Table {table} {option} />

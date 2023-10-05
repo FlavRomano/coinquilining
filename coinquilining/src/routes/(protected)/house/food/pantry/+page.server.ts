@@ -13,8 +13,8 @@ export const load = async ({ locals }) => {
 		throw redirect(303, "/register");
 	}
 
-	const { data: fridge, error } = await locals.supabase
-		.from("fridge")
+	const { data: pantry, error } = await locals.supabase
+		.from("pantry")
 		.select("id, owner, food_name, kind, purchased_on, expiration, price")
 		.eq("house_id", session.user.user_metadata.house_id);
 
@@ -35,7 +35,7 @@ export const load = async ({ locals }) => {
 		insertFoodForm,
 		deleteFoodForm,
 		editFoodForm,
-		table: fridge,
+		table: pantry,
 		roommates,
 	};
 };
@@ -49,7 +49,7 @@ export const actions: Actions = {
 
 		let session = await locals.getSession();
 
-		const { error } = await locals.supabase.from("fridge").insert({
+		const { error } = await locals.supabase.from("pantry").insert({
 			house_id: session.user.user_metadata.house_id,
 			owner: insertFoodForm.data.owner.split(" ")[0],
 			food_name: insertFoodForm.data.food_name,
@@ -69,8 +69,10 @@ export const actions: Actions = {
 			return fail(400, { removeFoodForm });
 		}
 
+		console.log(removeFoodForm.data.id);
+
 		const { error } = await locals.supabase
-			.from("fridge")
+			.from("pantry")
 			.delete()
 			.eq("id", removeFoodForm.data.id);
 
@@ -85,7 +87,7 @@ export const actions: Actions = {
 		}
 
 		const { error } = await locals.supabase
-			.from("fridge")
+			.from("pantry")
 			.update({
 				owner: editFoodForm.data.owner.split(" ").at(0),
 				food_name: editFoodForm.data.food_name,

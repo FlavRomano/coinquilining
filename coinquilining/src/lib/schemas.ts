@@ -48,7 +48,7 @@ export const houseSchema = z.object({
 	enteringExistingHouse: z.boolean(),
 });
 
-export const fridgeAddSchema = z.object({
+export const foodAddSchema = z.object({
 	owner: z.string(),
 	food_name: z.string().min(3, { message: "Name too short" }),
 	purchased_on: z.date(),
@@ -57,11 +57,11 @@ export const fridgeAddSchema = z.object({
 	price: z.number().min(0),
 });
 
-export const fridgeRemoveSchema = z.object({
+export const foodRemoveSchema = z.object({
 	id: z.string(),
 });
 
-export const fridgeEditSchema = z.object({
+export const foodEditSchema = z.object({
 	id: z.string(),
 	owner: z.string(),
 	food_name: z.string().min(3, { message: "Name too short" }),

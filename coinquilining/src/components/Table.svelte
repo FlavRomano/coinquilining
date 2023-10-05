@@ -3,7 +3,6 @@
 	import "gridjs/dist/theme/mermaid.css";
 	import type { Food } from "$types/lib/server/db/types";
 	import { h } from "gridjs";
-	import { writable } from "svelte/store";
 	import type { Writable } from "svelte/store";
 
 	export let table: Food[];
@@ -23,12 +22,13 @@
 			data={table}
 			columns={[
 				{
-					name: "Action",
+					name: "",
+					sort: false,
 					formatter: (_, row) => {
 						return h(
 							"button",
 							{
-								class: "btn btn-error lg:w-full",
+								class: "btn btn-xs btn-outline w-full",
 								type: "submit",
 								form: "remove",
 								onclick: (e) => {
@@ -41,7 +41,7 @@
 									) && e.preventDefault();
 								},
 							},
-							"Remove"
+							"🧨"
 						);
 					},
 				},
@@ -49,8 +49,20 @@
 				{ id: "owner", name: "Owner" },
 				{ id: "food_name", name: "Food" },
 				{ id: "kind", name: "Kind" },
-				{ id: "purchased_on", name: "Purchased on" },
-				{ id: "expiration", name: "Expiration" },
+				{
+					id: "purchased_on",
+					name: "Purchased on",
+					formatter: (cell, _) => {
+						return new Date(cell).toLocaleDateString("it-IT");
+					},
+				},
+				{
+					id: "expiration",
+					name: "Expiration",
+					formatter: (cell, _) => {
+						return new Date(cell).toLocaleDateString("it-IT");
+					},
+				},
 				{
 					id: "price",
 					name: "Price",
@@ -61,7 +73,7 @@
 			]}
 			sort
 			search={{ enabled: true }}
-			pagination={{ enabled: true, limit: 10 }}
+			pagination={{ enabled: true, limit: 5 }}
 			autoWidth={true}
 			fixedHeader
 		/>
@@ -70,13 +82,13 @@
 			data={table}
 			columns={[
 				{
-					name: "Action",
+					name: "",
 					formatter: (_, row) => {
 						return h(
 							"button",
 							{
-								class: "btn btn-neutral lg:w-full",
-								onclick: (e) => {
+								class: "btn btn-xs btn-outline w-full",
+								onclick: () => {
 									document
 										.getElementById("editModal")
 										.showModal();
@@ -87,7 +99,7 @@
 									$option.targets.editTarget(targetRowFood);
 								},
 							},
-							"Edit"
+							"✏️"
 						);
 					},
 					autoWidth: true,
@@ -96,8 +108,20 @@
 				{ id: "owner", name: "Owner" },
 				{ id: "food_name", name: "Food" },
 				{ id: "kind", name: "Kind" },
-				{ id: "purchased_on", name: "Purchased on" },
-				{ id: "expiration", name: "Expiration" },
+				{
+					id: "purchased_on",
+					name: "Purchased on",
+					formatter: (cell, _) => {
+						return new Date(cell).toLocaleDateString("it-IT");
+					},
+				},
+				{
+					id: "expiration",
+					name: "Expiration",
+					formatter: (cell, _) => {
+						return new Date(cell).toLocaleDateString("it-IT");
+					},
+				},
 				{
 					id: "price",
 					name: "Price",
@@ -108,7 +132,7 @@
 			]}
 			sort
 			search={{ enabled: true }}
-			pagination={{ enabled: true, limit: 10 }}
+			pagination={{ enabled: true, limit: 5 }}
 			autoWidth={true}
 			fixedHeader
 		/>
@@ -119,8 +143,20 @@
 				{ id: "owner", name: "Owner" },
 				{ id: "food_name", name: "Food" },
 				{ id: "kind", name: "Kind" },
-				{ id: "purchased_on", name: "Purchased on" },
-				{ id: "expiration", name: "Expiration" },
+				{
+					id: "purchased_on",
+					name: "Purchased on",
+					formatter: (cell, _) => {
+						return new Date(cell).toLocaleDateString("it-IT");
+					},
+				},
+				{
+					id: "expiration",
+					name: "Expiration",
+					formatter: (cell, _) => {
+						return new Date(cell).toLocaleDateString("it-IT");
+					},
+				},
 				{
 					id: "price",
 					name: "Price",
@@ -131,7 +167,7 @@
 			]}
 			sort
 			search
-			pagination={{ enabled: true, limit: 10 }}
+			pagination={{ enabled: true, limit: 5 }}
 			autoWidth={true}
 			fixedHeader
 		/>
