@@ -69,8 +69,6 @@ export const actions: Actions = {
 			return fail(400, { removeFoodForm });
 		}
 
-		console.log(removeFoodForm.data.id);
-
 		const { error } = await locals.supabase
 			.from("pantry")
 			.delete()

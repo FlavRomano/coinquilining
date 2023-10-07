@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Table from "$components/Table.svelte";
+	import Table from "$components/food/Table.svelte";
 	import {
 		foodAddSchema,
 		foodRemoveSchema,
@@ -10,7 +10,7 @@
 	import type { Food } from "$types/lib/server/db/types";
 	import { writable } from "svelte/store";
 	import type { PageData } from "./$types";
-	import TableControls from "$components/TableControls.svelte";
+	import TableControls from "$components/food/TableControls.svelte";
 
 	export let data: PageData;
 	const table: Food[] = data.table;
@@ -60,15 +60,20 @@
 </script>
 
 <Table {table} {option} />
-<div class="flex flex-col items-center pb-4">
-	<TableControls
-		{option}
-		{roommates}
-		add_form={fridgeAdd_form}
-		add_constraints={fridgeAdd_constraints}
-		edit_form={fridgeEdit_form}
-		edit_constraints={fridgeEdit_constraints}
-		remove_form={fridgeRemove_form}
-		remove_constraints={fridgeRemove_constraints}
-	/>
+<div class="flex flex-col items-center">
+	<div
+		class="fixed bottom-[8%] sm:bottom-[10%] md:bottom-[12%] lg:bottom-[16%]"
+	>
+		<TableControls
+			section={"fridge"}
+			{option}
+			{roommates}
+			add_form={fridgeAdd_form}
+			add_constraints={fridgeAdd_constraints}
+			edit_form={fridgeEdit_form}
+			edit_constraints={fridgeEdit_constraints}
+			remove_form={fridgeRemove_form}
+			remove_constraints={fridgeRemove_constraints}
+		/>
+	</div>
 </div>

@@ -3,7 +3,7 @@
 	import "gridjs/dist/theme/mermaid.css";
 	import type { Food } from "$types/lib/server/db/types";
 	import { h } from "gridjs";
-	import type { Writable } from "svelte/store";
+	import { writable, type Writable } from "svelte/store";
 
 	export let table: Food[];
 	export let option: Writable<{
@@ -13,7 +13,15 @@
 			deleteTargetID: (string) => void;
 			editTarget: (string) => void;
 		};
-	}>;
+	}> = writable({
+		remove: false,
+		edit: false,
+		targets: {
+			deleteTargetID: (targetRowID) => undefined,
+			editTarget: (targetRowFood) => undefined,
+		},
+		restore: () => undefined,
+	});
 </script>
 
 <div class="m-2">
@@ -28,7 +36,7 @@
 						return h(
 							"button",
 							{
-								class: "btn btn-xs btn-outline w-full",
+								class: "btn btn-xs btn-outline btn-error w-full",
 								type: "submit",
 								form: "remove",
 								onclick: (e) => {

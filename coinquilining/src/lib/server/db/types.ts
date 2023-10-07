@@ -1,6 +1,6 @@
 export type Food = {
 	id: string | null;
-	name: string;
+	food_name: string;
 	owner: string;
 	purchased_on: string;
 	expiration: "string";

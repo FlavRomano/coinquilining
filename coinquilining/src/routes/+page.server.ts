@@ -1,7 +1,5 @@
-import { fail, redirect } from "@sveltejs/kit";
-import type { Actions, PageServerLoad } from "./$types";
-import { message, superValidate } from "sveltekit-superforms/server";
-import { user } from "$lib/schemas";
+import { redirect } from "@sveltejs/kit";
+import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();

@@ -2,12 +2,13 @@
 	export let add_form;
 	export let add_constraints;
 	export let roommates;
+	export let section;
 </script>
 
 <div class="flex items-start">
 	<form
 		class="form-control flex-grow-1 gap-y-4 w-full"
-		action="fridge?/insert"
+		action="{section}?/insert"
 		method="post"
 	>
 		<label class="label"
