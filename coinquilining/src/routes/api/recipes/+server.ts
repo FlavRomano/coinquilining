@@ -3,46 +3,59 @@ import puppeteer from "puppeteer";
 
 export async function GET({ request }) {
 	const queryFoods = request.headers.get("foods");
-	const browser = await puppeteer.launch({
-		headless: false,
-	});
-
+	const browser = await puppeteer.launch();
 	const page = await browser.newPage();
-	// await page.goto(
-	// 	"https://www.giallozafferano.it/ricerca-ricette/" + queryFoods,
-	// 	{ waitUntil: "domcontentloaded" }
-	// );
-	await page.goto("https://www.giallozafferano.it", {
-		waitUntil: "domcontentloaded",
-	});
-	await page.waitForSelector(
-		"body > div.gz-page.mh2021Page > main > nav.gz-innerwrapper.gz-index-nav.gz-index-nav-visible.gz-fullbg > ul > li:nth-child(1) > a"
-	);
 
-	// const recipes = await page.evaluate(() => {
-	// 	// const recipeContainer = document.querySelector(
-	// 	// 	"body > div.gz-page.mh2021Page > main > div > div > div.gz-inner > h1"
-	// 	// );
-	// 	// const content = recipeContainer
-	// 	// 	.querySelector("gz-card-content")
-	// 	// 	.querySelector("h2")
-	// 	// 	.querySelector("a");
-	// 	// const title = content.title;
-	// 	// const link = content.href;
-	// 	let title = document.URL;
-	// 	return { };
-	// });
+	let it = 0;
+	let results: {
+		page: number;
+		recipes: { title: string; link: string; img: string }[];
+	}[] = [];
 
-	let data = await page.evaluate(
-		() =>
-			document.querySelector(
-				"body > div.gz-page.mh2021Page > main > nav.gz-innerwrapper.gz-index-nav.gz-index-nav-visible.gz-fullbg > ul > li:nth-child(1) > a"
-			).innerHTML
-	);
+	while (it !== 10) {
+		if (it === 0) {
+			await page.goto(
+				"https://www.giallozafferano.it/ricerca-ricette/" + queryFoods,
+				{ waitUntil: "domcontentloaded" }
+			);
+		} else {
+			await page.goto(
+				`https://www.giallozafferano.it/ricerca-ricette/page${
+					it + 1
+				}/${queryFoods}`,
+				{ waitUntil: "domcontentloaded" }
+			);
+		}
+		try {
+			await page.waitForSelector("article");
+		} catch (TimeoutError) {
+			break;
+		}
 
-	console.log(data);
+		const recipes = await page.evaluate(() => {
+			const articles = document.querySelectorAll("article");
+			const res: { title: string; link: string; img: string }[] = [];
+			for (let article of articles) {
+				try {
+					let step = article
+						.querySelector("div.gz-card-content")
+						.querySelector("h2");
+					let img = article
+						.querySelector("div.gz-card-image > a > picture > img")
+						.getAttribute("src");
+
+					let title = step.querySelector("a").innerText;
+					let link = step.querySelector("a").href;
+					res.push({ title, img, link });
+				} catch (TypeError) {}
+			}
+			return res;
+		});
+		results.push({ page: it + 1, recipes });
+		it++;
+	}
 
 	await browser.close();
 
-	return new Response(JSON.stringify({ data }), { status: 200 });
+	return json(results);
 }

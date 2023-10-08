@@ -1,69 +1,57 @@
 <script lang="ts">
-	import Grid from "gridjs-svelte/gridjs.svelte";
-	import { h } from "gridjs";
-	import "gridjs/dist/theme/mermaid.css";
+	import SelectTable from "$components/food/recipes/SelectTable.svelte";
+	import { writable } from "svelte/store";
 	import type { PageData } from "./$types";
+	import FoodCard from "$components/food/recipes/FoodCard.svelte";
+	import PaginationButton from "$components/food/recipes/PaginationButton.svelte";
 
 	export let data: PageData;
 	let table = data.table;
 
 	let checkedList: { food_name: string; checked: boolean }[] = [];
+	let recipes = writable([]);
+	let pageTab = writable(0);
 
 	async function logRecipes() {
+		console.log("start");
+		recipes.set([]);
+
 		const response = await fetch("/api/recipes", {
 			headers: {
 				foods: checkedList.map((obj) => obj.food_name).join("+"),
 			},
 		});
+
+		$recipes = [...(await response.json())];
 	}
+
+	let recipeTab = false;
 </script>
 
+<div class="flex flex-col items-center">
+	<div class="tabs">
+		<button
+			on:click={() => (recipeTab = !recipeTab && $recipes.length !== 0)}
+			class="tab tab-bordered {recipeTab ? '' : 'tab-active'}"
+			>Select</button
+		>
+		<a
+			href="/house/food/recipes/{checkedList
+				.map((obj) => obj.food_name)
+				.join('+')}"
+			class="tab tab-bordered {recipeTab ? 'tab-active' : ''}">Recipes</a
+		>
+	</div>
+</div>
 <div class="m-5">
-	<Grid
-		data={table}
-		columns={[
-			{
-				id: "checkBox",
-				name: "",
-				width: "10%",
-				formatter: (cell, row) => {
-					return h("input", {
-						class: "checkBox w-full",
-						type: "checkBox",
-						form: "remove",
-						onclick: (_) => {
-							let food_name = row.cells[2].data.toString();
-
-							for (let food of checkedList) {
-								let isSameFood = food_name === food.food_name;
-
-								if (isSameFood) {
-									food.checked = !food.checked;
-									return;
-								}
-							}
-
-							checkedList.push({
-								food_name: food_name,
-								checked: true,
-							});
-						},
-					});
-				},
-			},
-			{ id: "owner", name: "Owner" },
-			{ id: "food_name", name: "Food" },
-			{ id: "kind", name: "Kind" },
-
-			{
-				id: "expiration",
-				name: "Expiration",
-				formatter: (cell, _) => {
-					return new Date(cell).toLocaleDateString("it-IT");
-				},
-			},
-		]}
-	/>
-
-	<button class="btn btn-primary btn-wide"> SEARCH </button>
+	<SelectTable {table} {checkedList} />
+	<button
+		class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
+		on:click={() => {
+			logRecipes();
+			recipeTab = !recipeTab;
+		}}
+	>
+		SEARCH
+	</button>
 </div>
