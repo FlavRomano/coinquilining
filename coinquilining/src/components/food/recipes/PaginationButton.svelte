@@ -7,13 +7,16 @@
 </script>
 
 <div class="join">
-	<a
-		href="/house/food/recipes/{queryFoods}/{currentPage > 0
-			? currentPage - 1
-			: ''}"
-		rel="external"
-		class="join-item btn">«</a
-	>
+	{#if currentPage > 1}
+		<a
+			href="/house/food/recipes/{queryFoods}/{currentPage - 1}"
+			rel="external"
+			class="join-item btn">«</a
+		>
+	{:else}
+		<button disabled class="join-item btn">«</button>
+	{/if}
+
 	<button class="join-item btn">Page {currentPage}</button>
 	<a
 		href="/house/food/recipes/{queryFoods}/{currentPage + 1}"
