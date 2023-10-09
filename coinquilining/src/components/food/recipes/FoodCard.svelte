@@ -2,7 +2,7 @@
 	export let recipe;
 </script>
 
-<div class="card lg:card-side bg-base-100 shadow-xl m-5">
+<div class="card md:card-side bg-base-100 shadow-xl m-5">
 	<figure>
 		<img src={recipe.img} alt={recipe.title} width="360px" height="300px" />
 	</figure>
