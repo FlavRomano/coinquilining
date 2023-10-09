@@ -7,9 +7,12 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Shopping list</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p />
 			<div class="card-actions justify-end">
-				<button class="btn btn-primary">Click me</button>
+				<a
+					href="/house/groceries/shopping-list"
+					class="btn btn-primary w-full">Click me</a
+				>
 			</div>
 		</div>
 	</div>
@@ -20,9 +23,9 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Receipts</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p />
 			<div class="card-actions justify-end">
-				<button class="btn btn-primary">Click me</button>
+				<button class="btn btn-primary w-full">Click me</button>
 			</div>
 		</div>
 	</div>
