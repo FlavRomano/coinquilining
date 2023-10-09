@@ -113,6 +113,7 @@
 		{/each}
 	</tbody>
 </table>
+
 <div class="flex flex-col place-items-center">
 	<div class="join fixed bottom-1/4 md:bottom-1/3">
 		<button
@@ -130,13 +131,14 @@
 		>
 	</div>
 </div>
-
-<a
-	href="/house/food/recipes/{table
-		.filter((_, i) => Object.keys($selectedDataIds).includes('' + i))
-		.map((v) => v.food_name)
-		.join('+')}/1"
-	class="btn btn-primary w-full m-5 md:w-1/3 md:float-right md:right-5"
->
-	SEARCH
-</a>
+<div class="pt-5">
+	<a
+		href="/house/food/recipes/{table
+			.filter((_, i) => Object.keys($selectedDataIds).includes('' + i))
+			.map((v) => v.food_name)
+			.join('+')}/1"
+		class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
+	>
+		SEARCH
+	</a>
+</div>
