@@ -4,7 +4,13 @@
 
 <div class="card md:card-side bg-base-100 shadow-xl m-5">
 	<figure>
-		<img src={recipe.img} alt={recipe.title} width="360px" height="300px" />
+		<img
+			class="scale-100 sm:scale-[1.25] md:scale-100 lg:scale-100"
+			src={recipe.img}
+			alt={recipe.title}
+			width="360px"
+			height="300px"
+		/>
 	</figure>
 	<div class="card-body">
 		<h2 class="card-title break-words">
