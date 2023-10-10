@@ -1,7 +1,41 @@
 <script lang="ts">
-	import ShoppingTable from "$components/groceries/ShoppingTable.svelte";
+	import ShoppingCard from "$components/groceries/shopping-list/ShoppingCard.svelte";
+	import type { PageData } from "./$types";
+
+	export let data: PageData;
+	const shoppingLists: { id: string; name: string; date: string }[] = [
+		...data.shoppingLists,
+	];
 </script>
 
-<div class="m-5">
-	<ShoppingTable />
+<div class="grid grid-cols-4 m-5">
+	<ShoppingCard color={"neutral"} textColor={"text-neutral-content"} />
+	{#each shoppingLists as list}
+		<ShoppingCard
+			color={"primary"}
+			textColor={"text-primary-content"}
+			id={list.id}
+			title={list.name}
+			paragraph={list.date}
+		/>
+	{/each}
 </div>
+
+<dialog id="newShoppingListModal" class="modal">
+	<div class="modal-box">
+		<form action="?/new" method="post" class="form-control gap-4">
+			<input
+				minlength="4"
+				maxlength="18"
+				type="text"
+				placeholder="List name"
+				name="shoppingListName"
+				class="input input-bordered"
+			/>
+			<button class="btn btn-primary">CREATE</button>
+		</form>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>

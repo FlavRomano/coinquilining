@@ -13,7 +13,13 @@
 	} from "svelte-headless-table/plugins";
 	import { readable } from "svelte/store";
 
-	export let table;
+	export let table: {
+		id: string;
+		owner: string;
+		food_name: string;
+		kind: string;
+		expiration: string;
+	}[];
 
 	const data = readable(table);
 
@@ -39,19 +45,20 @@
 		}),
 		t.column({
 			header: "Owner",
-			accessor: "owner",
+			accessor: (item) => item.owner,
 		}),
 		t.column({
 			header: "Food",
-			accessor: "food_name",
+			accessor: (item) => item.food_name,
 		}),
 		t.column({
 			header: "Kind",
-			accessor: "kind",
+			accessor: (item) => item.kind,
 		}),
 		t.column({
 			header: "Expiration",
-			accessor: "expiration",
+			accessor: (item) =>
+				new Date(item.expiration).toLocaleDateString("it-IT"),
 		}),
 	]);
 

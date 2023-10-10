@@ -12,15 +12,13 @@
 		addSortBy,
 	} from "svelte-headless-table/plugins";
 	import { readable } from "svelte/store";
+	import ShoppingControls from "./ShoppingControls.svelte";
 
-	let table = [
-		{ owner: "Flavio", item: "Porchetta" },
-		{ owner: "Gabriele", item: "Benzina" },
-	];
+	export let table: { id: string; owner: string; item: string }[];
 
-	const data = readable(table);
+	const tableData = readable(table);
 
-	const t = createTable(data, {
+	const t = createTable(tableData, {
 		sort: addSortBy({
 			disableMultiSort: true,
 			toggleOrder: ["asc", "desc"],
@@ -42,7 +40,7 @@
 		}),
 		t.column({
 			header: "Owner",
-			accessor: "owner",
+			accessor: (item) => item.owner,
 		}),
 		t.column({
 			header: "Item",
@@ -55,17 +53,6 @@
 	const { pageIndex, pageCount, pageSize, hasNextPage, hasPreviousPage } =
 		pluginStates.page;
 	const { selectedDataIds, allRowsSelected } = pluginStates.select;
-
-	$allRowsSelected = true;
-
-	/**
-	 * TODO:
-	 * - Add Remove all selected
-	 * - Add Edit one row
-	 * - Add fake table for input Owner Item
-	 * -
-	 *
-	 */
 </script>
 
 <table class="table" {...$tableAttrs}>
@@ -119,28 +106,15 @@
 		{/each}
 	</tbody>
 </table>
+
 <div class="flex flex-col place-items-center">
-	<div class="join fixed bottom-1/4 md:bottom-1/3">
-		<button
-			class="join-item btn"
-			disabled={!$hasPreviousPage}
-			on:click={() => $pageIndex--}>«</button
-		>
-		<button class="join-item btn"
-			>Page {$pageIndex + 1} of {$pageCount}</button
-		>
-		<button
-			class="join-item btn"
-			disabled={!$hasNextPage}
-			on:click={() => $pageIndex++}>»</button
-		>
-	</div>
-	<div class="join fixed bottom-[17%] sm:bottom-[15%] lg:bottom-[23%]">
-		<button
-			on:click={() => ($allRowsSelected = !$allRowsSelected)}
-			class="btn btn-lg join-item">All</button
-		>
-		<button class="btn btn-lg join-item">Remove</button>
-		<button class="btn btn-lg join-item">Edit</button>
-	</div>
+	<ShoppingControls
+		{table}
+		{selectedDataIds}
+		{allRowsSelected}
+		{hasPreviousPage}
+		{pageIndex}
+		{pageCount}
+		{hasNextPage}
+	/>
 </div>
