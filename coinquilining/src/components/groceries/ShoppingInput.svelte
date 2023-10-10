@@ -19,8 +19,11 @@
 						<select
 							class="select select-bordered w-full max-w-xs"
 							name="owner"
+							required
 						>
-							<option disabled selected>Select owner</option>
+							<option disabled selected value=""
+								>Select owner</option
+							>
 							{#each roommates as roommate}
 								<option
 									>{roommate.firstname +

@@ -44,8 +44,11 @@ export const actions = {
 			.insert({
 				house_id: session.user.user_metadata.house_id,
 				name: shoppingListName,
+				shoppingList: [{}],
+				date: new Date().toISOString().split("T")[0],
 			})
 			.select("id");
+		console.log(error);
 
 		if (error) {
 			return fail(500, { message: error.message });

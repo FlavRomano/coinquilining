@@ -1,17 +1,15 @@
 <script lang="ts">
 	import ShoppingInput from "$components/groceries/ShoppingInput.svelte";
 	import ShoppingTable from "$components/groceries/ShoppingTable.svelte";
-	import { page } from "$app/stores";
+	import type { ShoppingListItem } from "$types/lib/schemas";
+	import type { PageData } from "./$types";
 
-	let table: { id: string; owner: string; item: string }[] = [
-		{ id: "1", owner: "Flavio", item: "Porchetta" },
-		{ id: "2", owner: "Gabriele", item: "Benzina" },
-	];
-
-	const roommates = $page.data.roommates;
+	export let data: PageData;
+	const roommates = data.roommates;
+	const shoppingList: ShoppingListItem[] = data.shoppingList;
 </script>
 
 <div class="m-5">
 	<ShoppingInput {roommates} />
-	<ShoppingTable {table} />
+	<ShoppingTable table={shoppingList} />
 </div>

@@ -97,3 +97,5 @@ export const changeNameSchema = z.object({
 			message: "Lastname must contain only letters",
 		}),
 });
+
+export type ShoppingListItem = { id: string; owner: string; item: string };

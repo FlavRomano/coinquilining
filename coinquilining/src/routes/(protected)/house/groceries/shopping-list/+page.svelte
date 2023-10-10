@@ -3,17 +3,15 @@
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
-	const shoppingLists: { id: string; name: string; date: string }[] = [
-		...data.shoppingLists,
-	];
+	const shoppingLists: { id: string; name: string; date: string }[] =
+		data.shoppingLists;
 </script>
 
 <div class="grid grid-cols-4 m-5">
-	<ShoppingCard color={"neutral"} textColor={"text-neutral-content"} />
+	<ShoppingCard />
 	{#each shoppingLists as list}
 		<ShoppingCard
-			color={"primary"}
-			textColor={"text-primary-content"}
+			color={"bg-primary"}
 			id={list.id}
 			title={list.name}
 			paragraph={list.date}

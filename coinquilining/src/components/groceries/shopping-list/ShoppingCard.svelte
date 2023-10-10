@@ -1,16 +1,19 @@
 <script lang="ts">
 	export let id = "new";
-	export let color;
-	export let textColor;
+	export let color = "bg-base-300";
 	export let title = "New Shopping list";
 	export let paragraph =
 		"Add something to the list before your trip to Lidl.";
 </script>
 
-<div class="card w-80 bg-{color} {textColor} ">
+<div class="card w-80 {color} {id !== 'new' ? 'text-primary-content' : ''}">
 	<div class="card-body">
 		<h2 class="card-title">{title}</h2>
-		<p>{paragraph}</p>
+		<p>
+			{paragraph[0] !== "A"
+				? new Date().toLocaleDateString("it-IT")
+				: paragraph}
+		</p>
 		<div class="card-actions justify-end">
 			{#if id !== "new"}
 				<a

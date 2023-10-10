@@ -38,7 +38,10 @@
 				.map((v) => v.id)
 				.join(";")}
 		/>
-		<button class="btn btn-lg join-item">Delete</button>
+		<button
+			class="btn btn-lg join-item"
+			disabled={Object.keys($selectedDataIds).length === 0}>Delete</button
+		>
 	</form>
 
 	<button

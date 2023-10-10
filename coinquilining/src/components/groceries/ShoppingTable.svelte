@@ -13,8 +13,9 @@
 	} from "svelte-headless-table/plugins";
 	import { readable } from "svelte/store";
 	import ShoppingControls from "./ShoppingControls.svelte";
+	import type { ShoppingListItem } from "$types/lib/schemas";
 
-	export let table: { id: string; owner: string; item: string }[];
+	export let table: ShoppingListItem[];
 
 	const tableData = readable(table);
 
@@ -55,66 +56,73 @@
 	const { selectedDataIds, allRowsSelected } = pluginStates.select;
 </script>
 
-<table class="table" {...$tableAttrs}>
-	<thead>
-		{#each $headerRows as headerRow (headerRow.id)}
-			<Subscribe rowAttrs={headerRow.attrs()} let:rowAttrs>
-				<tr {...rowAttrs}>
-					{#each headerRow.cells as cell (cell.id)}
-						<Subscribe
-							attrs={cell.attrs()}
-							let:attrs
-							props={cell.props()}
-							let:props
-						>
-							<th
-								{...attrs}
-								on:click={props.sort.toggle}
-								class:sorted={props.sort.order !== undefined}
+{#if table.length !== 0}
+	<table class="table" {...$tableAttrs}>
+		<thead>
+			{#each $headerRows as headerRow (headerRow.id)}
+				<Subscribe rowAttrs={headerRow.attrs()} let:rowAttrs>
+					<tr {...rowAttrs}>
+						{#each headerRow.cells as cell (cell.id)}
+							<Subscribe
+								attrs={cell.attrs()}
+								let:attrs
+								props={cell.props()}
+								let:props
 							>
-								<Render of={cell.render()} />
-								{#if props.sort.order === "asc"}
-									↓
-								{:else if props.sort.order === "desc"}
-									↑
-								{/if}
-							</th>
-						</Subscribe>
-					{/each}
-				</tr>
-			</Subscribe>
-		{/each}
-	</thead>
-	<tbody {...$tableBodyAttrs}>
-		{#each $pageRows as row (row.id)}
-			<Subscribe
-				rowAttrs={row.attrs()}
-				let:rowAttrs
-				rowProps={row.props()}
-				let:rowProps
-			>
-				<tr {...rowAttrs} class:selected={rowProps.select.selected}>
-					{#each row.cells as cell (cell.id)}
-						<Subscribe attrs={cell.attrs()} let:attrs>
-							<td {...attrs}>
-								<Render of={cell.render()} />
-							</td>
-						</Subscribe>
-					{/each}
-				</tr>
-			</Subscribe>
-		{/each}
-	</tbody>
-</table>
+								<th
+									{...attrs}
+									on:click={props.sort.toggle}
+									class:sorted={props.sort.order !==
+										undefined}
+								>
+									<Render of={cell.render()} />
+									{#if props.sort.order === "asc"}
+										↓
+									{:else if props.sort.order === "desc"}
+										↑
+									{/if}
+								</th>
+							</Subscribe>
+						{/each}
+					</tr>
+				</Subscribe>
+			{/each}
+		</thead>
+		<tbody {...$tableBodyAttrs}>
+			{#each $pageRows as row (row.id)}
+				<Subscribe
+					rowAttrs={row.attrs()}
+					let:rowAttrs
+					rowProps={row.props()}
+					let:rowProps
+				>
+					<tr {...rowAttrs} class:selected={rowProps.select.selected}>
+						{#each row.cells as cell (cell.id)}
+							<Subscribe attrs={cell.attrs()} let:attrs>
+								<td {...attrs}>
+									<Render of={cell.render()} />
+								</td>
+							</Subscribe>
+						{/each}
+					</tr>
+				</Subscribe>
+			{/each}
+		</tbody>
+	</table>
 
-<div class="flex flex-col place-items-center">
-	<ShoppingControls
-		{table}
-		{selectedDataIds}
-		{allRowsSelected}
-		{hasPreviousPage}
-		{pageIndex}
-		{pageCount}
-		{hasNextPage}
-	/>
-</div>
+	<div class="flex flex-col place-items-center">
+		<ShoppingControls
+			{table}
+			{selectedDataIds}
+			{allRowsSelected}
+			{hasPreviousPage}
+			{pageIndex}
+			{pageCount}
+			{hasNextPage}
+		/>
+	</div>
+{:else}
+	<div class="grid place-items-center pt-40">
+		<h1 class="prose prose-2xl prose-stone">Nothing to see...</h1>
+	</div>
+{/if}

@@ -1,7 +1,7 @@
-import { redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "../../../../../$types";
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
@@ -13,20 +13,42 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.select("firstname, lastname")
 		.eq("house_id", session.user.user_metadata.house_id);
 
-	return { roommates };
+	if (errno0) {
+		console.log(errno0);
+		return fail(500, { message: errno0.message });
+	}
+
+	const shoppingListId = params.name;
+
+	const { data: shoppingList, error: errno1 } = await locals.supabase
+		.from("shoppingListItems")
+		.select()
+		.eq("shoppingListId", shoppingListId);
+
+	if (errno1) {
+		console.log(errno1);
+		return fail(500, { message: errno1.message });
+	}
+
+	return { shoppingList, roommates };
 };
 
 export const actions = {
-	add: async ({ locals, request }) => {
-		const session = await locals.getSession();
+	add: async ({ locals, request, params }) => {
+		const shoppingListId = params.name;
 
 		let { owner, item } = Object.fromEntries(await request.formData());
 
 		owner = owner.toString().trim();
 
-		// TODO ADD SUPABASE
+		const { error } = await locals.supabase
+			.from("shoppingListItems")
+			.insert({ shoppingListId, owner, item });
 
-		console.log(owner, item);
+		if (error) {
+			console.log(error);
+			return fail(500, { message: error.message });
+		}
 	},
 	delete: async ({ locals, request }) => {
 		const session = await locals.getSession();
@@ -35,9 +57,17 @@ export const actions = {
 			.deleteIds.toString()
 			.split(";");
 
-		// TODO REMOVE SUPABASE
+		for (let deleteId of deleteIds) {
+			const { error } = await locals.supabase
+				.from("shoppingListItems")
+				.delete()
+				.eq("id", deleteId);
 
-		console.log(deleteIds);
+			if (error) {
+				console.log(error);
+				return fail(500, { message: error.message });
+			}
+		}
 	},
 	edit: async ({ locals, request }) => {
 		const session = await locals.getSession();
