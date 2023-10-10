@@ -4,7 +4,7 @@ import puppeteer from "puppeteer";
 export async function GET({ request }) {
 	const queryFoods = request.headers.get("foods");
 	const currentPage = request.headers.get("page");
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch({ headless: "new" });
 	const page = await browser.newPage();
 	await page.setDefaultNavigationTimeout(10000);
 
