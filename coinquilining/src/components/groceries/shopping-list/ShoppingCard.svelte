@@ -10,16 +10,14 @@
 	<div class="card-body">
 		<h2 class="card-title">{title}</h2>
 		<p>
-			{paragraph[0] !== "A"
-				? new Date().toLocaleDateString("it-IT")
-				: paragraph}
+			{id !== "new" ? new Date().toLocaleDateString("it-IT") : paragraph}
 		</p>
 		<div class="card-actions justify-end">
 			{#if id !== "new"}
-				<a
-					href="/house/groceries/shopping-list/{id}"
-					class="btn btn-error">DELETE</a
-				>
+				<form action="?/delete" method="post">
+					<input type="text" name="deleteId" value={id} hidden />
+					<button class="btn btn-error">DELETE</button>
+				</form>
 				<a href="/house/groceries/shopping-list/{id}" class="btn"
 					>OPEN</a
 				>

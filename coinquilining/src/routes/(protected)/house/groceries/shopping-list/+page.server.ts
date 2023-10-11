@@ -28,8 +28,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		return fail(500, { message: errno1.message });
 	}
 
-	console.log(shoppingLists);
-
 	return { shoppingLists, roommates };
 };
 
@@ -44,13 +42,12 @@ export const actions = {
 			.insert({
 				house_id: session.user.user_metadata.house_id,
 				name: shoppingListName,
-				shoppingList: [{}],
 				date: new Date().toISOString().split("T")[0],
 			})
 			.select("id");
-		console.log(error);
 
 		if (error) {
+			console.log(error);
 			return fail(500, { message: error.message });
 		}
 
@@ -61,14 +58,26 @@ export const actions = {
 	},
 
 	delete: async ({ locals, request }) => {
-		const session = await locals.getSession();
+		const { deleteId } = Object.fromEntries(await request.formData());
 
-		const deleteIds = Object.fromEntries(await request.formData())
-			.deleteIds.toString()
-			.split(";");
+		const { error: errno0 } = await locals.supabase
+			.from("shoppingListItems")
+			.delete()
+			.eq("shoppingListId", deleteId);
 
-		// TODO REMOVE SUPABASE
+		if (errno0) {
+			console.log(errno0);
+			return fail(500, { message: errno0.message });
+		}
 
-		console.log(deleteIds);
+		const { error: errno1 } = await locals.supabase
+			.from("shoppingLists")
+			.delete()
+			.eq("id", deleteId);
+
+		if (errno1) {
+			console.log(errno1);
+			return fail(500, { message: errno1.message });
+		}
 	},
 };

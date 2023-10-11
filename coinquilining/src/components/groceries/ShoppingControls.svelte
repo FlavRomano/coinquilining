@@ -5,7 +5,8 @@
 		hasPreviousPage,
 		pageIndex,
 		pageCount,
-		hasNextPage;
+		hasNextPage,
+		roommates;
 </script>
 
 <div class="join fixed bottom-[25%] sm:bottom-[18%] md:bottom-[18%]">
@@ -69,10 +70,35 @@
 						.map((v) => v.id)
 						.join(";")}
 				/>
+				<select
+					class="select select-bordered w-full max-w-xs"
+					name="owner"
+					required
+				>
+					{#each roommates as roommate}
+						{#if table
+							.filter( (v, i) => Object.keys($selectedDataIds).includes("" + i) )
+							.map((v) => v.owner)[0] === roommate.firstname + " " + roommate.lastname}
+							<option selected
+								>{roommate.firstname + " " + roommate.lastname}
+							</option>
+						{:else}
+							<option
+								>{roommate.firstname + " " + roommate.lastname}
+							</option>
+						{/if}
+					{/each}
+				</select>
 				<input
 					type="text"
 					name="item"
 					class="input input-bordered w-full max-w-xs"
+					value={table
+						.filter((v, i) =>
+							Object.keys($selectedDataIds).includes("" + i)
+						)
+						.map((v) => v.item)
+						.join("")}
 					placeholder="Item"
 				/>
 				<button class="btn btn-primary w-full max-w-xs">

@@ -36,9 +36,12 @@
 					<td
 						><input
 							type="text"
+							minlength="2"
+							maxlength="64"
 							class="input input-primary w-full"
 							name="item"
 							placeholder="Item"
+							required
 						/></td
 					>
 					<td

@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		return fail(500, { message: errno0.message });
 	}
 
-	const shoppingListId = params.name;
+	const shoppingListId = params.shoppingListId;
 
 	const { data: shoppingList, error: errno1 } = await locals.supabase
 		.from("shoppingListItems")
@@ -29,13 +29,23 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		console.log(errno1);
 		return fail(500, { message: errno1.message });
 	}
+	const { data: listName, error: errno2 } = await locals.supabase
+		.from("shoppingLists")
+		.select("name")
+		.eq("id", shoppingListId)
+		.single();
 
-	return { shoppingList, roommates };
+	if (errno2) {
+		console.log(errno2);
+		return fail(500, { message: errno2.message });
+	}
+
+	return { shoppingList, listName: listName.name, roommates };
 };
 
 export const actions = {
 	add: async ({ locals, request, params }) => {
-		const shoppingListId = params.name;
+		const shoppingListId = params.shoppingListId;
 
 		let { owner, item } = Object.fromEntries(await request.formData());
 
@@ -51,8 +61,6 @@ export const actions = {
 		}
 	},
 	delete: async ({ locals, request }) => {
-		const session = await locals.getSession();
-
 		const deleteIds = Object.fromEntries(await request.formData())
 			.deleteIds.toString()
 			.split(";");
@@ -70,13 +78,18 @@ export const actions = {
 		}
 	},
 	edit: async ({ locals, request }) => {
-		const session = await locals.getSession();
+		const { editId, item, owner } = Object.fromEntries(
+			await request.formData()
+		);
 
-		const { editId, item } = Object.fromEntries(await request.formData());
+		const { error } = await locals.supabase
+			.from("shoppingListItems")
+			.update({ owner, item })
+			.eq("id", editId);
 
-		// TODO EDIT SUPABASE
-
-		console.log(editId);
-		console.log(item);
+		if (error) {
+			console.log(error);
+			return fail(500, { message: error.message });
+		}
 	},
 };

@@ -16,6 +16,7 @@
 	import type { ShoppingListItem } from "$types/lib/schemas";
 
 	export let table: ShoppingListItem[];
+	export let roommates;
 
 	const tableData = readable(table);
 
@@ -119,6 +120,7 @@
 			{pageIndex}
 			{pageCount}
 			{hasNextPage}
+			{roommates}
 		/>
 	</div>
 {:else}
