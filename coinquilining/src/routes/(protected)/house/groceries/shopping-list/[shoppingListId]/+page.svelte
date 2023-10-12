@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ShoppingInput from "$components/groceries/ShoppingInput.svelte";
-	import ShoppingTable from "$components/groceries/ShoppingTable.svelte";
+	import ShoppingInput from "$components/groceries/shopping-list/ShoppingInput.svelte";
+	import ShoppingTable from "$components/groceries/shopping-list/ShoppingTable.svelte";
 	import type { ShoppingListItem } from "$types/lib/schemas";
 	import type { PageData } from "./$types";
 

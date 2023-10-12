@@ -25,7 +25,10 @@
 			<h2 class="card-title">Receipts</h2>
 			<p />
 			<div class="card-actions justify-end">
-				<button class="btn btn-primary w-full">Click me</button>
+				<a
+					href="/house/groceries/receipts"
+					class="btn btn-primary w-full">Click me</a
+				>
 			</div>
 		</div>
 	</div>
