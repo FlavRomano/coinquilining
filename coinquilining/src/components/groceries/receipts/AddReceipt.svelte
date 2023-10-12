@@ -1,21 +1,26 @@
 <script lang="ts">
 	import { writable } from "svelte/store";
 
-	export let roommates;
+	export let roommates: {
+		id: string;
+		firstname: string;
+		lastname: string;
+		amount: Number;
+	}[];
+	export let userId;
 	const splitWithSomeone = writable(true);
 </script>
 
-<div class="fixed bottom-[15%] left-[80%] sm:left-[50%] translate-x-[-50%]">
-	<button
-		class="btn btn-circle btn-lg sm:rounded-xl sm:btn-wide btn-primary animate-none"
-		on:click={() => document.getElementById("addOutgoing").showModal()}
-		>ADD RECEIPT</button
-	>
-</div>
+<button
+	class="btn btn-lg sm:btn-wide btn-primary"
+	on:click={() => document.getElementById("addReceipt").showModal()}
+	>ADD RECEIPT</button
+>
 
-<dialog id="addOutgoing" class="modal">
+<dialog id="addReceipt" class="modal">
 	<div class="modal-box max-w-xs">
-		<form action="?/add" method="post" class="form-control gap-2">
+		<form action="?/addOutgoing" method="post" class="form-control gap-2">
+			<input hidden type="text" name="from" value={userId} />
 			<input
 				minlength="4"
 				maxlength="32"
@@ -44,7 +49,7 @@
 			</label>
 			{#if $splitWithSomeone}
 				<ul>
-					{#each roommates as roommate}
+					{#each roommates.filter((obj) => obj.id !== userId) as roommate, i}
 						<li>
 							<label class="label cursor-pointer">
 								<span class="label-text"
@@ -56,7 +61,8 @@
 									type="checkbox"
 									checked={false}
 									class="checkbox"
-									required
+									value={roommate.id}
+									name="split{i}"
 								/>
 							</label>
 						</li>

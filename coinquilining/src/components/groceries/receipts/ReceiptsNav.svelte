@@ -1,12 +1,7 @@
 <script lang="ts">
-	import AddReceipt from "./AddReceipt.svelte";
-
-	export let roommates;
 	export let summary = false;
 	export let outgoings = false;
 </script>
-
-<AddReceipt {roommates} />
 
 <div class="btm-nav">
 	<a href="/house/groceries/receipts/summary" class={summary ? "active" : ""}>

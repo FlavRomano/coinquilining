@@ -22,11 +22,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	changeName: async ({
-		request,
-		cookies,
-		locals: { supabase, getSession },
-	}) => {
+	changeName: async ({ request, locals: { supabase, getSession } }) => {
 		const changeNameForm = await superValidate(request, changeNameSchema);
 
 		if (!changeNameForm.valid) {

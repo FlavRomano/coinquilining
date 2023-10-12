@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const { data: roommates, error: errno0 } = await locals.supabase
 		.from("users")
-		.select("firstname, lastname, balance")
+		.select("id, firstname, lastname, balance")
 		.eq("house_id", session.user.user_metadata.house_id);
 
 	if (errno0) {

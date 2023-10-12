@@ -1,44 +1,14 @@
 <script lang="ts">
+	import AddReceipt from "$components/groceries/receipts/AddReceipt.svelte";
+	import AddPayment from "$components/groceries/receipts/AddPayment.svelte";
 	import ReceiptsNav from "$components/groceries/receipts/ReceiptsNav.svelte";
 	import SummaryItem from "$components/groceries/receipts/SummaryItem.svelte";
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
 
-	let roommates = data.roommates;
-
-	let outgoings = [
-		{
-			id: 1,
-			title: "Lampadina",
-			price: 6.5,
-			from: roommates[0],
-			splitWith: [roommates[1]],
-		},
-		{
-			id: 2,
-			title: "Chair",
-			price: 45.0,
-			from: roommates[1],
-			splitWith: [roommates[0]],
-		},
-		{
-			id: 3,
-			title: "Table",
-			price: 80.0,
-			from: roommates[1],
-			splitWith: [roommates[0]],
-		},
-	];
-
-	let payments = [
-		{
-			id: 1,
-			amount: 3.25,
-			from: roommates[1],
-			to: [roommates[0]],
-		},
-	];
+	const roommates = data.roommates;
+	const userId = data.userId;
 </script>
 
 <div class="fixed w-full h-full">
@@ -46,11 +16,18 @@
 		<ul>
 			{#each roommates as roommate}
 				<li class="my-5">
-					<SummaryItem {roommate} {outgoings} {payments} />
+					<SummaryItem {roommate} />
 				</li>
 			{/each}
 		</ul>
 	</div>
 </div>
 
-<ReceiptsNav summary={true} {roommates} />
+<div class="grid grid-cols-2 place-items-center">
+	<div class="fixed bottom-[15%]">
+		<AddReceipt {roommates} {userId} />
+		<AddPayment {roommates} {userId} />
+	</div>
+</div>
+
+<ReceiptsNav summary={true} {roommates} {userId} />
