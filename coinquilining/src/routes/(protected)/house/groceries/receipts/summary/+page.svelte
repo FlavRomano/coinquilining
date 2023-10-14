@@ -7,7 +7,12 @@
 
 	export let data: PageData;
 
-	const roommates = data.roommates;
+	const roommates: {
+		id: string;
+		firstname: string;
+		lastname: string;
+		amount: Number;
+	}[] = data.roommates;
 	const userId = data.userId;
 </script>
 
@@ -26,8 +31,7 @@
 <div class="grid grid-cols-2 place-items-center">
 	<div class="fixed bottom-[15%]">
 		<AddReceipt {roommates} {userId} />
-		<AddPayment {roommates} {userId} />
 	</div>
 </div>
 
-<ReceiptsNav summary={true} {roommates} {userId} />
+<ReceiptsNav summary={true} />

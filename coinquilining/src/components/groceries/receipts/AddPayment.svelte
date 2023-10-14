@@ -31,9 +31,10 @@
 			<select
 				bind:value={fromRoommate}
 				class="select select-bordered w-full max-w-xs"
+				name="from"
 				required
 			>
-				<option value="" disabled selected hidden>From</option>
+				<option value="" disabled selected>From</option>
 				{#each roommates as roommate}
 					<option value={roommate.id}
 						>From: {roommate.firstname +
@@ -43,8 +44,12 @@
 				{/each}
 			</select>
 
-			<select class="select select-bordered w-full max-w-xs" required>
-				<option value="" disabled selected hidden>To</option>
+			<select
+				class="select select-bordered w-full max-w-xs"
+				name="to"
+				required
+			>
+				<option value="" disabled selected>To</option>
 				{#each roommates.filter((obj) => obj.id !== fromRoommate) as roommate}
 					<option value={roommate.id}
 						>To: {roommate.firstname +

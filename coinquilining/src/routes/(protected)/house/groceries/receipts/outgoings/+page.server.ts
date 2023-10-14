@@ -1,4 +1,4 @@
-import { fail, redirect } from "@sveltejs/kit";
+import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -28,4 +28,34 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	}
 
 	return { roommates, outgoings };
+};
+
+export const actions: Actions = {
+	edit: async ({ request, locals, fetch }) => {
+		let {
+			id,
+			owner: from,
+			title: item_name,
+			price,
+			...splitWith
+		} = Object.fromEntries(await request.formData());
+
+		await fetch(
+			`/api/receipts?title=${item_name}&price=${price}&from=${from}&splitWith=${[
+				...Object.values(splitWith),
+			]}`,
+			{ method: "POST" }
+		);
+
+		await fetch(`/api/receipts?id=${id}`, { method: "DELETE" });
+	},
+
+	delete: async ({ request, locals, fetch }) => {
+		let { id } = Object.fromEntries(await request.formData());
+
+		const response = await fetch(`/api/receipts?id=${id}`, {
+			method: "DELETE",
+		});
+    },
+
 };

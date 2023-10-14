@@ -24,87 +24,57 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 };
 
 export const actions: Actions = {
-	addOutgoing: async ({ request, locals }) => {
-		let data = Object.fromEntries(await request.formData());
+	addOutgoing: async ({ request, fetch }) => {
+		const {
+			title: item_name,
+			from,
+			price,
+			...splitWith
+		} = Object.fromEntries(await request.formData());
 
-		let splitWith = [];
-		for (let key in data) {
-			if (key.includes("split")) {
-				splitWith = [...splitWith, data[key]];
-			}
-		}
-		const { from, title, price } = data;
-		const house_id = (await locals.getSession()).user.user_metadata
-			.house_id;
+		await fetch(
+			`/api/receipts?title=${item_name}&price=${price}&from=${from}&splitWith=${[
+				...Object.values(splitWith),
+			]}`,
+			{ method: "POST" }
+		);
+	},
+	addPayment: async ({ request, locals }) => {
+		const {
+			amount: paymentAmount,
+			from,
+			to,
+		} = Object.fromEntries(await request.formData());
 
-		const { data: receipts, error: errno0 } = await locals.supabase
-			.from("receipts")
-			.insert({
-				item_name: title,
-				house_id,
-				price,
-				from,
-				splitWith,
-			})
-			.select();
+		const { data: oldAmount, error: errno0 } = await locals.supabase
+			.from("users")
+			.select("amount")
+			.eq("id", to)
+			.single();
 
 		if (errno0) {
 			console.log(errno0);
 			return fail(500, { errno0 });
 		}
 
-		if (splitWith.length > 0) {
-			const priceToPay = Number(price) / splitWith.length;
-			console.log(priceToPay);
+		const { error: errno1 } = await locals.supabase
+			.from("payments")
+			.insert({ from, amount: paymentAmount, to });
 
-			for (let userId of splitWith) {
-				let { data: oldBalance, error: errno1 } = await locals.supabase
-					.from("users")
-					.select("balance")
-					.eq("id", userId)
-					.single();
+		if (errno1) {
+			console.log(errno1);
+			return fail(500, { errno1 });
+		}
 
-				if (errno1) {
-					console.log(errno1);
-					return fail(500, { errno1 });
-				}
+		const newAmount = oldAmount.amount + paymentAmount;
 
-				let newBalance = oldBalance.balance - priceToPay;
+		const { error: errno2 } = await locals.supabase
+			.from("users")
+			.update({ amount: newAmount });
 
-				let { error: errno2 } = await locals.supabase
-					.from("users")
-					.update({ balance: newBalance })
-					.eq("id", userId);
-
-				if (errno2) {
-					console.log(errno2);
-					return fail(500, { errno2 });
-				}
-			}
-
-			let { data: oldBalance, error: errno3 } = await locals.supabase
-				.from("users")
-				.select("balance")
-				.eq("id", from)
-				.single();
-
-			if (errno3) {
-				console.log(errno3);
-				return fail(500, { errno3 });
-			}
-
-			let newBalance = oldBalance.balance + priceToPay;
-
-			let { error: errno4 } = await locals.supabase
-				.from("users")
-				.update({ balance: newBalance })
-				.eq("id", from);
-
-			if (errno4) {
-				console.log(errno4);
-				return fail(500, { errno4 });
-			}
+		if (errno2) {
+			console.log(errno2);
+			return fail(500, { errno2 });
 		}
 	},
-	addPayment: async ({ request, locals }) => {},
 };
