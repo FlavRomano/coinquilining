@@ -12,8 +12,8 @@
 			height="300px"
 		/>
 	</figure>
-	<div class="card-body">
-		<h2 class="card-title break-words">
+	<div class="card-body break-words">
+		<h2 class="card-title">
 			{recipe.title}
 		</h2>
 		<p />

@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="navbar bg-base-100 pb-5">
+<div class="navbar bg-base-100">
 	<div class="navbar-start">
 		<div class="dropdown">
 			<!-- svelte-ignore a11y-label-has-associated-control -->

@@ -10,7 +10,7 @@ export const load = async ({ locals }) => {
 		.from("fridge")
 		.select(
 			`
-            id, owner, food_name, kind, expiration
+            id, owner_id, food_name, kind, expiration
         `
 		)
 		.eq("house_id", session.user.user_metadata.house_id);
@@ -19,14 +19,14 @@ export const load = async ({ locals }) => {
 		.from("pantry")
 		.select(
 			`
-            id, owner, food_name, kind, expiration
+            id, owner_id, food_name, kind, expiration
         `
 		)
 		.eq("house_id", session.user.user_metadata.house_id);
 
 	const { data: roommates, error: err } = await locals.supabase
 		.from("users")
-		.select("firstname, lastname")
+		.select("id, firstname, lastname")
 		.eq("house_id", session.user.user_metadata.house_id);
 
 	if (ERRFridge) {

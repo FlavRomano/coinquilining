@@ -1,10 +1,4 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
-import {
-	foodAddSchema,
-	foodRemoveSchema,
-	foodEditSchema,
-} from "$types/lib/schemas";
 
 export const load = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -13,92 +7,103 @@ export const load = async ({ locals }) => {
 		throw redirect(303, "/register");
 	}
 
-	const { data: pantry, error } = await locals.supabase
+	const { data: pantry, error: errno0 } = await locals.supabase
 		.from("pantry")
-		.select("id, owner, food_name, kind, purchased_on, expiration, price")
+		.select(
+			"id, owner_id, food_name, kind, purchased_on, expiration, price"
+		)
 		.eq("house_id", session.user.user_metadata.house_id);
 
-	const { data: roommates, error: err } = await locals.supabase
-		.from("users")
-		.select("firstname, lastname")
-		.eq("house_id", session.user.user_metadata.house_id);
-
-	if (error) {
-		return fail(404, { error });
+	if (errno0) {
+		console.log(errno0);
+		return fail(404, { errno0 });
 	}
 
-	const insertFoodForm = await superValidate(foodAddSchema);
-	const deleteFoodForm = await superValidate(foodRemoveSchema);
-	const editFoodForm = await superValidate(foodEditSchema);
+	const { data: roommates, error: errno1 } = await locals.supabase
+		.from("users")
+		.select("id, firstname, lastname")
+		.eq("house_id", session.user.user_metadata.house_id);
+
+	if (errno1) {
+		console.log(errno1);
+		return fail(404, { errno1 });
+	}
 
 	return {
-		insertFoodForm,
-		deleteFoodForm,
-		editFoodForm,
 		table: pantry,
 		roommates,
 	};
 };
 
 export const actions: Actions = {
-	insert: async ({ request, cookies, locals }) => {
-		const insertFoodForm = await superValidate(request, foodAddSchema);
-		if (!insertFoodForm.valid) {
-			return fail(400, { insertFoodForm });
-		}
+	add: async ({ request, cookies, locals }) => {
+		const {
+			owner: owner_id,
+			food_name,
+			purchased_on,
+			expiration,
+			kind,
+			price,
+		} = Object.fromEntries(await request.formData());
 
 		let session = await locals.getSession();
 
 		const { error } = await locals.supabase.from("pantry").insert({
 			house_id: session.user.user_metadata.house_id,
-			owner: insertFoodForm.data.owner.split(" ")[0],
-			food_name: insertFoodForm.data.food_name,
-			purchased_on: insertFoodForm.data.purchased_on,
-			expiration: insertFoodForm.data.expiration_on,
-			kind: insertFoodForm.data.kind,
-			price: insertFoodForm.data.price,
+			owner_id,
+			food_name,
+			purchased_on,
+			expiration,
+			kind,
+			price,
 		});
 
 		if (error) {
-			return fail(400, { insertFoodForm });
+			console.log(error);
+			return fail(400, { error });
 		}
 	},
 	delete: async ({ request, cookies, locals }) => {
-		const removeFoodForm = await superValidate(request, foodRemoveSchema);
-		if (!removeFoodForm.valid) {
-			return fail(400, { removeFoodForm });
-		}
+		const { deleteIds } = Object.fromEntries(await request.formData());
 
-		const { error } = await locals.supabase
-			.from("pantry")
-			.delete()
-			.eq("id", removeFoodForm.data.id);
+		for (let id of deleteIds.toString().split(",")) {
+			const { error } = await locals.supabase
+				.from("pantry")
+				.delete()
+				.eq("id", id);
 
-		if (error) {
-			return fail(400, { removeFoodForm });
+			if (error) {
+				console.log(error);
+				return fail(400, { error });
+			}
 		}
 	},
 	edit: async ({ request, cookies, locals }) => {
-		const editFoodForm = await superValidate(request, foodEditSchema);
-		if (!editFoodForm.valid) {
-			return fail(400, { editFoodForm });
-		}
+		const {
+			id,
+			owner: owner_id,
+			food_name,
+			purchased_on,
+			expiration,
+			kind,
+			price,
+		} = Object.fromEntries(await request.formData());
 
 		const { error } = await locals.supabase
 			.from("pantry")
 			.update({
-				owner: editFoodForm.data.owner.split(" ").at(0),
-				food_name: editFoodForm.data.food_name,
-				purchased_on: editFoodForm.data.purchased_on,
-				expiration: editFoodForm.data.expiration_on,
-				kind: editFoodForm.data.kind,
-				price: editFoodForm.data.price,
+				owner_id,
+				food_name,
+				purchased_on,
+				expiration,
+				kind,
+				price,
 			})
-			.eq("id", editFoodForm.data.id)
-			.select();
+			.eq("id", id);
 
 		if (error) {
-			return fail(400, { editFoodForm });
+			console.log(error);
+			return fail(400, { error });
 		}
 	},
 };

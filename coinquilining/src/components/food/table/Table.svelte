@@ -5,35 +5,41 @@
 		createRender,
 		createTable,
 	} from "svelte-headless-table";
-	import SelectIndicator from "$components/food/recipes/SelectIndicator.svelte";
+	import TablePagination from "./TablePagination.svelte";
+	import { readable } from "svelte/store";
 	import {
 		addPagination,
 		addSelectedRows,
 		addSortBy,
 		addTableFilter,
 	} from "svelte-headless-table/plugins";
-	import { readable } from "svelte/store";
+	import SelectIndicator from "./SelectIndicator.svelte";
+	import TableControls from "./TableControls.svelte";
 
 	export let table: {
-		id: string;
-		owner_id: string;
-		food_name: string;
-		kind: string;
-		expiration: string;
+		id: any;
+		owner_id: any;
+		food_name: any;
+		kind: any;
+		purchased_on: any;
+		expiration: any;
+		price: any;
 	}[];
 
-	export let roommates;
+	export let roommates: { id: string; firstname: string; lastname: string }[];
 
-	const data = readable(table);
+	const tableStore = readable(table);
 
-	const t = createTable(data, {
+	const t = createTable(tableStore, {
 		sort: addSortBy({
 			disableMultiSort: true,
 			toggleOrder: ["asc", "desc"],
 		}),
 		filter: addTableFilter(),
-		page: addPagination({ initialPageSize: 5 }),
-		select: addSelectedRows({}),
+		page: addPagination({
+			initialPageSize: 5,
+		}),
+		select: addSelectedRows(),
 	});
 
 	const columns = t.createColumns([
@@ -55,10 +61,26 @@
 			header: "Kind",
 			accessor: (item) => item.kind,
 		}),
+
+		t.column({
+			header: "Purchased on",
+			accessor: (item) =>
+				new Date(item.purchased_on).toLocaleDateString("it-IT"),
+		}),
 		t.column({
 			header: "Expiration",
 			accessor: (item) =>
 				new Date(item.expiration).toLocaleDateString("it-IT"),
+		}),
+		t.column({
+			header: "Price",
+			accessor: (item) =>
+				Number(item.price).toLocaleString("it-IT", {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+					style: "currency",
+					currency: "EUR",
+				}),
 		}),
 		t.column({
 			header: "Owner",
@@ -81,7 +103,8 @@
 	} = t.createViewModel(columns);
 	const { pageIndex, pageCount, pageSize, hasNextPage, hasPreviousPage } =
 		pluginStates.page;
-	const { selectedDataIds } = pluginStates.select;
+	const { selectedDataIds, allPageRowsSelected, allRowsSelected } =
+		pluginStates.select;
 	const { filterValue } = pluginStates.filter;
 </script>
 
@@ -156,30 +179,13 @@
 </div>
 
 <div class="flex flex-col place-items-center">
-	<div class="join fixed bottom-1/4 md:bottom-[10%]">
-		<button
-			class="join-item btn"
-			disabled={!$hasPreviousPage}
-			on:click={() => $pageIndex--}>«</button
-		>
-		<button class="join-item btn"
-			>Page {$pageIndex + 1} of {$pageCount}</button
-		>
-		<button
-			class="join-item btn"
-			disabled={!$hasNextPage}
-			on:click={() => $pageIndex++}>»</button
-		>
-	</div>
-</div>
-<div class="pt-5">
-	<a
-		href="/house/food/recipes/{table
-			.filter((_, i) => Object.keys($selectedDataIds).includes('' + i))
-			.map((v) => v.food_name)
-			.join('+')}/1"
-		class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
-	>
-		SEARCH
-	</a>
+	<TablePagination {hasNextPage} {hasPreviousPage} {pageIndex} {pageCount} />
+
+	<TableControls
+		{table}
+		{roommates}
+		{selectedDataIds}
+		{allRowsSelected}
+		{allPageRowsSelected}
+	/>
 </div>
