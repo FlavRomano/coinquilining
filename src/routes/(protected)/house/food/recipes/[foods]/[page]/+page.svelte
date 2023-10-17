@@ -1,10 +1,8 @@
 <script lang="ts">
 	import PaginationButton from "$components/food/recipes/PaginationButton.svelte";
 	import FoodCard from "$components/food/recipes/FoodCard.svelte";
-	import { writable } from "svelte/store";
 	import { page } from "$app/stores";
 
-	let recipes = writable([]);
 	const queryFoods = $page.params.foods;
 	const currentPage = $page.params.page;
 
@@ -16,7 +14,7 @@
 			},
 		});
 
-		$recipes = [...(await response.json())];
+		return [...(await response.json())];
 	}
 </script>
 
@@ -26,13 +24,13 @@
 			<span class="loading loading-spinner loading-lg" />
 		</div>
 	</div>
-{:then}
+{:then recipes}
 	<div class="m-5">
 		<div class="flex flex-col place-items-center">
 			<a class="btn btn-neutral" href="/house/food/recipes"
 				>BACK TO TABLE</a
 			>
-			{#each $recipes as recipesObj}
+			{#each recipes as recipesObj}
 				<ul>
 					{#each recipesObj.recipes as recipe}
 						<li>
