@@ -4,19 +4,48 @@
 	import DayGrid from "@event-calendar/day-grid";
 	import "@event-calendar/interaction";
 	import { writable, type Writable } from "svelte/store";
+	import type { PageData } from "./$types";
 
 	type Event = {
 		title: string;
+		start: string;
+		end: string;
+		allDay: boolean;
 	};
 
+	export let data: PageData;
 	const selectedEvent: Writable<Event> = writable();
+
+	const calendar = data.calendar;
+
+	function createEvent() {
+		// start, end, title, allDay: true
+		const res = [];
+
+		for (const { roommate, events } of calendar) {
+			let jsonEvents: { zone: string; cleaningDay: string } =
+				JSON.parse(events);
+			for (const { zone, cleaningDay } of Object.values(jsonEvents)) {
+				const title =
+					roommate.firstname + " " + roommate.lastname + " " + zone;
+				const [start, end] = [cleaningDay, cleaningDay];
+				const allDay = true;
+
+				const event = { title, start, end, allDay };
+				res.push(event);
+			}
+		}
+
+		return res;
+	}
 
 	let plugins = [TimeGrid, DayGrid];
 	let options = {
 		view: "dayGridMonth",
-		events: [{ title: "Gabriele bagno", allDay: true }],
+		events: [...createEvent()],
 		eventClick: function (info) {
 			selectedEvent.set(info.event);
+			console.log(JSON.stringify(info, null, 2));
 		},
 		views: {
 			timeGridWeek: { pointer: true },
@@ -29,17 +58,6 @@
 		},
 		flexibleSlotTimeLimits: true,
 	};
-
-	// SETTINGS:
-	/* 
-            - Giorni della settimana in cui si è disponibili per lavare
-            (opzione tasto "copy" e "all") 
-            - Quante zone ci sono da lavare (e.g bagno,
-            cucina, salotto, stanzino, sgabuzzino +++) 
-
-            n.b: se non sono presenti alcuni setting nel db => si apre automaticamente settings
-    */
-
 	// SHUFFLE:
 	/* 
             - Siano n i giorni della settimana selezionati in settings
@@ -60,7 +78,9 @@
 	</div>
 	<div class="pb-5 flex flex-col place-items-center sm:pb-0">
 		<div class="join">
-			<button class="btn md:btn-wide join-item">SHUFFLE</button>
+			<form action="?/shuffle" method="post">
+				<button class="btn md:btn-wide join-item">SHUFFLE</button>
+			</form>
 			<a
 				href="/house/lifestyle/cleaning-rotations/settings/"
 				class="btn md:btn-wide join-item">SETTINGS</a
