@@ -4,7 +4,7 @@
 </script>
 
 <div class="btm-nav">
-	<a href="/house/groceries/receipts/summary" class={summary ? "active" : ""}>
+	<a href="/house/lifestyle/receipts/summary" class={summary ? "active" : ""}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			class="h-5 w-5"
@@ -21,7 +21,7 @@
 		<span class="btm-nav-label">Summary</span>
 	</a>
 	<a
-		href="/house/groceries/receipts/outgoings"
+		href="/house/lifestyle/receipts/outgoings"
 		class={outgoings ? "active" : ""}
 	>
 		<svg

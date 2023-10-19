@@ -1,4 +1,7 @@
 // place files you want to import through the `$lib` alias in this folder.
+
+import { nanoid } from "nanoid";
+
 export function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
@@ -21,6 +24,7 @@ export function cleaningMonth(week) {
 		let weekdays = [...cleaningDays].map((entry) => {
 			const nth = curr.setDate(firstDayOfMonth + parseInt(entry[0]) + 1);
 			const nthDay = new Date(nth);
+			nthDay.setHours(0, 0, 0);
 			return nthDay.toISOString();
 		});
 		firstDayOfMonth = firstDayOfMonth + 7;
@@ -67,7 +71,7 @@ export function cleaningCalendar(users: User[], zones, cleaningMonth) {
 	const shuffledCleaningMonth = shuffleArray(cleaningMonth);
 
 	let userAssignments: {
-		[key: string]: { zone: string; cleaningDay: string }[];
+		[key: string]: { id: string; zone: string; cleaningDay: string }[];
 	} = {};
 
 	let dayIndex = 0;
@@ -94,7 +98,8 @@ export function cleaningCalendar(users: User[], zones, cleaningMonth) {
 					)
 				) {
 					userAssignments[selectedUser.id].push({
-						zone,
+						id: nanoid(8),
+						zone: zone.trim(),
 						cleaningDay,
 					});
 				}
@@ -105,4 +110,28 @@ export function cleaningCalendar(users: User[], zones, cleaningMonth) {
 	}
 
 	return userAssignments;
+}
+
+export function createEvents(calendar: { roommate: any; events: any }[]) {
+	const res = [];
+
+	for (const { roommate, events } of calendar) {
+		let jsonEvents: { zone; cleaningDay } = JSON.parse(events);
+		for (const { id, zone, cleaningDay } of Object.values(jsonEvents)) {
+			const title =
+				roommate.firstname + " " + roommate.lastname + " " + zone;
+			const allDay = true;
+
+			const event = {
+				id,
+				title,
+				start: cleaningDay,
+				end: cleaningDay,
+				allDay,
+			};
+			res.push(event);
+		}
+	}
+
+	return res;
 }

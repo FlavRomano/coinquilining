@@ -2,51 +2,47 @@
 	import Calendar from "@event-calendar/core";
 	import TimeGrid from "@event-calendar/time-grid";
 	import DayGrid from "@event-calendar/day-grid";
-	import "@event-calendar/interaction";
+	import Interaction from "@event-calendar/interaction";
 	import { writable, type Writable } from "svelte/store";
 	import type { PageData } from "./$types";
+	import { createEvents } from "$types/lib";
+
+	/**
+	 * Example for event-calendar:
+	 *      https://stackblitz.com/edit/sveltejs-kit-template-default-mvpsgx?file=src%2Froutes%2F%2Bpage.js,src%2Froutes%2F%2Bpage.svelte
+	 */
 
 	type Event = {
-		title: string;
+		id: string;
 		start: string;
-		end: string;
-		allDay: boolean;
 	};
 
 	export let data: PageData;
-	const selectedEvent: Writable<Event> = writable();
+	const modifiedEvents: Writable<Event[]> = writable([]);
 
 	const calendar = data.calendar;
 
-	function createEvent() {
-		// start, end, title, allDay: true
-		const res = [];
+	let plugins = [TimeGrid, DayGrid, Interaction];
 
-		for (const { roommate, events } of calendar) {
-			let jsonEvents: { zone: string; cleaningDay: string } =
-				JSON.parse(events);
-			for (const { zone, cleaningDay } of Object.values(jsonEvents)) {
-				const title =
-					roommate.firstname + " " + roommate.lastname + " " + zone;
-				const [start, end] = [cleaningDay, cleaningDay];
-				const allDay = true;
+	let changingEvents = false;
 
-				const event = { title, start, end, allDay };
-				res.push(event);
-			}
-		}
-
-		return res;
-	}
-
-	let plugins = [TimeGrid, DayGrid];
 	let options = {
 		view: "dayGridMonth",
-		events: [...createEvent()],
-		eventClick: function (info) {
-			selectedEvent.set(info.event);
-			console.log(JSON.stringify(info, null, 2));
+		events: createEvents(calendar),
+
+		pointer: true,
+
+		eventDrop: (info) => {
+			if (!changingEvents) changingEvents = !changingEvents;
+			const { id, start } = info.event;
+
+			if ($modifiedEvents.filter((event) => event.id === id).length !== 0)
+				$modifiedEvents = $modifiedEvents.filter(
+					(event) => event.id !== id
+				);
+			$modifiedEvents = [...$modifiedEvents, { id, start }];
 		},
+
 		views: {
 			timeGridWeek: { pointer: true },
 			resourceTimeGridWeek: { pointer: true },
@@ -56,17 +52,9 @@
 			center: "title",
 			end: "dayGridMonth,timeGridWeek,timeGridDay",
 		},
-		flexibleSlotTimeLimits: true,
+		selectable: true,
+		nowIndicator: true,
 	};
-	// SHUFFLE:
-	/* 
-            - Siano n i giorni della settimana selezionati in settings
-                - aggiunge n eventi al calendario a partire dalla data odierna
-                - gli eventi seguono i giorni della settimana stabiliti in settings
-                - ogni evento avrà associato l'id di un coinquilino e un'azione da svolgere per quel giorno
-                    - la scelta avverrà casualmente
-            - È possibile eseguire massimo 3 shuffle a settimana, per evitare che il coinquilino bari (opzione disattivabile dai settings)
-    */
 </script>
 
 <div class="m-5">
@@ -87,8 +75,22 @@
 			>
 		</div>
 	</div>
-	<Calendar {plugins} {options} />
-	{#if $selectedEvent}
-		{$selectedEvent.title}
-	{/if}
+	<div class="flex flex-col justify-center gap-5">
+		<Calendar {plugins} {options} />
+		<form
+			class="flex flex-col place-items-center"
+			action="?/changeEvents"
+			method="post"
+		>
+			{#if changingEvents}
+				<input
+					class="w-full"
+					type="text"
+					name="events"
+					value={JSON.stringify($modifiedEvents)}
+				/>
+				<button class="btn btn-primary btn-md w-1/3">Confirm</button>
+			{/if}
+		</form>
+	</div>
 </div>

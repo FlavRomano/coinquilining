@@ -39,7 +39,6 @@
 		<ul class="menu menu-horizontal px-1">
 			<li><a href="/house/lifestyle">Lifestyle</a></li>
 			<li><a href="/house/food">Food</a></li>
-			<li><a href="/house/groceries">Groceries</a></li>
 		</ul>
 	</div>
 	<div class="navbar-end">
@@ -50,7 +49,7 @@
 				tabindex="-1"
 				class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
 			>
-				<li><a href="/settings">Settings</a></li>
+				<li><a href="/house/settings">Settings</a></li>
 				<li><a href="/signout">Quit</a></li>
 			</ul>
 		</div>

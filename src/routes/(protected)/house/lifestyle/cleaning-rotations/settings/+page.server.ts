@@ -46,5 +46,7 @@ export const actions = {
 			console.log(error);
 			return fail(500, { error });
 		}
+
+		throw redirect(303, "/house/lifestyle/cleaning-rotations?/shuffle");
 	},
 };

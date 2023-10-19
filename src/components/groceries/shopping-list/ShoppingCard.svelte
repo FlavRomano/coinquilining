@@ -18,7 +18,7 @@
 					<input type="text" name="deleteId" value={id} hidden />
 					<button class="btn btn-error">DELETE</button>
 				</form>
-				<a href="/house/groceries/shopping-list/{id}" class="btn"
+				<a href="/house/lifestyle/shopping-list/{id}" class="btn"
 					>OPEN</a
 				>
 			{:else}

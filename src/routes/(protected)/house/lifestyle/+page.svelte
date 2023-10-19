@@ -19,28 +19,31 @@
 
 	<div class="card w-80 bg-base-100 shadow-xl">
 		<figure>
-			<img src="/house/calendar.jpeg" alt="Calendar" />
+			<img src="/groceries/shopping list.jpeg" alt="Shopping list" />
 		</figure>
 		<div class="card-body">
-			<h2 class="card-title">Calendar</h2>
+			<h2 class="card-title">Shopping list</h2>
 			<p>If a dog chews shoes whose shoes does he choose?</p>
 			<div class="card-actions justify-end">
-				<a class="btn btn-primary" href="/house/lifestyle/calendar"
-					>Click me</a
+				<a
+					href="/house/lifestyle/shopping-list"
+					class="btn btn-primary w-full">Click me</a
 				>
 			</div>
 		</div>
 	</div>
+
 	<div class="card w-80 bg-base-100 shadow-xl">
 		<figure>
-			<img src="/house/outgoings.jpeg" alt="Cleaning things" />
+			<img src="/groceries/receipts.jpeg" alt="Receipt" />
 		</figure>
 		<div class="card-body">
-			<h2 class="card-title">Outgoings</h2>
+			<h2 class="card-title">Receipts</h2>
 			<p>If a dog chews shoes whose shoes does he choose?</p>
 			<div class="card-actions justify-end">
-				<a class="btn btn-primary" href="/house/lifestyle/outgoings"
-					>Click me</a
+				<a
+					href="/house/lifestyle/receipts"
+					class="btn btn-primary w-full">Click me</a
 				>
 			</div>
 		</div>

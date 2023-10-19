@@ -7,5 +7,5 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	if (!session) {
 		throw redirect(303, "/register");
 	}
-	throw redirect(303, "/house/groceries/receipts/summary");
+	throw redirect(303, "/house/lifestyle/receipts/summary");
 };

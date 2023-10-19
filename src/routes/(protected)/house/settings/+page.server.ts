@@ -1,5 +1,5 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
-import type { PageServerLoad } from "../../$types";
+import type { PageServerLoad } from "../../../$types";
 import { superValidate } from "sveltekit-superforms/server";
 import { changeNameSchema } from "$types/lib/schemas";
 

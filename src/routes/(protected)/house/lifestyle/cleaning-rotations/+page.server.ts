@@ -46,7 +46,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	shuffle: async ({ locals, request, params }) => {
+	shuffle: async ({ locals }) => {
 		const session = await locals.getSession();
 
 		const { data: roommates, error: errno0 } = await locals.supabase
@@ -97,6 +97,14 @@ export const actions = {
 				console.log(errno2);
 				return fail(500, { errno2 });
 			}
+		}
+	},
+	changeEvents: async ({ locals, request }) => {
+		const { events } = Object.fromEntries(await request.formData());
+		const session = await locals.getSession();
+
+		for (let { id, start } of JSON.parse(events.toString())) {
+			// TODO
 		}
 	},
 };
