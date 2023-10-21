@@ -1,9 +1,15 @@
+<script>
+	import cleaning from "$lib/assets/house/cleaning.jpeg";
+	import shoppingList from "$lib/assets/house/shoppingList.jpeg";
+	import receipts from "$lib/assets/house/receipts.jpeg";
+</script>
+
 <div
 	class="grid place-items-center gap-4 lg:pt-12 lg:grid lg:grid-cols-3 sm:grid-cols-1 sm:gap-4 md:grid-cols-2 md:gap-4"
 >
 	<div class="card w-80 bg-base-100 shadow-xl">
 		<figure>
-			<img src="/house/cleaning.jpeg" alt="Cleaning things" />
+			<img src={cleaning} alt="Cleaning things" />
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Cleaning rotations</h2>
@@ -19,7 +25,7 @@
 
 	<div class="card w-80 bg-base-100 shadow-xl">
 		<figure>
-			<img src="/groceries/shopping list.jpeg" alt="Shopping list" />
+			<img src={shoppingList} alt="Shopping list" />
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Shopping list</h2>
@@ -35,7 +41,7 @@
 
 	<div class="card w-80 bg-base-100 shadow-xl">
 		<figure>
-			<img src="/groceries/receipts.jpeg" alt="Receipt" />
+			<img src={receipts} alt="Receipt" />
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Receipts</h2>

@@ -98,4 +98,9 @@ export const changeNameSchema = z.object({
 		}),
 });
 
+export const changePasswordSchema = z.object({
+	oldPassword: z.string().trim().min(6, { message: "Password too short" }),
+	newPassword: z.string().trim().min(6, { message: "Password too short" }),
+});
+
 export type ShoppingListItem = { id: string; owner: string; item: string };

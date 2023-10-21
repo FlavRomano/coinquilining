@@ -10,6 +10,9 @@ const config = {
       $components: "src/components",
       $types: "src/"
     },
+    serviceWorker: {
+        register: false
+    }
   },
 };
 

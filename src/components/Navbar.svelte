@@ -28,7 +28,6 @@
 				<li>
 					<a href="/house/food">Food</a>
 				</li>
-				<li><a href="/house/groceries">Groceries</a></li>
 			</ul>
 		</div>
 		<a class="btn btn-ghost normal-case text-xl" href="/house/dashboard"

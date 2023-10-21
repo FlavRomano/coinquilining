@@ -13,7 +13,8 @@
 <div class="ml-5">
 	<div class="text-sm breadcrumbs">
 		<ul>
-			<li><a href="/house/lifestyle">Groceries</a></li>
+			<li><a href="/house/">House</a></li>
+			<li><a href="/house/lifestyle">Lifestyle</a></li>
 			<li><a href="/house/lifestyle/shopping-list">Shopping-lists</a></li>
 			<li>{listName}</li>
 		</ul>

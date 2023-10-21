@@ -2,6 +2,32 @@
 
 import { nanoid } from "nanoid";
 
+export function sumPricesByOwner(arr) {
+	const result = {};
+
+	// Iterate through the array and sum the prices for each owner_id
+	arr.forEach((item) => {
+		const owner_id = item.owner_id;
+		const price = item.price;
+
+		if (result[owner_id]) {
+			// If the owner_id already exists in the result, add the price to it
+			result[owner_id] += price;
+		} else {
+			// If the owner_id is not in the result, initialize it with the price
+			result[owner_id] = price;
+		}
+	});
+
+	// Convert the result object into an array of objects
+	const finalResult = Object.keys(result).map((owner_id) => ({
+		owner_id,
+		price: result[owner_id],
+	}));
+
+	return finalResult;
+}
+
 export function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));

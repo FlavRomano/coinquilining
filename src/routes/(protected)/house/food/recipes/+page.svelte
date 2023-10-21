@@ -3,7 +3,9 @@
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
-	const table = data.table;
+	const fridge = data.fridge;
+	const pantry = data.pantry;
+	const table = [...fridge, ...pantry];
 	const roommates = data.roommates;
 </script>
 

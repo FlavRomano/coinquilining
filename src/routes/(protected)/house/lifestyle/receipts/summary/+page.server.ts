@@ -1,5 +1,6 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../$types";
+import { sumPricesByOwner } from "$types/lib";
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const session = await locals.getSession();
@@ -20,7 +21,30 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		return fail(500, { message: errno0.message });
 	}
 
-	return { userId, roommates };
+	const { data: fridgePrice, error: errno1 } = await locals.supabase
+		.from("fridge")
+		.select("owner_id, price")
+		.eq("house_id", session.user.user_metadata.house_id);
+
+	if (errno1) {
+		console.log(errno1);
+		return fail(500, { message: errno1.message });
+	}
+
+	const { data: pantryPrice, error: errno2 } = await locals.supabase
+		.from("pantry")
+		.select("owner_id, price")
+		.eq("house_id", session.user.user_metadata.house_id);
+
+	if (errno2) {
+		console.log(errno2);
+		return fail(500, { message: errno2.message });
+	}
+
+	const fridgeTotalBalance = sumPricesByOwner(fridgePrice);
+	const pantryTotalBalance = sumPricesByOwner(pantryPrice);
+
+	return { userId, roommates, fridgeTotalBalance, pantryTotalBalance };
 };
 
 export const actions: Actions = {

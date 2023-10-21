@@ -2,9 +2,8 @@ import { fail, json } from "@sveltejs/kit";
 
 export async function POST({ url, locals }) {
 	const session = await locals.getSession();
-
 	if (!session) {
-		return json("INVALID REQUEST");
+		return json("Unauthorized access", { status: 401 });
 	}
 
 	const title = url.searchParams.get("title");

@@ -53,7 +53,7 @@ export const actions = {
 
 		throw redirect(
 			303,
-			`/house/groceries/shopping-list/${shoppingListID[0].id}`
+			`/house/lifestyle/shopping-list/${shoppingListID[0].id}`
 		);
 	},
 

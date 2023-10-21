@@ -13,6 +13,4 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.select()
 		.eq("id", session.user.id)
 		.single();
-
-	console.log(data);
 };

@@ -1,26 +1,40 @@
 <script lang="ts">
 	import InputPassword from "$components/InputPassword.svelte";
+	import { superForm } from "sveltekit-superforms/client";
+	import { changePasswordSchema } from "$types/lib/schemas";
+
+	export let data;
+
+	const { form, constraints, message, enhance } = superForm(
+		data.changePasswordForm,
+		{
+			taintedMessage: null,
+			validators: changePasswordSchema,
+		}
+	);
 </script>
 
-<div class="pt-12 prose prose-xl w-full grid lg:grid-cols-2">
-	<div class="lg:pt-12 lg:pl-52">
-		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<form action="" class="join join-vertical gap-4">
-			<div class="join-item">
-				<label class="label">
-					<span class="label-text">Old Password</span>
-				</label>
-				<InputPassword />
-			</div>
+<div class="flex flex-col items-center pt-5">
+	<form action="?/changePassword" method="post">
+		<div class="form-control gap-4">
+			<div class="w-fit">
+				<InputPassword
+					text={"Old Password"}
+					name={"oldPassword"}
+					{form}
+					{constraints}
+				/>
 
-			<div class="join-item">
-				<label class="label">
-					<span class="label-text">New Password</span>
-				</label>
-				<InputPassword />
+				<InputPassword
+					text={"New Password"}
+					name={"newPassword"}
+					{form}
+					{constraints}
+				/>
+				<button class="btn btn-primary w-full max-w-full my-4"
+					>CHANGE</button
+				>
 			</div>
-
-			<button class="btn btn-primary">CHANGE</button>
-		</form>
-	</div>
+		</div>
+	</form>
 </div>

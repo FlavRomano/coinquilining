@@ -4,6 +4,8 @@
 	import type { PageData } from "../../../routes/(protected)/settings/$types";
 	export let data: PageData;
 
+	const { firstname, lastname } = data.user;
+
 	const { form, constraints, message, enhance } = superForm(
 		data?.changeNameForm,
 		{
@@ -17,15 +19,15 @@
 	<div>
 		<h3>Current</h3>
 		<ul class="list-none whitespace-nowrap pl-0">
-			<li>Firstname: {data.user.firstname}</li>
-			<li>Lastname: {data.user.lastname}</li>
+			<li>Firstname: {firstname}</li>
+			<li>Lastname: {lastname}</li>
 		</ul>
 	</div>
 	<div class="lg:pt-12">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<form
 			method="POST"
-			action="/settings?/changeName"
+			action="?/changeName"
 			class="join join-vertical gap-4"
 		>
 			<div class="join-item">

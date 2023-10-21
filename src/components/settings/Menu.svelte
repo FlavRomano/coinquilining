@@ -4,6 +4,8 @@
 	import ResetPassword from "$components/settings/profile/ResetPassword.svelte";
 	import EditRoommates from "$components/settings/house/EditRoommates.svelte";
 	import DestroyHouse from "$components/settings/house/DestroyHouse.svelte";
+	import RedAlert from "$components/errorAlerts/RedAlert.svelte";
+	import { page } from "$app/stores";
 
 	let settingsOptions = 1;
 
@@ -13,7 +15,7 @@
 <div class="grid grid-cols-3 grid-flow-col-dense m-2 lg:m-5">
 	<ul class="menu lg:menu-lg lg:bg-base-200 rounded-box">
 		<li>
-			<p>Profile</p>
+			<h1 class="menu-title">Profile</h1>
 			<ul>
 				<li>
 					<button
@@ -39,7 +41,7 @@
 			</ul>
 		</li>
 		<li>
-			<p>House</p>
+			<p class="menu-title">House</p>
 			<ul>
 				<li>
 					<button
@@ -66,11 +68,24 @@
 		{:else if settingsOptions === 2}
 			<ChangeEmail {data} />
 		{:else if settingsOptions === 3}
-			<ResetPassword />
+			<ResetPassword {data} />
 		{:else if settingsOptions === 4}
 			<EditRoommates />
 		{:else if settingsOptions === 5}
-			<DestroyHouse />
+			<DestroyHouse {data} />
+		{/if}
+
+		{#if $page.status >= 400}
+			<div class="flex flex-col place-items-center">
+				<div
+					class="fixed bottom-[20%] sm:bottom-[5%] lg:bottom-[10%] m-2 w-fit"
+				>
+					<RedAlert
+						status={$page.status}
+						message={$page.form.message}
+					/>
+				</div>
+			</div>
 		{/if}
 	</div>
 </div>

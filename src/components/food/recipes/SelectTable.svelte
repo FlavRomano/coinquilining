@@ -156,7 +156,7 @@
 </div>
 
 <div class="flex flex-col place-items-center">
-	<div class="join fixed bottom-1/4 md:bottom-[10%]">
+	<div class="join fixed bottom-1/4 sm:bottom-[10%] md:bottom-[10%]">
 		<button
 			class="join-item btn"
 			disabled={!$hasPreviousPage}
@@ -173,13 +173,16 @@
 	</div>
 </div>
 <div class="pt-5">
-	<a
-		href="/house/food/recipes/{table
+	<form
+		action="/house/food/recipes/{table
 			.filter((_, i) => Object.keys($selectedDataIds).includes('' + i))
 			.map((v) => v.food_name)
 			.join('+')}/1"
-		class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
+		method="get"
 	>
-		SEARCH
-	</a>
+		<button
+			class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
+			disabled={Object.keys($selectedDataIds).length === 0}>SEARCH</button
+		>
+	</form>
 </div>

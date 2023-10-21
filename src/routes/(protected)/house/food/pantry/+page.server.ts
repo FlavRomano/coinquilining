@@ -1,33 +1,21 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 
-export const load = async ({ locals }) => {
+export const load = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
 		throw redirect(303, "/register");
 	}
 
-	const { data: pantry, error: errno0 } = await locals.supabase
-		.from("pantry")
-		.select(
-			"id, owner_id, food_name, kind, purchased_on, expiration, price"
-		)
-		.eq("house_id", session.user.user_metadata.house_id);
+	const house_id = session.user.user_metadata.house_id;
 
-	if (errno0) {
-		console.log(errno0);
-		return fail(404, { errno0 });
-	}
+	let response = await fetch(`/api/pantry?house_id=${house_id}`);
 
-	const { data: roommates, error: errno1 } = await locals.supabase
-		.from("users")
-		.select("id, firstname, lastname")
-		.eq("house_id", session.user.user_metadata.house_id);
+	const pantry = await response.json();
 
-	if (errno1) {
-		console.log(errno1);
-		return fail(404, { errno1 });
-	}
+	response = await fetch(`/api/roommates?house_id=${house_id}`);
+
+	const roommates = await response.json();
 
 	return {
 		table: pantry,

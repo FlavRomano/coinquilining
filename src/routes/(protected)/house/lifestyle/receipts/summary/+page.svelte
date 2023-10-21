@@ -1,6 +1,5 @@
 <script lang="ts">
 	import AddReceipt from "$components/groceries/receipts/AddReceipt.svelte";
-	import AddPayment from "$components/groceries/receipts/AddPayment.svelte";
 	import ReceiptsNav from "$components/groceries/receipts/ReceiptsNav.svelte";
 	import SummaryItem from "$components/groceries/receipts/SummaryItem.svelte";
 	import type { PageData } from "./$types";
@@ -14,6 +13,8 @@
 		amount: Number;
 	}[] = data.roommates;
 	const userId = data.userId;
+	const fridgeTotalBalance: {}[] = data.fridgeTotalBalance;
+	const pantryTotalBalance = data.pantryTotalBalance;
 </script>
 
 <div class="fixed w-full h-full">
@@ -21,7 +22,11 @@
 		<ul>
 			{#each roommates as roommate}
 				<li class="my-5">
-					<SummaryItem {roommate} />
+					<SummaryItem
+						{roommate}
+						{fridgeTotalBalance}
+						{pantryTotalBalance}
+					/>
 				</li>
 			{/each}
 		</ul>

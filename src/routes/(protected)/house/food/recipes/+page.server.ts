@@ -1,44 +1,28 @@
-import { fail, redirect } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 
-export const load = async ({ locals }) => {
+export const load = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
 	if (!session) {
 		throw redirect(303, "/register");
 	}
 
-	const { data: fridge, error: ERRFridge } = await locals.supabase
-		.from("fridge")
-		.select(
-			`
-            id, owner_id, food_name, kind, expiration
-        `
-		)
-		.eq("house_id", session.user.user_metadata.house_id);
+	const house_id = session.user.user_metadata.house_id;
 
-	const { data: pantry, error: ERRPantry } = await locals.supabase
-		.from("pantry")
-		.select(
-			`
-            id, owner_id, food_name, kind, expiration
-        `
-		)
-		.eq("house_id", session.user.user_metadata.house_id);
+	let response = await fetch(`/api/fridge?house_id=${house_id}`);
 
-	const { data: roommates, error: err } = await locals.supabase
-		.from("users")
-		.select("id, firstname, lastname")
-		.eq("house_id", session.user.user_metadata.house_id);
+	const fridge = await response.json();
 
-	if (ERRFridge) {
-		return fail(404, { ERRFridge });
-	} else if (ERRPantry) {
-		return fail(404, { ERRPantry });
-	} else if (err) {
-		return fail(404, { err });
-	}
+	response = await fetch(`/api/pantry?house_id=${house_id}`);
+
+	const pantry = await response.json();
+
+	response = await fetch(`/api/roommates?house_id=${house_id}`);
+
+	const roommates = await response.json();
 
 	return {
-		table: [...fridge, ...pantry],
+		fridge,
+		pantry,
 		roommates,
 	};
 };

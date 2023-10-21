@@ -1,12 +1,7 @@
 <script lang="ts">
-	import { generate } from "random-words";
+	export let data;
 
-	let words = generate({
-		exactly: 1,
-		wordsPerString: 4,
-		separator: "-",
-		maxLength: 5,
-	});
+	const words = data.wordsForDestroy;
 </script>
 
 <div class="prose prose-xl">
@@ -21,7 +16,11 @@
 	</p>
 </div>
 <div class="pt-5 grid grid-cols-1 place-items-center">
-	<form action="" class="form-control gap-4 w-full max-w-xs">
+	<form
+		action="?/destroyHouse"
+		method="POST"
+		class="form-control gap-4 w-full max-w-xs"
+	>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<div class="join-item">
 			<label class="label">
@@ -32,7 +31,9 @@
 			<input
 				type="text"
 				placeholder="Dangerous words"
+				name="words"
 				class="input input-bordered w-full max-w-xs"
+				required
 			/>
 		</div>
 
