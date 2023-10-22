@@ -16,7 +16,7 @@ export async function GET({ url, locals }) {
 	const { data: roommates, error } = await locals.supabase
 		.from("users")
 		.select("id, firstname, lastname")
-		.eq("house_id", session.user.user_metadata.house_id);
+		.eq("house_id", house_id);
 
 	if (error) {
 		throw TypeError("Failed fetch <> " + error.message);
