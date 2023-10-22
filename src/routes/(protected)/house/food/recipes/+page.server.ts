@@ -8,17 +8,20 @@ export const load = async ({ locals, fetch }) => {
 
 	const house_id = session.user.user_metadata.house_id;
 
-	let response = await fetch(`/api/fridge?house_id=${house_id}`);
+	const fridge = (async () => {
+		let response = await fetch(`/api/fridge?house_id=${house_id}`);
+		if (response.ok) return await response.json();
+	})();
 
-	const fridge = await response.json();
+	const pantry = (async () => {
+		let response = await fetch(`/api/pantry?house_id=${house_id}`);
+		if (response.ok) return await response.json();
+	})();
 
-	response = await fetch(`/api/pantry?house_id=${house_id}`);
-
-	const pantry = await response.json();
-
-	response = await fetch(`/api/roommates?house_id=${house_id}`);
-
-	const roommates = await response.json();
+	const roommates = (async () => {
+		let response = await fetch(`/api/roommates?house_id=${house_id}`);
+		if (response.ok) return await response.json();
+	})();
 
 	return {
 		fridge,

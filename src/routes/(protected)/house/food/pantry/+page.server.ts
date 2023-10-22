@@ -9,13 +9,15 @@ export const load = async ({ locals, fetch }) => {
 
 	const house_id = session.user.user_metadata.house_id;
 
-	let response = await fetch(`/api/pantry?house_id=${house_id}`);
+	const pantry = (async () => {
+		let response = await fetch(`/api/pantry?house_id=${house_id}`);
+		if (response.ok) return await response.json();
+	})();
 
-	const pantry = await response.json();
-
-	response = await fetch(`/api/roommates?house_id=${house_id}`);
-
-	const roommates = await response.json();
+	const roommates = (async () => {
+		let response = await fetch(`/api/roommates?house_id=${house_id}`);
+		if (response.ok) return await response.json();
+	})();
 
 	return {
 		table: pantry,
@@ -24,7 +26,7 @@ export const load = async ({ locals, fetch }) => {
 };
 
 export const actions: Actions = {
-	add: async ({ request, cookies, locals }) => {
+	add: async ({ request, locals, fetch }) => {
 		const {
 			owner: owner_id,
 			food_name,
@@ -36,8 +38,9 @@ export const actions: Actions = {
 
 		let session = await locals.getSession();
 
-		const { error } = await locals.supabase.from("pantry").insert({
-			house_id: session.user.user_metadata.house_id,
+		const house_id = session.user.user_metadata.house_id;
+
+		const requestBody = JSON.stringify({
 			owner_id,
 			food_name,
 			purchased_on,
@@ -46,27 +49,34 @@ export const actions: Actions = {
 			price,
 		});
 
-		if (error) {
-			console.log(error);
-			return fail(400, { error });
+		const response = await fetch(`/api/pantry?house_id=${house_id}`, {
+			method: "POST",
+			body: requestBody,
+		});
+
+		if (!response.ok) {
+			return fail(response.status);
 		}
 	},
-	delete: async ({ request, cookies, locals }) => {
+	delete: async ({ request, locals, fetch }) => {
 		const { deleteIds } = Object.fromEntries(await request.formData());
 
-		for (let id of deleteIds.toString().split(",")) {
-			const { error } = await locals.supabase
-				.from("pantry")
-				.delete()
-				.eq("id", id);
+		let session = await locals.getSession();
 
-			if (error) {
-				console.log(error);
-				return fail(400, { error });
-			}
+		const house_id = session.user.user_metadata.house_id;
+
+		const requestBody = JSON.stringify(deleteIds.toString().split(","));
+
+		const response = await fetch(`/api/pantry?house_id=${house_id}`, {
+			method: "DELETE",
+			body: requestBody,
+		});
+
+		if (!response.ok) {
+			return fail(response.status);
 		}
 	},
-	edit: async ({ request, cookies, locals }) => {
+	edit: async ({ request, fetch, locals }) => {
 		const {
 			id,
 			owner: owner_id,
@@ -77,21 +87,27 @@ export const actions: Actions = {
 			price,
 		} = Object.fromEntries(await request.formData());
 
-		const { error } = await locals.supabase
-			.from("pantry")
-			.update({
-				owner_id,
-				food_name,
-				purchased_on,
-				expiration,
-				kind,
-				price,
-			})
-			.eq("id", id);
+		let session = await locals.getSession();
 
-		if (error) {
-			console.log(error);
-			return fail(400, { error });
+		const house_id = session.user.user_metadata.house_id;
+
+		const requestBody = JSON.stringify({
+			id,
+			owner_id,
+			food_name,
+			purchased_on,
+			expiration,
+			kind,
+			price,
+		});
+
+		const response = await fetch(`/api/pantry?house_id=${house_id}`, {
+			method: "PUT",
+			body: requestBody,
+		});
+
+		if (!response.ok) {
+			return fail(response.status);
 		}
 	},
 };
