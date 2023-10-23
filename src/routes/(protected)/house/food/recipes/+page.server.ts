@@ -19,7 +19,7 @@ export const load = async ({ locals, fetch }) => {
 	})();
 
 	const roommates = (async () => {
-		let response = await fetch(`/api/roommates?house_id=${house_id}`);
+		let response = await fetch(`/api/house/roommates?house_id=${house_id}`);
 		if (response.ok) return await response.json();
 	})();
 

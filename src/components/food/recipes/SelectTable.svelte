@@ -20,6 +20,7 @@
 		food_name: string;
 		kind: string;
 		expiration: string;
+		is_expired: boolean;
 	}[];
 
 	export let roommates;
@@ -30,6 +31,7 @@
 		sort: addSortBy({
 			disableMultiSort: true,
 			toggleOrder: ["asc", "desc"],
+			initialSortKeys: [{ id: "Expiration", order: "asc" }],
 		}),
 		filter: addTableFilter(),
 		page: addPagination({ initialPageSize: 5 }),
@@ -57,8 +59,25 @@
 		}),
 		t.column({
 			header: "Expiration",
-			accessor: (item) =>
-				new Date(item.expiration).toLocaleDateString("it-IT"),
+			accessor: (item) => {
+				return { date: item.expiration, is_expired: item.is_expired };
+			},
+			cell: ({ value }) => {
+				if (value.is_expired)
+					return (
+						new Date(value.date).toLocaleDateString("it-IT") + " 🤮"
+					);
+				return new Date(value.date).toLocaleDateString("it-IT");
+			},
+			plugins: {
+				sort: {
+					compareFn: (left, right) => {
+						if (left.date < right.date) return -1;
+						if (left.date > right.date) return 1;
+						return 0;
+					},
+				},
+			},
 		}),
 		t.column({
 			header: "Owner",

@@ -19,7 +19,10 @@ export async function GET({ url, locals }) {
 		.eq("house_id", house_id);
 
 	if (error) {
-		throw TypeError("Failed fetch <> " + error.message);
+		return new Response(null, {
+			status: 500,
+			statusText: error.message,
+		});
 	}
 
 	return json(roommates, { status: 200 });

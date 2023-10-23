@@ -8,6 +8,7 @@
 	import TablePagination from "./TablePagination.svelte";
 	import { readable } from "svelte/store";
 	import {
+		addHiddenColumns,
 		addPagination,
 		addSelectedRows,
 		addSortBy,
@@ -24,6 +25,7 @@
 		purchased_on: any;
 		expiration: any;
 		price: any;
+		is_expired: any;
 	}[];
 
 	export let roommates: { id: string; firstname: string; lastname: string }[];
@@ -33,13 +35,15 @@
 	const t = createTable(tableStore, {
 		sort: addSortBy({
 			disableMultiSort: true,
-			toggleOrder: ["asc", "desc"],
+			initialSortKeys: [{ id: "Expiration", order: "asc" }],
+			toggleOrder: ["asc", "desc", undefined],
 		}),
 		filter: addTableFilter(),
 		page: addPagination({
 			initialPageSize: 5,
 		}),
 		select: addSelectedRows(),
+		hide: addHiddenColumns({ initialHiddenColumnIds: [] }),
 	});
 
 	const columns = t.createColumns([
@@ -69,8 +73,25 @@
 		}),
 		t.column({
 			header: "Expiration",
-			accessor: (item) =>
-				new Date(item.expiration).toLocaleDateString("it-IT"),
+			accessor: (item) => {
+				return { date: item.expiration, is_expired: item.is_expired };
+			},
+			cell: ({ value }) => {
+				if (value.is_expired)
+					return (
+						new Date(value.date).toLocaleDateString("it-IT") + " 🤮"
+					);
+				return new Date(value.date).toLocaleDateString("it-IT");
+			},
+			plugins: {
+				sort: {
+					compareFn: (left, right) => {
+						if (left.date < right.date) return -1;
+						if (left.date > right.date) return 1;
+						return 0;
+					},
+				},
+			},
 		}),
 		t.column({
 			header: "Price",

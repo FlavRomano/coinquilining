@@ -15,13 +15,14 @@ export async function GET({ url, locals }) {
 
 	const { data: pantry, error } = await locals.supabase
 		.from("pantry")
-		.select(
-			"id, owner_id, food_name, kind, purchased_on, expiration, price"
-		)
+		.select()
 		.eq("house_id", house_id);
 
 	if (error) {
-		throw TypeError("Failed fetch <> " + error.message);
+		return new Response(null, {
+			status: 500,
+			statusText: error.message,
+		});
 	}
 
 	return json(pantry, { status: 200 });
@@ -56,7 +57,10 @@ export async function POST({ request, url, locals }) {
 	});
 
 	if (error) {
-		throw TypeError("Failed fetch <> " + error.message);
+		return new Response(null, {
+			status: 500,
+			statusText: error.message,
+		});
 	}
 
 	return new Response(null, { status: 204 });
@@ -84,7 +88,10 @@ export async function DELETE({ request, url, locals }) {
 			.eq("id", id);
 
 		if (error) {
-			throw TypeError("Failed fetch <> " + error.message);
+			return new Response(null, {
+				status: 500,
+				statusText: error.message,
+			});
 		}
 	}
 
@@ -120,7 +127,10 @@ export async function PUT({ request, url, locals }) {
 		.eq("id", id);
 
 	if (error) {
-		throw TypeError("Failed fetch <> " + error.message);
+		return new Response(null, {
+			status: 500,
+			statusText: error.message,
+		});
 	}
 
 	return new Response(null, { status: 204 });

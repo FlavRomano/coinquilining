@@ -29,7 +29,7 @@ export async function GET({ request }) {
 	try {
 		await page.waitForSelector("article");
 	} catch (TimeoutError) {
-		throw Error("Nothing to see");
+		return new Response(null, { status: 405 });
 	}
 
 	const recipes = await page.evaluate(() => {
@@ -54,7 +54,7 @@ export async function GET({ request }) {
 
 	results.push({ page: parseInt(currentPage), recipes });
 
-	const response = json(results);
+	const response = json(results, { status: 200 });
 
 	await browser.close();
 
