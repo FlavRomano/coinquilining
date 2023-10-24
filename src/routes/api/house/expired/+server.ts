@@ -1,3 +1,4 @@
+import type { Food } from "$types/lib/server/db/types.js";
 import { json } from "@sveltejs/kit";
 
 export async function GET({ url, locals }) {
@@ -60,7 +61,13 @@ export async function GET({ url, locals }) {
 			});
 	}
 
-	console.log("EXPIRED LOG > ");
+	const expiredFoods = [
+		...fridgeExpired.map((food) => ({ where: "fridge", ...food })),
+		...pantryExpired.map((food) => ({ where: "pantry", ...food })),
+	];
+	expiredFoods.sort((food1, food2) => {
+		return Date.parse(food1.expiration) - Date.parse(food2.expiration);
+	});
 
-	return json({ fridgeExpired, pantryExpired }, { status: 200 });
+	return json(expiredFoods, { status: 200 });
 }

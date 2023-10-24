@@ -57,40 +57,38 @@
 	};
 </script>
 
-<div class="m-5">
-	<div class="text-sm breadcrumbs">
-		<ul>
-			<li><a href="/house/lifestyle/">Lifestyle</a></li>
-			<li>Cleaning rotations</li>
-		</ul>
-	</div>
-	<div class="pb-5 flex flex-col place-items-center sm:pb-0">
-		<div class="join">
-			<form action="?/shuffle" method="post">
-				<button class="btn md:btn-wide join-item">SHUFFLE</button>
-			</form>
-			<a
-				href="/house/lifestyle/cleaning-rotations/settings/"
-				class="btn md:btn-wide join-item">SETTINGS</a
-			>
-		</div>
-	</div>
-	<div class="flex flex-col justify-center gap-5">
-		<Calendar {plugins} {options} />
-		<form
-			class="flex flex-col place-items-center"
-			action="?/changeEvents"
-			method="post"
-		>
-			{#if changingEvents}
-				<input
-					class="w-full"
-					type="text"
-					name="events"
-					value={JSON.stringify($modifiedEvents)}
-				/>
-				<button class="btn btn-primary btn-md w-1/3">Confirm</button>
-			{/if}
+<div class="text-sm breadcrumbs">
+	<ul>
+		<li><a href="/house/lifestyle/">Lifestyle</a></li>
+		<li>Cleaning rotations</li>
+	</ul>
+</div>
+<div class="pb-5 flex flex-col place-items-center sm:pb-0">
+	<div class="join">
+		<form action="?/shuffle" method="post">
+			<button class="btn md:btn-wide join-item">SHUFFLE</button>
 		</form>
+		<a
+			href="/house/lifestyle/cleaning-rotations/settings/"
+			class="btn md:btn-wide join-item">SETTINGS</a
+		>
 	</div>
+</div>
+<div class="flex flex-col justify-center gap-5">
+	<Calendar {plugins} {options} />
+	<form
+		class="flex flex-col place-items-center"
+		action="?/changeEvents"
+		method="post"
+	>
+		{#if changingEvents}
+			<input
+				class="w-full"
+				type="text"
+				name="events"
+				value={JSON.stringify($modifiedEvents)}
+			/>
+			<button class="btn btn-primary btn-md w-1/3">Confirm</button>
+		{/if}
+	</form>
 </div>

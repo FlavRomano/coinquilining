@@ -8,7 +8,7 @@
 </script>
 
 <div
-	class="grid grid-cols-1 place-items-center m-5 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+	class="grid grid-cols-1 place-items-center gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 >
 	{#each shoppingLists as list}
 		<ShoppingCard

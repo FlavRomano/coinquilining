@@ -1,4 +1,5 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
+import { timeout } from "$lib/stores.js";
 
 export const load = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
@@ -20,6 +21,8 @@ export const load = async ({ locals, fetch }) => {
 		);
 		if (response.ok) return await response.json();
 	})();
+
+	timeout.set(true);
 
 	return {
 		table: fridge,

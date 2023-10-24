@@ -3,7 +3,8 @@ export type Food = {
 	food_name: string;
 	owner_id: string;
 	purchased_on: string;
-	expiration: "string";
-	kind: "string";
+	expiration: string;
+	kind: string;
 	price: number;
+	is_expired: boolean;
 };

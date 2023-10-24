@@ -11,7 +11,7 @@ const config = {
       $types: "src/"
     },
     serviceWorker: {
-        register: true
+        register: false
     }
   },
 };

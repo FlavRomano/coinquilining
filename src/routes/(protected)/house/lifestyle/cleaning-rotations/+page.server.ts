@@ -2,62 +2,35 @@ import { fail, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "../../../../$types";
 import { cleaningCalendar, cleaningMonth } from "$types/lib";
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
 		throw redirect(303, "/register");
 	}
 
-	let { data: calendar, error: errno0 } = await locals.supabase
-		.from("calendar")
-		.select("roommate, events")
-		.eq("house_id", session.user.user_metadata.house_id);
+	const house_id = session.user.user_metadata.house_id;
 
-	if (errno0) {
-		console.log(errno0);
-		return fail(500, { errno0 });
-	}
-
-	const { data: roommates, error: errno1 } = await locals.supabase
-		.from("users")
-		.select("id, firstname, lastname")
-		.eq("house_id", session.user.user_metadata.house_id);
-
-	if (errno1) {
-		console.log(errno1);
-		return fail(500, { errno1 });
-	}
-
-	calendar = calendar.map((entry) => {
-		const roommate = roommates.filter(
-			(obj) => obj.id === entry.roommate
-		)[0];
-		return {
-			...entry,
-			roommate: {
-				firstname: roommate.firstname,
-				lastname: roommate.lastname,
-			},
-		};
-	});
+	const calendar = await (async () => {
+		const response = await fetch(`/api/calendar?house_id=${house_id}`);
+		if (response.ok) return await response.json();
+	})();
 
 	return { calendar };
 };
 
 export const actions = {
-	shuffle: async ({ locals }) => {
+	shuffle: async ({ locals, fetch }) => {
 		const session = await locals.getSession();
 
-		const { data: roommates, error: errno0 } = await locals.supabase
-			.from("users")
-			.select("id, firstname, lastname")
-			.eq("house_id", session.user.user_metadata.house_id);
+		const house_id = session.user.user_metadata.house_id;
 
-		if (errno0) {
-			console.log(errno0);
-			return fail(404, { errno0 });
-		}
+		const roommates = await (async () => {
+			const response = await fetch(
+				`/api/house/roommates?house_id=${house_id}`
+			);
+			if (response.ok) return await response.json();
+		})();
 
 		const {
 			data: {
@@ -68,7 +41,7 @@ export const actions = {
 		} = await locals.supabase
 			.from("houses")
 			.select("cleaning_zones, cleaning_days")
-			.eq("invitation_ID", session.user.user_metadata.house_id)
+			.eq("invitation_ID", house_id)
 			.single();
 
 		if (errno1) {
@@ -83,20 +56,14 @@ export const actions = {
 			cleaningDays
 		);
 
-		for (let [userId, events] of Object.entries(calendar)) {
-			const { error: errno2 } = await locals.supabase
-				.from("calendar")
-				.upsert({
-					roommate: userId,
-					house_id: session.user.user_metadata.house_id,
-					events: JSON.stringify(events),
-				})
-				.eq("roommate", userId);
+		const requestBody = JSON.stringify(calendar);
+		const response = await fetch(`/api/calendar?house_id=${house_id}`, {
+			method: "PUT",
+			body: requestBody,
+		});
 
-			if (errno2) {
-				console.log(errno2);
-				return fail(500, { errno2 });
-			}
+		if (!response.ok) {
+			return fail(response.status);
 		}
 	},
 	changeEvents: async ({ locals, request }) => {

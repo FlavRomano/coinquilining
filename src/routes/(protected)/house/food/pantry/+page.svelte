@@ -12,18 +12,17 @@
 		purchased_on: any;
 		expiration: any;
 		price: any;
+		is_expired: any;
 	}[] = data.table;
 
 	const roommates = data.roommates;
 </script>
 
-<div class="m-5">
-	<div class="text-sm breadcrumbs">
-		<ul>
-			<li><a href="/house/dashboard">House</a></li>
-			<li><a href="/house/food">Food</a></li>
-			<li>Pantry</li>
-		</ul>
-	</div>
-	<Table {table} {roommates} />
+<div class="text-sm breadcrumbs">
+	<ul>
+		<li><a href="/house/dashboard">House</a></li>
+		<li><a href="/house/food">Food</a></li>
+		<li>Pantry</li>
+	</ul>
 </div>
+<Table {table} {roommates} />

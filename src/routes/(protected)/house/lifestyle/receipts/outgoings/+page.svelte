@@ -9,7 +9,7 @@
 	const outgoings = data.outgoings;
 </script>
 
-<div class="fixed w-full h-full">
+<div class="pr-5 fixed w-full h-full">
 	<div class="m-5 overflow-auto h-3/5">
 		<ul>
 			{#each outgoings as outgoing, index}

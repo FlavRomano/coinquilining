@@ -17,8 +17,8 @@
 	const pantryTotalBalance = data.pantryTotalBalance;
 </script>
 
-<div class="fixed w-full h-full">
-	<div class="m-5 overflow-auto h-3/5">
+<div class="pr-5 fixed w-full h-full">
+	<div class="mx-5 overflow-auto h-3/5">
 		<ul>
 			{#each roommates as roommate}
 				<li class="my-5">
