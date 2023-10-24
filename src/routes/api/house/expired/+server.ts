@@ -1,4 +1,3 @@
-import type { Food } from "$types/lib/server/db/types.js";
 import { json } from "@sveltejs/kit";
 
 export async function GET({ url, locals }) {

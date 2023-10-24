@@ -1,16 +1,81 @@
 <script lang="ts">
-	export const overviewItems = [];
+	import SummaryItem from "$components/groceries/receipts/SummaryItem.svelte";
+	import ShoppingCard from "$components/groceries/shopping-list/ShoppingCard.svelte";
+	import type { Food } from "$types/lib/server/db/types";
+	import {
+		latestShoppingLists,
+		timeout_shoppingList,
+	} from "$types/lib/stores";
+	import { onMount } from "svelte";
+
+	export let roommates;
+	export let house_id;
+
+	onMount(async () => {
+		if (
+			$latestShoppingLists.length === 0 ||
+			$timeout_shoppingList === true
+		) {
+			const latestSL: Food[] = await (async () => {
+				const response = await fetch(
+					`/api/shopping-list?house_id=${house_id}&latest=true`
+				);
+				if (response.ok) return await response.json();
+			})();
+			$timeout_shoppingList = false;
+			$latestShoppingLists = [...latestSL];
+		} else console.log("cached");
+	});
 </script>
 
 <div class="bg-primary rounded-2xl">
 	<div class="py-2 px-5">
 		<div class="font-medium prose-2xl text-primary-content">Overview</div>
 		<div class="text-primary-content">
-			<ul>
-				{#each overviewItems as item}
-					<!-- content here -->
-				{/each}
-				<li>- item</li>
+			<ul class="space-y-2">
+				<li>
+					<div class="collapse bg-neutral bg-opacity-50">
+						<input type="checkbox" />
+						<div class="collapse-title text-xl font-medium">
+							Balance
+						</div>
+						<div class="collapse-content">
+							{#each roommates as roommate}
+								<SummaryItem {roommate} isOverview={true} />
+							{/each}
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="collapse bg-neutral bg-opacity-30">
+						<input type="checkbox" />
+						<div class="collapse-title text-xl font-medium">
+							Latest shopping list
+						</div>
+						<div class="collapse-content">
+							{#if $latestShoppingLists.length == 0}
+								Nothing to see...
+							{/if}
+							<ul>
+								{#each $latestShoppingLists as shoppingList}
+									<div class="relative">
+										<a
+											class="link"
+											href="/house/lifestyle/shopping-list/{shoppingList.id}"
+											>{shoppingList.name}</a
+										>
+										is expiring
+										<span
+											class="absolute right-0 opacity-60"
+										>
+											[{shoppingList.date}]</span
+										>
+									</div>
+								{/each}
+							</ul>
+						</div>
+					</div>
+				</li>
 			</ul>
 		</div>
 	</div>

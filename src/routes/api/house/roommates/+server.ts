@@ -15,7 +15,7 @@ export async function GET({ url, locals }) {
 
 	const { data: roommates, error } = await locals.supabase
 		.from("users")
-		.select("id, firstname, lastname")
+		.select()
 		.eq("house_id", house_id);
 
 	if (error) {

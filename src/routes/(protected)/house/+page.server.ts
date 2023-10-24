@@ -7,10 +7,4 @@ export const load: PageServerLoad = async ({ locals }) => {
 	if (!session) {
 		throw redirect(303, "/register");
 	}
-
-	const { data, error } = await locals.supabase
-		.from("users")
-		.select()
-		.eq("id", session.user.id)
-		.single();
 };

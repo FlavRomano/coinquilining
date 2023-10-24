@@ -1,18 +1,17 @@
 <script lang="ts">
-	import Notifications from "$components/dashboard/NotificationTab.svelte";
+	import NotificationsTab from "$components/dashboard/NotificationTab.svelte";
 	import type { PageData } from "./$types";
 	import { onMount } from "svelte";
 	import { notifications, timeout } from "$lib/stores";
 	import type { Food } from "$types/lib/server/db/types";
-	import { registrationSchema } from "$types/lib/schemas";
+	import OverviewTab from "$components/dashboard/OverviewTab.svelte";
 
 	export let data: PageData;
 
-	const { house_id } = data;
+	const { house_id, roommates } = data;
 
 	onMount(async () => {
 		if ($notifications.length === 0 || $timeout === true) {
-			console.log("HERE");
 			const expiringFoods: Food[] = await (async () => {
 				const response = await fetch(
 					`/api/house/expired?house_id=${house_id}`
@@ -31,6 +30,13 @@
 					reg.pushManager.subscribe({ userVisibleOnly: true });
 				}
 			}
+
+			if (status === "granted" && $notifications.length !== 0) {
+				const reg = await navigator.serviceWorker.ready;
+				reg.showNotification("Something is going rotten 🤮", {
+					icon: "/favicon.ico",
+				});
+			}
 		} else console.log("cached");
 	});
 </script>
@@ -38,9 +44,9 @@
 <div />
 <div class="lg:grid lg:grid-cols-3 gap-4">
 	<div class="col-span-2 pb-5">
-		<!-- <Overview {overviewItems} /> -->
+		<OverviewTab {roommates} {house_id} />
 	</div>
 	<div>
-		<Notifications {notifications} />
+		<NotificationsTab {notifications} />
 	</div>
 </div>
