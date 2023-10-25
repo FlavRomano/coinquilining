@@ -15,23 +15,22 @@
 <button
 	on:click={() =>
 		document.getElementById(`editOutgoing${outgoingIndex}`).showModal()}
-	class="bg-base-200 relative rounded-lg w-full"
+	class="bg-accent rounded-lg w-full relative"
 >
 	<div class="mx-3">
 		<div class="float-left mr-5">
 			<OutgoingsIcon />
 		</div>
-		<div class="float-left">
-			<p
-				class="prose prose-stone prose-lg font-semibold lg:prose-xl break-words text-left"
-			>
+		<div
+			class="float-left prose text-accent-content prose-lg font-semibold lg:prose-xl"
+		>
+			<p class="break-words text-left">
 				{item}<br />{owner.firstname + " " + owner.lastname}
 			</p>
 		</div>
-
-		<div class="absolute right-4 top-4">
-			<p class="prose prose-xl font-semibold">{price}</p>
-		</div>
+	</div>
+	<div class="absolute top-[22%] right-5">
+		<span class="prose prose-xl font-semibold">{price}</span>
 	</div>
 </button>
 

@@ -33,7 +33,9 @@
 		<div class="text-primary-content">
 			<ul class="space-y-2">
 				<li>
-					<div class="collapse bg-neutral bg-opacity-30">
+					<div
+						class="collapse collapse-plus bg-neutral bg-opacity-30"
+					>
 						<input type="checkbox" />
 						<div class="collapse-title text-xl font-medium">
 							Balance
@@ -46,7 +48,9 @@
 					</div>
 				</li>
 				<li>
-					<div class="collapse bg-neutral bg-opacity-30">
+					<div
+						class="collapse collapse-plus bg-neutral bg-opacity-30"
+					>
 						<input type="checkbox" />
 						<div class="collapse-title text-xl font-medium">
 							Latest shopping list

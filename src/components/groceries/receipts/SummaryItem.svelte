@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+
 	export let roommate;
 
-	export let fridgePrices = [];
-	export let pantryPrices = [];
+	export let summary;
 
 	export let isOverview = false;
 
@@ -17,18 +18,23 @@
 
 	let balance = formatEuro(roommate.balance);
 
-	const roommateFridgePrice = fridgePrices.filter(
-		(obj) => obj.owner_id === roommate.id
-	);
-	const pantryFridgePrice = pantryPrices.filter(
-		(obj) => obj.owner_id === roommate.id
-	);
+	let roommateFridgePrice = [];
+	let roommatePantryPrice = [];
+
+	$: if ($summary.fridgePrices && $summary.pantryPrices) {
+		roommateFridgePrice = $summary.fridgePrices.filter(
+			(obj) => obj.owner_id === roommate.id
+		);
+		roommatePantryPrice = $summary.pantryPrices.filter(
+			(obj) => obj.owner_id === roommate.id
+		);
+	}
 </script>
 
 <div
-	class="collapse collapse-plus {isOverview
+	class="collapse {isOverview
 		? 'bg-transparent collapse-open'
-		: 'bg-base-200'}"
+		: 'bg-info text-info-content'}"
 >
 	<input type="checkbox" />
 	<div class="collapse-title text-xl font-medium">
@@ -37,9 +43,6 @@
 	</div>
 	{#if !isOverview}
 		<div class="collapse-content">
-			<a href="/house/lifestyle/receipts" class="link">Receipts</a>
-
-			<p class="prose-md">Other expenses</p>
 			<ul>
 				<li>
 					<a class="link" href="/house/food/fridge">Fridge</a>:
@@ -49,9 +52,9 @@
 				</li>
 				<li>
 					<a class="link" href="/house/food/pantry">Pantry</a>:
-					{pantryFridgePrice.length === 0
+					{roommatePantryPrice.length === 0
 						? formatEuro(0)
-						: formatEuro(pantryFridgePrice[0].price)}
+						: formatEuro(roommatePantryPrice[0].price)}
 				</li>
 			</ul>
 		</div>

@@ -1,50 +1,21 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../$types";
-import { sumPricesByOwner } from "$types/lib";
+import { getRoommates } from "$types/lib/utilities";
+import { summary, timeout_summary } from "$types/lib/stores";
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
 		throw redirect(303, "/register");
 	}
 
-	const { data: roommates, error: errno0 } = await locals.supabase
-		.from("users")
-		.select("id, firstname, lastname, balance")
-		.eq("house_id", session.user.user_metadata.house_id);
-
+	const house_id = session.user.user_metadata.house_id;
 	const userId = session.user.id;
 
-	if (errno0) {
-		console.log(errno0);
-		return fail(500, { message: errno0.message });
-	}
+	const roommates = await getRoommates(fetch, house_id);
 
-	const { data: fridgePrice, error: errno1 } = await locals.supabase
-		.from("fridge")
-		.select("owner_id, price")
-		.eq("house_id", session.user.user_metadata.house_id);
-
-	if (errno1) {
-		console.log(errno1);
-		return fail(500, { message: errno1.message });
-	}
-
-	const { data: pantryPrice, error: errno2 } = await locals.supabase
-		.from("pantry")
-		.select("owner_id, price")
-		.eq("house_id", session.user.user_metadata.house_id);
-
-	if (errno2) {
-		console.log(errno2);
-		return fail(500, { message: errno2.message });
-	}
-
-	const fridgeTotalBalance = sumPricesByOwner(fridgePrice);
-	const pantryTotalBalance = sumPricesByOwner(pantryPrice);
-
-	return { userId, roommates, fridgeTotalBalance, pantryTotalBalance };
+	return { userId, house_id, roommates };
 };
 
 export const actions: Actions = {
@@ -62,6 +33,7 @@ export const actions: Actions = {
 			]}`,
 			{ method: "POST" }
 		);
+		timeout_summary.set(true);
 	},
 	addPayment: async ({ request, locals }) => {
 		const {
@@ -100,5 +72,7 @@ export const actions: Actions = {
 			console.log(errno2);
 			return fail(500, { errno2 });
 		}
+
+		timeout_summary.set(true);
 	},
 };

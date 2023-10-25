@@ -1,5 +1,6 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { timeout } from "$lib/stores.js";
+import { getFridge, getRoommates } from "$types/lib/utilities.js";
 
 export const load = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
@@ -10,17 +11,9 @@ export const load = async ({ locals, fetch }) => {
 
 	const house_id = session.user.user_metadata.house_id;
 
-	const fridge = await (async () => {
-		const response = await fetch(`/api/fridge?house_id=${house_id}`);
-		if (response.ok) return await response.json();
-	})();
+	const fridge = await getFridge(fetch, house_id);
 
-	const roommates = await (async () => {
-		const response = await fetch(
-			`/api/house/roommates?house_id=${house_id}`
-		);
-		if (response.ok) return await response.json();
-	})();
+	const roommates = await getRoommates(fetch, house_id);
 
 	timeout.set(true);
 

@@ -1,5 +1,6 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { timeout } from "$lib/stores.js";
+import { getRoommates } from "$types/lib/utilities";
 
 export const load = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
@@ -15,11 +16,7 @@ export const load = async ({ locals, fetch }) => {
 		if (response.ok) return await response.json();
 	})();
 
-	const roommates = (async () => {
-		let response = await fetch(`/api/house/roommates?house_id=${house_id}`);
-		if (response.ok) return await response.json();
-	})();
-
+	const roommates = await getRoommates(fetch, house_id);
 	timeout.set(true);
 
 	return {

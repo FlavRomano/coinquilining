@@ -1,33 +1,20 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
+import { timeout_ougoings } from "$types/lib/stores";
+import { getRoommates } from "$types/lib/utilities";
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
 		throw redirect(303, "/register");
 	}
 
-	const { data: roommates, error: errno0 } = await locals.supabase
-		.from("users")
-		.select("id, firstname, lastname, balance")
-		.eq("house_id", session.user.user_metadata.house_id);
+	const house_id = session.user.user_metadata.house_id;
 
-	if (errno0) {
-		console.log(errno0);
-		return fail(500, { message: errno0.message });
-	}
+	const roommates = await getRoommates(fetch, house_id);
 
-	const { data: outgoings, error: errno1 } = await locals.supabase
-		.from("receipts")
-		.select();
-
-	if (errno1) {
-		console.log(errno1);
-		return fail(500, { message: errno1.message });
-	}
-
-	return { roommates, outgoings };
+	return { house_id, roommates };
 };
 
 export const actions: Actions = {
@@ -48,6 +35,8 @@ export const actions: Actions = {
 		);
 
 		await fetch(`/api/receipts?id=${id}`, { method: "DELETE" });
+
+		timeout_ougoings.set(true);
 	},
 
 	delete: async ({ request, locals, fetch }) => {
@@ -56,6 +45,7 @@ export const actions: Actions = {
 		const response = await fetch(`/api/receipts?id=${id}`, {
 			method: "DELETE",
 		});
-    },
 
+		timeout_ougoings.set(true);
+	},
 };

@@ -2,17 +2,31 @@
 	import ReceiptsNav from "$components/groceries/receipts/ReceiptsNav.svelte";
 	import OutgoingsItem from "$components/groceries/receipts/OutgoingsItem.svelte";
 	import type { PageData } from "./$types";
+	import { outgoings, timeout_ougoings } from "$types/lib/stores";
+	import { onMount } from "svelte";
 
 	export let data: PageData;
 
-	const roommates = data.roommates;
-	const outgoings = data.outgoings;
+	const { house_id, roommates } = data;
+
+	onMount(async () => {
+		if ($outgoings.length === 0 || $timeout_ougoings === true) {
+			const currentOutgoings = await (async () => {
+				const response = await fetch(
+					`/api/receipts/outgoings?house_id=${house_id}`
+				);
+				if (response.ok) return await response.json();
+			})();
+			$timeout_ougoings = false;
+			$outgoings = [...currentOutgoings];
+		} else console.log("cached");
+	});
 </script>
 
 <div class="pr-5 fixed w-full h-full">
-	<div class="m-5 overflow-auto h-3/5">
+	<div class="pr-5 overflow-auto h-3/5">
 		<ul>
-			{#each outgoings as outgoing, index}
+			{#each $outgoings as outgoing, index}
 				<li class="my-3">
 					<OutgoingsItem
 						{outgoing}

@@ -3,30 +3,42 @@
 	import ReceiptsNav from "$components/groceries/receipts/ReceiptsNav.svelte";
 	import SummaryItem from "$components/groceries/receipts/SummaryItem.svelte";
 	import type { PageData } from "./$types";
+	import { summary, timeout_summary } from "$lib/stores";
+	import { getFridge, getPantry } from "$types/lib/utilities";
+	import { onMount } from "svelte";
+	import { sumPricesByOwner } from "$types/lib";
 
 	export let data: PageData;
 
-	const roommates: {
-		id: string;
-		firstname: string;
-		lastname: string;
-		amount: Number;
-	}[] = data.roommates;
-	const userId = data.userId;
-	const fridgeTotalBalance: {}[] = data.fridgeTotalBalance;
-	const pantryTotalBalance = data.pantryTotalBalance;
+	const { roommates, house_id, userId } = data;
+
+	onMount(async () => {
+		if (
+			$timeout_summary === true ||
+			!$summary ||
+			$summary.fridgePrices === undefined ||
+			$summary.pantryPrices === undefined
+		) {
+			$timeout_summary = false;
+			const fridge = await getFridge(fetch, house_id);
+			const pantry = await getPantry(fetch, house_id);
+
+			const fridgePrices = sumPricesByOwner(fridge);
+			const pantryPrices = sumPricesByOwner(pantry);
+
+			$summary = { fridgePrices, pantryPrices };
+
+			console.log($summary);
+		} else console.log("cached");
+	});
 </script>
 
-<div class="pr-5 fixed w-full h-full">
-	<div class="mx-5 overflow-auto h-3/5">
+<div class="pr-10 fixed w-full h-full">
+	<div class="overflow-auto h-3/5">
 		<ul>
 			{#each roommates as roommate}
 				<li class="my-5">
-					<SummaryItem
-						{roommate}
-						{fridgeTotalBalance}
-						{pantryTotalBalance}
-					/>
+					<SummaryItem {roommate} {summary} />
 				</li>
 			{/each}
 		</ul>
