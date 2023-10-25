@@ -2,9 +2,9 @@
 	import ChangeName from "$components/settings/profile/ChangeName.svelte";
 	import ChangeEmail from "$components/settings/profile/ChangeEmail.svelte";
 	import ResetPassword from "$components/settings/profile/ResetPassword.svelte";
-	import EditRoommates from "$components/settings/house/EditRoommates.svelte";
 	import DestroyHouse from "$components/settings/house/DestroyHouse.svelte";
 	import RedAlert from "$components/errorAlerts/RedAlert.svelte";
+	import ShowRoommates from "$components/settings/house/ShowRoommates.svelte";
 	import { page } from "$app/stores";
 
 	let settingsOptions = 1;
@@ -47,7 +47,7 @@
 					<button
 						class={settingsOptions === 4 ? "active" : ""}
 						on:click={() => (settingsOptions = 4)}
-						>Edit roommates</button
+						>Show roommates</button
 					>
 				</li>
 				<li>
@@ -70,7 +70,7 @@
 		{:else if settingsOptions === 3}
 			<ResetPassword {data} />
 		{:else if settingsOptions === 4}
-			<EditRoommates />
+			<ShowRoommates />
 		{:else if settingsOptions === 5}
 			<DestroyHouse {data} />
 		{/if}

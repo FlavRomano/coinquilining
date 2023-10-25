@@ -11,21 +11,30 @@
 		<div
 			class="container h-64 text-secondary-content overflow-y-scroll no-scrollbar"
 		>
-			<ul>
-				{#each $notifications as food}
-					<li>
-						<div class="relative">
-							<a class="link" href="/house/food/{food.where}"
-								>{food.food_name}</a
-							>
-							is expiring
-							<span class="absolute right-0 opacity-60">
-								[{food.expiration}]</span
-							>
-						</div>
-					</li>
-				{/each}
-			</ul>
+			{#if $notifications.length !== 0}
+				<!-- content here -->
+				<ul>
+					{#each $notifications as food}
+						<li>
+							<div class="relative">
+								<a class="link" href="/house/food/{food.where}"
+									>{food.food_name}</a
+								>
+								is expiring
+								<span class="absolute right-0 opacity-60">
+									[{food.expiration}]</span
+								>
+							</div>
+						</li>
+					{/each}
+				</ul>
+			{:else}
+				<div class="flex h-full">
+					<div class="m-auto">
+						<span class="loading loading-ball loading-lg" />
+					</div>
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>

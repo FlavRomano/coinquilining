@@ -1,6 +1,5 @@
 <script lang="ts">
 	import SummaryItem from "$components/groceries/receipts/SummaryItem.svelte";
-	import ShoppingCard from "$components/groceries/shopping-list/ShoppingCard.svelte";
 	import type { Food } from "$types/lib/server/db/types";
 	import {
 		latestShoppingLists,
@@ -34,7 +33,7 @@
 		<div class="text-primary-content">
 			<ul class="space-y-2">
 				<li>
-					<div class="collapse bg-neutral bg-opacity-50">
+					<div class="collapse bg-neutral bg-opacity-30">
 						<input type="checkbox" />
 						<div class="collapse-title text-xl font-medium">
 							Balance
@@ -64,7 +63,6 @@
 											href="/house/lifestyle/shopping-list/{shoppingList.id}"
 											>{shoppingList.name}</a
 										>
-										is expiring
 										<span
 											class="absolute right-0 opacity-60"
 										>

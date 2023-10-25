@@ -15,6 +15,9 @@ declare global {
 			session: Session | null;
 			user: User;
 		}
+		interface Error {
+			code: Number;
+		}
 		// interface Platform {}
 	}
 }
