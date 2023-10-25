@@ -23,6 +23,13 @@
 	});
 </script>
 
+<div class="text-sm breadcrumbs">
+	<ul>
+		<li><a href="/house/lifestyle/">Lifestyle</a></li>
+		<li>Receipts</li>
+	</ul>
+</div>
+
 <div class="pr-5 fixed w-full h-full">
 	<div class="pr-5 overflow-auto h-3/5">
 		<ul>

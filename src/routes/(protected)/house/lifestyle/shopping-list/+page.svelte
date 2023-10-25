@@ -7,6 +7,13 @@
 		data.shoppingLists;
 </script>
 
+<div class="text-sm breadcrumbs pb-5">
+	<ul>
+		<li><a href="/house/lifestyle/">Lifestyle</a></li>
+		<li>Shopping lists</li>
+	</ul>
+</div>
+
 <div
 	class="grid grid-cols-1 place-items-center gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 >

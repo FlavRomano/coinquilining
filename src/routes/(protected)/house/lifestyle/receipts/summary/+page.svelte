@@ -11,13 +11,13 @@
 	export let data: PageData;
 
 	const { roommates, house_id, userId } = data;
+	let loaded = false;
 
 	onMount(async () => {
 		if (
 			$timeout_summary === true ||
-			!$summary ||
-			$summary.fridgePrices === undefined ||
-			$summary.pantryPrices === undefined
+			!$summary.fridgePrices ||
+			!$summary.pantryPrices
 		) {
 			$timeout_summary = false;
 			const fridge = await getFridge(fetch, house_id);
@@ -26,22 +26,36 @@
 			const fridgePrices = sumPricesByOwner(fridge);
 			const pantryPrices = sumPricesByOwner(pantry);
 
-			$summary = { fridgePrices, pantryPrices };
+			summary.set({ fridgePrices, pantryPrices });
 
 			console.log($summary);
 		} else console.log("cached");
+		loaded = true;
 	});
 </script>
 
+<div class="text-sm breadcrumbs">
+	<ul>
+		<li><a href="/house/lifestyle/">Lifestyle</a></li>
+		<li>Receipts</li>
+	</ul>
+</div>
+
 <div class="pr-10 fixed w-full h-full">
 	<div class="overflow-auto h-3/5">
-		<ul>
-			{#each roommates as roommate}
-				<li class="my-5">
-					<SummaryItem {roommate} {summary} />
-				</li>
-			{/each}
-		</ul>
+		{#if loaded}
+			<ul>
+				{#each roommates as roommate}
+					<li class="my-5">
+						<SummaryItem {roommate} {summary} />
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<div class="flex flex-col items-center">
+				<span class="loading loading-spinner loading-lg" />
+			</div>
+		{/if}
 	</div>
 </div>
 

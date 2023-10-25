@@ -13,10 +13,10 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Cleaning rotations</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p><i>Shuffle</i> your broom</p>
 			<div class="card-actions justify-end">
 				<a
-					class="btn btn-primary"
+					class="btn btn-primary w-full lg:w-fit"
 					href="/house/lifestyle/cleaning-rotations">CLICK ME</a
 				>
 			</div>
@@ -29,11 +29,11 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Shopping list</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p>But not when you're hungry</p>
 			<div class="card-actions justify-end">
 				<a
 					href="/house/lifestyle/shopping-list"
-					class="btn btn-primary w-full">Click me</a
+					class="btn btn-primary w-full lg:w-fit">Click me</a
 				>
 			</div>
 		</div>
@@ -45,11 +45,11 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Receipts</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p>Money is not everything</p>
 			<div class="card-actions justify-end">
 				<a
 					href="/house/lifestyle/receipts"
-					class="btn btn-primary w-full">Click me</a
+					class="btn btn-primary w-full lg:w-fit">Click me</a
 				>
 			</div>
 		</div>

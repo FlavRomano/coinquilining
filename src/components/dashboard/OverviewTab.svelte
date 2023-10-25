@@ -1,11 +1,11 @@
 <script lang="ts">
-	import SummaryItem from "$components/groceries/receipts/SummaryItem.svelte";
 	import type { Food } from "$types/lib/server/db/types";
 	import {
 		latestShoppingLists,
 		timeout_shoppingList,
 	} from "$types/lib/stores";
 	import { onMount } from "svelte";
+	import CurrentBalance from "./OverviewItems/CurrentBalance.svelte";
 
 	export let roommates;
 	export let house_id;
@@ -23,7 +23,7 @@
 			})();
 			$timeout_shoppingList = false;
 			$latestShoppingLists = [...latestSL];
-		} else console.log("cached");
+		}
 	});
 </script>
 
@@ -42,7 +42,7 @@
 						</div>
 						<div class="collapse-content">
 							{#each roommates as roommate}
-								<SummaryItem {roommate} isOverview={true} />
+								<CurrentBalance {roommate} />
 							{/each}
 						</div>
 					</div>

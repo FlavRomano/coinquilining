@@ -13,9 +13,11 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Fridge</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p>The one and only</p>
 			<div class="card-actions justify-end">
-				<a class="btn btn-primary" href="/house/food/fridge">Click me</a
+				<a
+					class="btn btn-primary w-full lg:w-fit"
+					href="/house/food/fridge">Click me</a
 				>
 			</div>
 		</div>
@@ -27,9 +29,11 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Pantry</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p>Onions, tuna, pasta... what else?</p>
 			<div class="card-actions justify-end">
-				<a class="btn btn-primary" href="/house/food/pantry">Click me</a
+				<a
+					class="btn btn-primary w-full lg:w-fit"
+					href="/house/food/pantry">Click me</a
 				>
 			</div>
 		</div>
@@ -41,10 +45,11 @@
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">Recipes</h2>
-			<p>If a dog chews shoes whose shoes does he choose?</p>
+			<p>Dream big, but first let's eat</p>
 			<div class="card-actions justify-end">
-				<a class="btn btn-primary" href="/house/food/recipes"
-					>Click me</a
+				<a
+					class="btn btn-primary w-full lg:w-fit"
+					href="/house/food/recipes">Click me</a
 				>
 			</div>
 		</div>
