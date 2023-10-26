@@ -41,22 +41,20 @@
 	</ul>
 </div>
 
-<div class="pr-10 fixed w-full h-full">
-	<div class="overflow-auto h-3/5">
-		{#if loaded}
-			<ul>
-				{#each roommates as roommate}
-					<li class="my-5">
-						<SummaryItem {roommate} {summary} />
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<div class="flex flex-col items-center">
-				<span class="loading loading-spinner loading-lg" />
-			</div>
-		{/if}
-	</div>
+<div class=" w-full h-[55vh] overflow-y-scroll">
+	{#if loaded}
+		<ul>
+			{#each roommates as roommate}
+				<li class="my-5">
+					<SummaryItem {roommate} {summary} />
+				</li>
+			{/each}
+		</ul>
+	{:else}
+		<div class="flex flex-col items-center">
+			<span class="loading loading-spinner loading-lg" />
+		</div>
+	{/if}
 </div>
 
 <div class="grid grid-cols-2 place-items-center">

@@ -114,6 +114,8 @@
 		}),
 	]);
 
+	let loaded = false;
+
 	const {
 		visibleColumns,
 		headerRows,

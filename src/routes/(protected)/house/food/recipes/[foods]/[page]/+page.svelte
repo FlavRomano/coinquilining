@@ -2,6 +2,7 @@
 	import PaginationButton from "$components/food/recipes/PaginationButton.svelte";
 	import FoodCard from "$components/food/recipes/FoodCard.svelte";
 	import { page } from "$app/stores";
+	import RedAlert from "$components/errorAlerts/RedAlert.svelte";
 
 	const queryFoods = $page.params.foods;
 	const currentPage = $page.params.page;
@@ -13,8 +14,8 @@
 				page: currentPage,
 			},
 		});
-
-		return [...(await response.json())];
+		if (response.ok) return [...(await response.json())];
+		else throw new Error(await response.text());
 	}
 </script>
 
@@ -41,5 +42,10 @@
 			{/each}
 			<PaginationButton {queryFoods} {currentPage} />
 		</div>
+	</div>
+{:catch error}
+	<RedAlert status={500} message={error.message} />
+	<div class="flex flex-col place-items-center pt-10">
+		<a class="btn btn-neutral" href="/house/food/recipes">BACK TO TABLE</a>
 	</div>
 {/await}

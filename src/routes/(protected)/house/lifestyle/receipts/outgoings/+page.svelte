@@ -19,7 +19,7 @@
 			})();
 			$timeout_ougoings = false;
 			$outgoings = [...currentOutgoings];
-		} else console.log("cached");
+		}
 	});
 </script>
 
@@ -30,19 +30,15 @@
 	</ul>
 </div>
 
-<div class="pr-5 fixed w-full h-full">
-	<div class="pr-5 overflow-auto h-3/5">
-		<ul>
-			{#each $outgoings as outgoing, index}
-				<li class="my-3">
-					<OutgoingsItem
-						{outgoing}
-						{roommates}
-						outgoingIndex={index}
-					/>
-				</li>
-			{/each}
-		</ul>
-	</div>
+<div class="h-[70vh] w-full overflow-y-scroll rounded-2xl">
+	<!-- display in reverse order -->
+	<ul class="rotate-180">
+		{#each $outgoings as outgoing, index}
+			<li class="rotate-[-180deg] my-3">
+				<OutgoingsItem {outgoing} {roommates} outgoingIndex={index} />
+			</li>
+		{/each}
+	</ul>
 </div>
+
 <ReceiptsNav outgoings={true} />

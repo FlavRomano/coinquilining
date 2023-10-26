@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { changeNameSchema } from "$types/lib/schemas";
 	import { superForm } from "sveltekit-superforms/client";
-	import type { PageData } from "../../../routes/(protected)/settings/$types";
-	export let data: PageData;
+
+	export let data;
 
 	const { firstname, lastname } = data.user;
 
@@ -15,21 +15,16 @@
 	);
 </script>
 
-<div class="prose prose-xl w-full grid lg:grid-cols-2">
-	<div>
-		<h3>Current</h3>
-		<ul class="list-none whitespace-nowrap pl-0">
-			<li>Firstname: {firstname}</li>
-			<li>Lastname: {lastname}</li>
-		</ul>
-	</div>
-	<div class="lg:pt-12">
+<div class="prose prose-xl">
+	<div class="flex flex-col place-items-start lg:pt-12">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<span>Firstname: {firstname} <br /> Lastname: {lastname}</span>
 		<form
 			method="POST"
 			action="?/changeName"
 			class="join join-vertical gap-4"
 		>
+			<!-- svelte-ignore a11y-label-has-associated-control -->
 			<div class="join-item">
 				<label class="label">
 					<span class="label-text">New Firstname</span>
@@ -39,12 +34,9 @@
 					type="text"
 					placeholder="Firstname"
 					name="firstname"
-					class="input input-bordered lg:w-80"
+					class="input input-bordered w-full max-w-full"
 					{...$constraints.firstname}
 				/>
-			</div>
-
-			<div class="join-item">
 				<label class="label">
 					<span class="label-text">New Lastname</span>
 				</label>
@@ -53,12 +45,12 @@
 					type="text"
 					placeholder="Lastname"
 					name="lastname"
-					class="input input-bordered lg:w-80"
+					class="input input-bordered w-full max-w-full"
 					{...$constraints.lastname}
 				/>
 			</div>
 
-			<button class="btn btn-primary lg:w-80">CHANGE</button>
+			<button class="btn btn-primary w-full max-w-full">CHANGE</button>
 		</form>
 	</div>
 </div>

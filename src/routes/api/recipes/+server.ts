@@ -14,7 +14,7 @@ export async function GET({ request }) {
 		"accept-encoding": "gzip, deflate, br",
 		"accept-language": "en-US,en;q=0.9,en;q=0.8",
 	});
-	await page.setDefaultNavigationTimeout(10000);
+	await page.setDefaultTimeout(3000);
 
 	let results: {
 		page: number;
@@ -26,10 +26,13 @@ export async function GET({ request }) {
 		{ waitUntil: "domcontentloaded" }
 	);
 
+	const maxPage = await page.evaluate(() => {});
+	console.log(maxPage);
+
 	try {
 		await page.waitForSelector("article");
 	} catch (TimeoutError) {
-		return new Response(null, { status: 405 });
+		return new Response("No recipes, EOGZ reached.", { status: 500 });
 	}
 
 	const recipes = await page.evaluate(() => {

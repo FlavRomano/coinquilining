@@ -25,7 +25,10 @@
 			class="float-left prose text-accent-content prose-lg font-semibold lg:prose-xl"
 		>
 			<p class="break-words text-left">
-				{item}<br />{owner.firstname + " " + owner.lastname}
+				{item} <br />
+				<span class="font-normal"
+					>{owner.firstname + " " + owner.lastname}</span
+				>
 			</p>
 		</div>
 	</div>

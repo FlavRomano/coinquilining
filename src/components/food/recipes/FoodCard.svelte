@@ -3,13 +3,14 @@
 </script>
 
 <div class="card md:card-side bg-base-100 shadow-xl m-5">
-	<figure>
+	<figure class="object-cover">
 		<img
-			class="scale-100 sm:scale-[1.25] md:scale-100 lg:scale-100"
+			class="sm:scale-[1.25] md:scale-100 lg:scale-100"
 			src={recipe.img}
 			alt={recipe.title}
 			width="360px"
 			height="300px"
+			loading="lazy"
 		/>
 	</figure>
 	<div class="card-body break-words">

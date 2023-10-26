@@ -14,7 +14,7 @@
 	);
 </script>
 
-<div class="flex flex-col items-center pt-5">
+<div class="flex flex-col items-center pt-14">
 	<form action="?/changePassword" method="post">
 		<div class="form-control gap-4">
 			<div class="w-fit">

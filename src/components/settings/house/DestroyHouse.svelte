@@ -4,7 +4,7 @@
 	const words = data.wordsForDestroy;
 </script>
 
-<div class="container prose prose-xl">
+<div class="container prose prose-sm sm:prose-xl">
 	<p class="text-center prose-p">
 		Copy the following words to <b>delete permanently</b> the house:
 	</p>

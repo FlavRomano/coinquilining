@@ -3,25 +3,24 @@ import type { PageServerLoad } from "../../../$types";
 import { superValidate } from "sveltekit-superforms/server";
 import { changeNameSchema, changePasswordSchema } from "$types/lib/schemas";
 import { generate } from "random-words";
+import { getRoommates } from "$types/lib/utilities";
 
 let wordsForDestroy;
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, fetch }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
 		throw redirect(303, "/register");
 	}
 
-	const { data: user, error: errno0 } = await locals.supabase
-		.from("users")
-		.select("firstname, lastname, email")
-		.eq("id", session.user.id)
-		.single();
+	const house_id = session.user.user_metadata.house_id;
 
-	if (errno0) {
-		return fail(500, { errno0 });
-	}
+	const roommates = await getRoommates(fetch, house_id);
+
+	const user = roommates.filter(
+		(roommate) => roommate.id === session.user.id
+	)[0];
 
 	const changeNameForm = await superValidate(changeNameSchema);
 	const changePasswordForm = await superValidate(changePasswordSchema);
@@ -33,7 +32,14 @@ export const load: PageServerLoad = async ({ locals }) => {
 		maxLength: 5,
 	})[0];
 
-	return { user, changeNameForm, changePasswordForm, wordsForDestroy };
+	return {
+		user,
+		roommates,
+		changeNameForm,
+		changePasswordForm,
+		wordsForDestroy,
+		house_id,
+	};
 };
 
 export const actions: Actions = {
@@ -115,12 +121,11 @@ export const actions: Actions = {
 	},
 	destroyHouse: async ({ request, locals: { supabase, getSession } }) => {
 		const { words } = Object.fromEntries(await request.formData());
-		console.log(words, wordsForDestroy);
 
 		if (words === wordsForDestroy) {
-			console.log("Boom");
+			throw redirect(303, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 		} else {
-			return fail(409, { message: "Wrong words" });
+			return fail(409);
 		}
 	},
 };
