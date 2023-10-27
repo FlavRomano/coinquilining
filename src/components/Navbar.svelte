@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let demo = false;
 </script>
 
 <div class="navbar bg-base-100">
@@ -20,24 +21,39 @@
 					/></svg
 				></label
 			>
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<ul
 				tabindex="0"
 				class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
 			>
-				<li><a href="/house/lifestyle">Lifestyle</a></li>
 				<li>
-					<a href="/house/food">Food</a>
+					<a
+						href={demo
+							? "/demo/house/lifestyle"
+							: "/house/lifestyle"}>Lifestyle</a
+					>
+				</li>
+				<li>
+					<a href={demo ? "/demo/house/food" : "/house/food"}>Food</a>
 				</li>
 			</ul>
 		</div>
-		<a class="btn btn-ghost normal-case text-xl" href="/house/dashboard"
+		<a
+			class="btn btn-ghost normal-case text-xl"
+			href={demo ? "/demo/house/dashboard" : "/house/dashboard"}
 			>coinquilining</a
 		>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
-			<li><a href="/house/lifestyle">Lifestyle</a></li>
-			<li><a href="/house/food">Food</a></li>
+			<li>
+				<a href={demo ? "/demo/house/lifestyle" : "/house/lifestyle"}
+					>Lifestyle</a
+				>
+			</li>
+			<li>
+				<a href={demo ? "/demo/house/food" : "/house/food"}>Food</a>
+			</li>
 		</ul>
 	</div>
 	<div class="navbar-end">
@@ -48,7 +64,11 @@
 				tabindex="-1"
 				class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
 			>
-				<li><a href="/house/settings">Settings</a></li>
+				<li>
+					<a href={demo ? "/demo/house/settings" : "/house/settings"}
+						>Settings</a
+					>
+				</li>
 				<li><a href="/signout">Quit</a></li>
 			</ul>
 		</div>

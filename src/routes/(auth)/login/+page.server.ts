@@ -33,8 +33,6 @@ export const actions: Actions = {
 			return message(form, err.message);
 		}
 
-		const session = await getSession();
-
 		throw redirect(303, `/house/dashboard`);
 	},
 };

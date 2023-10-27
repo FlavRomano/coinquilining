@@ -18,6 +18,8 @@
 	export let table: ShoppingListItem[];
 	export let roommates;
 
+	export let demo = false;
+
 	const tableData = readable(table);
 
 	const t = createTable(tableData, {
@@ -42,7 +44,12 @@
 		}),
 		t.column({
 			header: "Owner",
-			accessor: (item) => item.owner,
+			accessor: (item) => {
+				const owner = roommates.find(
+					(roommate) => roommate.id === item.owner_id
+				);
+				return owner.firstname;
+			},
 		}),
 		t.column({
 			header: "Item",
@@ -121,6 +128,7 @@
 			{pageCount}
 			{hasNextPage}
 			{roommates}
+			{demo}
 		/>
 	</div>
 {:else}

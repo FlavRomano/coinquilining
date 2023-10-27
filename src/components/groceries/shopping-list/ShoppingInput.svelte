@@ -1,10 +1,9 @@
 <script lang="ts">
-	export let roommates: { firstname: string; lastname: string }[] = [
-		{ firstname: "Anacleto", lastname: "De Paperoni" },
-	];
+	export let roommates;
+	export let demo = false;
 </script>
 
-<form action="?/add" method="post">
+<form action="?/add" method={demo ? "" : "POST"}>
 	<div class="m-5">
 		<table class="table">
 			<thead
@@ -18,14 +17,14 @@
 					<td>
 						<select
 							class="select select-bordered w-full max-w-xs"
-							name="owner"
+							name="owner_id"
 							required
 						>
 							<option disabled selected value=""
 								>Select owner</option
 							>
 							{#each roommates as roommate}
-								<option
+								<option value={roommate.id}
 									>{roommate.firstname +
 										" " +
 										roommate.lastname}

@@ -28,6 +28,8 @@
 		is_expired: any;
 	}[];
 
+	export let demo = false;
+
 	export let roommates: { id: string; firstname: string; lastname: string }[];
 
 	const tableStore = readable(table);
@@ -201,14 +203,21 @@
 	</table>
 </div>
 
-<div class="flex flex-col place-items-center">
-	<TablePagination {hasNextPage} {hasPreviousPage} {pageIndex} {pageCount} />
+{#if !demo}
+	<div class="flex flex-col place-items-center">
+		<TablePagination
+			{hasNextPage}
+			{hasPreviousPage}
+			{pageIndex}
+			{pageCount}
+		/>
 
-	<TableControls
-		{table}
-		{roommates}
-		{selectedDataIds}
-		{allRowsSelected}
-		{allPageRowsSelected}
-	/>
-</div>
+		<TableControls
+			{table}
+			{roommates}
+			{selectedDataIds}
+			{allRowsSelected}
+			{allPageRowsSelected}
+		/>
+	</div>
+{/if}

@@ -4,6 +4,7 @@
 	export let title = "New Shopping list";
 	export let paragraph =
 		"Add something to the list before your trip to Lidl.";
+	export let demo = false;
 </script>
 
 <div class="card w-80 {color} {id !== 'new' ? 'text-primary-content' : ''}">
@@ -18,8 +19,11 @@
 					<input type="text" name="deleteId" value={id} hidden />
 					<button class="btn btn-error">DELETE</button>
 				</form>
-				<a href="/house/lifestyle/shopping-list/{id}" class="btn"
-					>OPEN</a
+				<a
+					href={demo
+						? "/demo/house/lifestyle/shopping-list/" + id
+						: "/house/lifestyle/shopping-list/" + id}
+					class="btn">OPEN</a
 				>
 			{:else}
 				<button

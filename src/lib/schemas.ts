@@ -103,4 +103,4 @@ export const changePasswordSchema = z.object({
 	newPassword: z.string().trim().min(6, { message: "Password too short" }),
 });
 
-export type ShoppingListItem = { id: string; owner: string; item: string };
+export type ShoppingListItem = { id: string; owner_id: string; item: string };

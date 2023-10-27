@@ -24,6 +24,7 @@
 	}[];
 
 	export let roommates;
+	export let demo = false;
 
 	const data = readable(table);
 
@@ -191,17 +192,39 @@
 		>
 	</div>
 </div>
+
 <div class="pt-5">
-	<form
-		action="/house/food/recipes/{table
-			.filter((_, i) => Object.keys($selectedDataIds).includes('' + i))
-			.map((v) => v.food_name)
-			.join('+')}/1"
-		method="get"
-	>
-		<button
-			class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
-			disabled={Object.keys($selectedDataIds).length === 0}>SEARCH</button
+	{#if !demo}
+		<form
+			action="/house/food/recipes/{table
+				.filter((_, i) =>
+					Object.keys($selectedDataIds).includes('' + i)
+				)
+				.map((v) => v.food_name)
+				.join('+')}/1"
+			method="get"
 		>
-	</form>
+			<button
+				class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
+				disabled={Object.keys($selectedDataIds).length === 0}
+				>SEARCH</button
+			>
+		</form>
+	{:else}
+		<form
+			action="/demo/house/food/recipes/{table
+				.filter((_, i) =>
+					Object.keys($selectedDataIds).includes('' + i)
+				)
+				.map((v) => v.food_name)
+				.join('+')}/1"
+			method="get"
+		>
+			<button
+				class="btn btn-primary w-full md:w-1/3 md:float-right md:right-5"
+				disabled={Object.keys($selectedDataIds).length === 0}
+				>SEARCH</button
+			>
+		</form>
+	{/if}
 </div>

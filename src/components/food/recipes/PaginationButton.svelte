@@ -9,7 +9,7 @@
 <div class="join">
 	{#if currentPage > 1}
 		<a
-			href="/house/food/recipes/{queryFoods}/{currentPage - 1}"
+			href="/demo/house/food/recipes/{queryFoods}/{currentPage - 1}"
 			rel="external"
 			class="join-item btn">«</a
 		>
@@ -19,7 +19,7 @@
 
 	<button class="join-item btn">Page {currentPage}</button>
 	<a
-		href="/house/food/recipes/{queryFoods}/{currentPage + 1}"
+		href="/demo/house/food/recipes/{queryFoods}/{currentPage + 1}"
 		rel="external"
 		class="join-item btn">»</a
 	>

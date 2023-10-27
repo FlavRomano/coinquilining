@@ -1,22 +1,17 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "../../../../../$types";
+import { getRoommates } from "$types/lib/utilities";
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ params, locals, fetch }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
 		throw redirect(303, "/register");
 	}
 
-	const { data: roommates, error: errno0 } = await locals.supabase
-		.from("users")
-		.select("firstname, lastname")
-		.eq("house_id", session.user.user_metadata.house_id);
+	const house_id = session.user.user_metadata.house_id;
 
-	if (errno0) {
-		console.log(errno0);
-		return fail(500, { message: errno0.message });
-	}
+	const roommates = await getRoommates(fetch, house_id);
 
 	const shoppingListId = params.shoppingListId;
 
@@ -47,13 +42,13 @@ export const actions = {
 	add: async ({ locals, request, params }) => {
 		const shoppingListId = params.shoppingListId;
 
-		let { owner, item } = Object.fromEntries(await request.formData());
+		let { owner_id, item } = Object.fromEntries(await request.formData());
 
-		owner = owner.toString().trim();
+		owner_id = owner_id.toString();
 
 		const { error } = await locals.supabase
 			.from("shoppingListItems")
-			.insert({ shoppingListId, owner, item });
+			.insert({ shoppingListId, owner_id, item });
 
 		if (error) {
 			console.log(error);
@@ -78,13 +73,13 @@ export const actions = {
 		}
 	},
 	edit: async ({ locals, request }) => {
-		const { editId, item, owner } = Object.fromEntries(
+		const { editId, item, owner_id } = Object.fromEntries(
 			await request.formData()
 		);
 
 		const { error } = await locals.supabase
 			.from("shoppingListItems")
-			.update({ owner, item })
+			.update({ owner_id, item })
 			.eq("id", editId);
 
 		if (error) {

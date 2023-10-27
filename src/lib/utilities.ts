@@ -1,3 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+export const env = process.env;
+
 export const getRoommates = async (fetch, house_id) => {
 	let response = await fetch(`/api/house/roommates?house_id=${house_id}`);
 	if (response.ok) return await response.json();
