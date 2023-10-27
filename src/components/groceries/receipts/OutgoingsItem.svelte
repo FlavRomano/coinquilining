@@ -1,6 +1,8 @@
 <script lang="ts">
 	import OutgoingsIcon from "./OutgoingsIcon.svelte";
 	export let outgoing, roommates, outgoingIndex;
+	export let demo = false;
+
 	let item = outgoing.item_name;
 	let price = Number(outgoing.price).toLocaleString("it-IT", {
 		minimumFractionDigits: 2,
@@ -39,7 +41,11 @@
 
 <dialog id={`editOutgoing${outgoingIndex}`} class="modal">
 	<div class="modal-box max-w-xs">
-		<form action="?/edit" method="post" class="form-control gap-2">
+		<form
+			action="?/edit"
+			method={demo ? "" : "POST"}
+			class="form-control gap-2"
+		>
 			<input type="text" name="id" value={id} hidden />
 			<select
 				name="owner"
@@ -127,7 +133,11 @@
 			<button class="btn btn-info w-full">EDIT</button>
 		</form>
 		<div class="divider">OR</div>
-		<form action="?/delete" method="post" class="form-control gap-2">
+		<form
+			action="?/delete"
+			method={demo ? "" : "POST"}
+			class="form-control gap-2"
+		>
 			<input type="text" name="id" value={id} hidden />
 			<button class="btn btn-error w-full">DELETE</button>
 		</form>

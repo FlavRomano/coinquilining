@@ -20,6 +20,7 @@
 			$timeout_ougoings = false;
 			$outgoings = [...currentOutgoings];
 		}
+		console.log($outgoings);
 	});
 </script>
 

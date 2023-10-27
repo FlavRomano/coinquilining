@@ -1,10 +1,14 @@
 <script lang="ts">
 	export let summary = false;
 	export let outgoings = false;
+	export let demo = false;
 </script>
 
 <div class="btm-nav">
-	<a href="/house/lifestyle/receipts/summary" class={summary ? "active" : ""}>
+	<a
+		href="{demo ? '/demo' : ''}/house/lifestyle/receipts/summary"
+		class={summary ? "active" : ""}
+	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			class="h-5 w-5"
@@ -21,7 +25,7 @@
 		<span class="btm-nav-label">Summary</span>
 	</a>
 	<a
-		href="/house/lifestyle/receipts/outgoings"
+		href="{demo ? '/demo' : ''}/house/lifestyle/receipts/outgoings"
 		class={outgoings ? "active" : ""}
 	>
 		<svg

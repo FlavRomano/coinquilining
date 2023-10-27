@@ -1,44 +1,79 @@
 <script lang="ts">
 	import ReceiptsNav from "$components/groceries/receipts/ReceiptsNav.svelte";
 	import OutgoingsItem from "$components/groceries/receipts/OutgoingsItem.svelte";
-	import type { PageData } from "./$types";
-	import { outgoings, timeout_ougoings } from "$types/lib/stores";
-	import { onMount } from "svelte";
+	import { writable } from "svelte/store";
 
-	export let data: PageData;
+	const outgoings = writable([
+		{
+			id: "item0",
+			created_at: "2023-10-13T16:35:48.238698+00:00",
+			item_name: "Gnocchetti al sugo",
+			price: 3.5,
+			from: "someUUID1",
+			splitWith: ["someUUID0"],
+			house_id: "t0Zpi_o-B",
+		},
+		{
+			id: "item1",
+			created_at: "2023-10-21T16:07:52.763933+00:00",
+			item_name: "Ombrellone",
+			price: 10,
+			from: "someUUID1",
+			splitWith: ["someUUID0"],
+			house_id: "t0Zpi_o-B",
+		},
+		{
+			id: "item2",
+			created_at: "2023-10-25T09:35:15.511651+00:00",
+			item_name: "Papaveri e paperi",
+			price: 2,
+			from: "someUUID0",
+			splitWith: ["someUUID1"],
+			house_id: "t0Zpi_o-B",
+		},
+	]);
 
-	const { house_id, roommates } = data;
-
-	onMount(async () => {
-		if ($outgoings.length === 0 || $timeout_ougoings === true) {
-			const currentOutgoings = await (async () => {
-				const response = await fetch(
-					`/api/receipts/outgoings?house_id=${house_id}`
-				);
-				if (response.ok) return await response.json();
-			})();
-			$timeout_ougoings = false;
-			$outgoings = [...currentOutgoings];
-		}
-	});
+	const roommates = [
+		{
+			id: "someUUID0",
+			email: "fromano000@gmail.com",
+			firstname: "Flavio",
+			lastname: "Romano",
+			house_id: "Zzxjoanw",
+			balance: 5.75,
+		},
+		{
+			id: "someUUID1",
+			email: "flavio.romano92@gmail.com",
+			firstname: "Gabriele",
+			lastname: "Patierno",
+			house_id: "Zzxjoanw",
+			balance: -5.75,
+		},
+	];
 </script>
 
 <div class="text-sm breadcrumbs">
 	<ul>
-		<li><a href="/house/lifestyle/">Lifestyle</a></li>
+		<li><a href="/demo/house/lifestyle/">Lifestyle</a></li>
 		<li>Receipts</li>
 	</ul>
 </div>
 
-<div class="h-[70vh] w-full overflow-y-scroll rounded-2xl">
+<div class="h-[70vh] w-full overflow-y-scroll rounded-2xl no-scrollbar">
 	<!-- display in reverse order -->
 	<ul class="rotate-180">
 		{#each $outgoings as outgoing, index}
 			<li class="rotate-[-180deg] my-3">
-				<OutgoingsItem {outgoing} {roommates} outgoingIndex={index} />
+				<OutgoingsItem
+					{outgoing}
+					{roommates}
+					outgoingIndex={index}
+					demo={true}
+				/>
 			</li>
 		{/each}
 	</ul>
 </div>
 
-<ReceiptsNav outgoings={true} />
+<ReceiptsNav outgoings={true} demo={true} />

@@ -48,7 +48,7 @@
 			<p>Money is not everything</p>
 			<div class="card-actions justify-end">
 				<a
-					href="/demo/house/lifestyle/receipts"
+					href="/demo/house/lifestyle/receipts/summary"
 					class="btn btn-primary w-full lg:w-fit">Click me</a
 				>
 			</div>
