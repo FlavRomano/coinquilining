@@ -30,7 +30,7 @@
 	</ul>
 </div>
 
-<div class="h-[70vh] w-full overflow-y-scroll rounded-2xl">
+<div class="h-[70vh] w-full overflow-y-scroll rounded-2xl no-scrollbar">
 	<!-- display in reverse order -->
 	<ul class="rotate-180">
 		{#each $outgoings as outgoing, index}

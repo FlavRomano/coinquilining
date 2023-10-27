@@ -4,7 +4,7 @@
 	import SummaryItem from "$components/groceries/receipts/SummaryItem.svelte";
 	import type { PageData } from "./$types";
 	import { summary, timeout_summary } from "$lib/stores";
-	import { getFridge, getPantry } from "$types/lib/utilities";
+	// import { getFridge, getPantry } from "$types/lib/utilities";
 	import { onMount } from "svelte";
 	import { sumPricesByOwner } from "$types/lib";
 
@@ -20,8 +20,18 @@
 			!$summary.pantryPrices
 		) {
 			$timeout_summary = false;
-			const fridge = await getFridge(fetch, house_id);
-			const pantry = await getPantry(fetch, house_id);
+			const fridge = await (async () => {
+				const response = await fetch(
+					`/api/fridge?house_id=${house_id}`
+				);
+				if (response.ok) return await response.json();
+			})();
+			const pantry = await (async () => {
+				const response = await fetch(
+					`/api/pantry?house_id=${house_id}`
+				);
+				if (response.ok) return await response.json();
+			})();
 
 			const fridgePrices = sumPricesByOwner(fridge);
 			const pantryPrices = sumPricesByOwner(pantry);
@@ -29,7 +39,7 @@
 			summary.set({ fridgePrices, pantryPrices });
 
 			console.log($summary);
-		} else console.log("cached");
+		}
 		loaded = true;
 	});
 </script>
@@ -41,7 +51,7 @@
 	</ul>
 </div>
 
-<div class=" w-full h-[55vh] overflow-y-scroll">
+<div class="w-full h-[55vh] overflow-y-scroll no-scrollbar">
 	{#if loaded}
 		<ul>
 			{#each roommates as roommate}
