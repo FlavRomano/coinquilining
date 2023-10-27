@@ -112,8 +112,13 @@
 				</div>
 				<div class="divider">OR</div>
 			</form>
-			<div class="prose">
-				<p>Click <a href="/login">here</a> to login</p>
+			<div>
+				<p class="prose">
+					Click <a href="/login" class="link">here</a> to login
+				</p>
+				<p class="prose">
+					Click <a href="/demo" class="link">here</a> to try the demo
+				</p>
 			</div>
 			{#if $registration_allErrors.length}
 				<ul>
