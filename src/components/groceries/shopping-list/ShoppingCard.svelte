@@ -4,6 +4,7 @@
 	export let title = "New Shopping list";
 	export let paragraph =
 		"Add something to the list before your trip to Lidl.";
+	export let date = undefined;
 	export let demo = false;
 </script>
 
@@ -11,7 +12,9 @@
 	<div class="card-body">
 		<h2 class="card-title">{title}</h2>
 		<p>
-			{id !== "new" ? new Date().toLocaleDateString("it-IT") : paragraph}
+			{id !== "new"
+				? new Date(date).toLocaleDateString("it-IT")
+				: paragraph}
 		</p>
 		<div class="card-actions justify-end">
 			{#if id !== "new"}

@@ -22,6 +22,7 @@
 			color={"bg-primary"}
 			id={list.id}
 			title={list.name}
+			date={list.date}
 			paragraph={list.date}
 		/>
 	{/each}

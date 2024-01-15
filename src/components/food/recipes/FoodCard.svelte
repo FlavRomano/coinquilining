@@ -8,8 +8,6 @@
 			class="sm:scale-[1.25] md:scale-100 lg:scale-100"
 			src={recipe.img}
 			alt={recipe.title}
-			width="360px"
-			height="300px"
 			loading="lazy"
 		/>
 	</figure>
